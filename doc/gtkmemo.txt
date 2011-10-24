@@ -1,0 +1,50 @@
+-*- outline -*-
+
+* 2006-04-16 文字コードの問題
+
+ソースはすべて utf-8 で記述しないとメニューに日本語が表示されない。
+
+* Gtk.main/Gtk.main_quit関連
+
+http://home2.highway.ne.jp/mutoh/tips/gtk_etc.html
+
+** ダメな方法1
+
+  g = DrawAll.new(frame, 0, Draw.new)
+  Thread.start{
+    frame.start(0)
+    g.close #=> Gtk.main_quit が呼ばれる。
+  }
+  Gtk.main  #=> 待つ
+
+  この方法では、main_quit に反応して Gtk.main が半分しか終わらず。
+  何かのイベント(マウスをウィンドウに当てるなど)を行なわないと
+  Gtk.main を抜けない。そこで方法2を使う。
+
+** 良い方法2
+
+  g = DrawAll.new(frame, 0, Draw.new)
+  frame.start(0){
+    while (Gtk.events_pending?)
+      Gtk.main_iteration
+    end
+  }
+  g.close
+
+  このように長い処理中、定期的に
+
+    while (Gtk.events_pending?)
+      Gtk.main_iteration
+    end
+
+  を呼ぶ。
+
+* Gtk::Paned#pack1(widget, resize, shrink)
+
+1. widget - 追加するウィジェット
+2. resize - ペインがリサイズされたときにウィジェット自体がリサイズする場合はtrue、リサイズしない場合はfalseを指定する。
+3. shrink - ペインがリサイズされたときに、そのウィジェットが持つ最小の大きさより小さくしても良い場合はtrue、最小値よりは小さくしない場合はfalseを指定する
+
+add1(x) は pack1(x, false, true) と同じ
+
+http://home2.highway.ne.jp/mutoh/tips/paned.html#1

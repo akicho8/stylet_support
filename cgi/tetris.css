@@ -1,0 +1,45 @@
+/*
+#999 #666 #000 #ccc
+*/
+
+body {
+  background-color: #600;
+  color: #000;
+}
+
+a:link{ color: #c63}
+a:active{ color: #f03}
+a:visited{ color: #993}
+
+h1 {
+  background-color: #F84;
+  color: #000;
+  text-align: center;
+  line-height: 400%;
+  margin: 3% 10%;
+}
+
+.mainlist {
+  background-color: #A00;
+  text-align: center;
+  border: 4px solid #A00;
+  margin: 1% 18% 3%;
+  line-height: 200%;
+}
+
+th {
+  background-color: #f70;
+}
+
+td {
+  padding: 5px 8px;
+}
+
+
+.even {background-color: #fc9}
+.odd  {background-color: #fcA}
+
+.footer {
+  text-align: right;
+  color: #c60;
+}

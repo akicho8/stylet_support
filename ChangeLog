@@ -1,0 +1,1117 @@
+2004-05-03  akicho8  <akicho8@gmail.com>
+
+	* backtrack.rb, pattern.rb, test/testtetrimino.rb, test/testpattern.rb, tetris.rb:
+	pattern_to_index_str_pattern 関連を整理。
+
+2004-05-02  akicho8  <akicho8@gmail.com>
+
+	* MANIFEST, config.rb, input.rb, make-dist, tetac.rb, tetris.rb, ui/field.rb, ui/frame.rb, graph.rb:
+	*** empty log message ***
+
+	* modes/tap_vs_mode.rb:
+	undefine field_before_puton になっていたのを修正。
+
+	* input.rb: *** empty log message ***
+
+	* modes/tgm_plus_mode.rb: 1.8対応。
+
+	* modes/tap_master_mode.rb, ui/frame.rb: *** empty log message ***
+
+	* ui/gdk/input.rb: 2P側が定数がまちがっていたのを修正。
+
+2004-05-01  akicho8  <akicho8@gmail.com>
+
+	* tetac.rb, tetris-checkmate, make-dist: *** empty log message ***
+
+2004-04-30  akicho8  <akicho8@gmail.com>
+
+	* MANIFEST, simulator/goo-tetrimino-controll-optimize.rb:
+	*** empty log message ***
+
+	* tetris-checkmate, tetac.rb: 削除。
+
+	* simulator/etc.rb, simulator/goo-tetrimino-controll-optimize.rb, simulator/ipepapi-boyaki.rb, simulator/ipepapi-checkmate.rb, simulator/ipepapi-synchro-checkmate.rb, simulator/panoo-basic-technique.rb, simulator/zon-checkmate.rb:
+	リネームしたいけどできないので新規で追加。
+
+	* simulator/テトリス基本技集-ぱのお.rb, simulator/テトリス情報ページぼやき.rb, simulator/ブロック操作最適化.rb, simulator/詰めテト-ZON.rb, simulator/詰めテト-いぺぱぴ.rb, simulator/詰めテト・シンクロ編-いぺぱぴ.rb, simulator/未整理.rb, make-dist:
+	*** empty log message ***
+
+2004-04-18  akicho8  <akicho8@gmail.com>
+
+	* simulator/ブロック操作最適化.rb: URLを変更。
+
+2004-04-17  akicho8  <akicho8@gmail.com>
+
+	* MANIFEST, ChangeLog, make-dist: *** empty log message ***
+
+2004-04-16  akicho8  <akicho8@gmail.com>
+
+	* simulator/sample.rb, gtk-util.rb, manager.rb, recfile.rb, simulator.rb, tool.rb:
+	*** empty log message ***
+
+2004-04-14  akicho8  <akicho8@gmail.com>
+
+	* test/testtetrimino.rb: *** empty log message ***
+
+	* tetris.rb: str_to_jcharstr を追加。
+
+2004-04-13  akicho8  <akicho8@gmail.com>
+
+	* tool.rb: *** empty log message ***
+
+2004-03-05  akicho8  <akicho8@gmail.com>
+
+	* manager.rb: ライブラリ部分を gtk-util.rb に抽出した。
+
+	* graph.rb, dataclear.sh: OK
+
+	* gtk-util.rb:
+	sodaplay を作るために manager.rb の共通部分をライブラリ化した。
+
+2004-01-21  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog: *** empty log message ***
+
+2004-01-10  akicho8  <akicho8@gmail.com>
+
+	* cgi/tetris.css: 色を赤にした。
+
+	* cgi/tetris.css, cgi/index.rb: *** empty log message ***
+
+	* recfile.rb: おぼえてない。
+
+	* tool.rb: スクリプトを生成して実行するようにした。
+
+2003-08-05  akicho8  <akicho8@gmail.com>
+
+	* testinput.rb, ChangeLog, testtetrimino.rb, testfield.rb:
+	to_s2で空文字列を返すようになったときの対処。
+	あれこれリファクタリング。
+	黄色が最初に出現可能になっていたのを修正(前のバージョンで直した気もする)
+
+2003-08-03  akicho8  <akicho8@gmail.com>
+
+	* testinput.rb: まとめてコミット。
+
+2003-07-29  akicho8  <akicho8@gmail.com>
+
+	* testfield.rb:
+	まとめてコミット。TGM+モードの作成。リプレイ方法の改良。
+
+	* testplayer.rb:
+	Array.new(2)だと[nil,nil]になってしまい、キーボード入力で nil を入力し
+	たことになってしまっていたのを修正。
+
+	* testtetrimino.rb, testpattern.rb: まとめてコミット。
+
+2003-07-27  akicho8  <akicho8@gmail.com>
+
+	* testplayer.rb: *** empty log message ***
+
+2003-07-22  akicho8  <akicho8@gmail.com>
+
+	* testpattern.rb: まとめてコミット。
+
+2003-07-20  akicho8  <akicho8@gmail.com>
+
+	* testall.rb: quiet_modeに変更。
+
+	* testcell.rb, testtetrimino.rb, testbacktrack.rb:
+	*** empty log message ***
+
+2003-07-19  akicho8  <akicho8@gmail.com>
+
+	* testfield.rb: *** empty log message ***
+
+	* testfield.rb: test_get_cell_count_for_ac を追加
+
+2003-07-18  akicho8  <akicho8@gmail.com>
+
+	* testfield.rb: test_create2 を追加。
+
+	* ChangeLog: *** empty log message ***
+
+	* testpattern.rb: test_original_pattern_rec の追加。履歴機能のテスト。
+
+	* testfield.rb: test_clear!, test_replace, test_create を追加。
+
+2003-07-16  akicho8  <akicho8@gmail.com>
+
+	* testtetrimino.rb.dat: まとめてコミット。
+
+	* testtetrimino.dat: testtetrimino.rb.dat から改名。
+
+	* testtetrimino.rb: データファイル名を変更した。
+
+	* testcell.rb, testetc.rb, testframe.rb, testplayer.rb, testall.rb:
+	ファイルが JIS になっているのがあったので全て euc-jp-unix に変更した。
+
+	* testinput.rb: 入力優先順位テストを行う test_get_lr_dir を消して新たに
+	test_preference_key を作成した。
+
+2003-12-03  akicho8  <akicho8@gmail.com>
+
+	* dbtest.conf: 削除予定。
+
+	* dbconfig.rb: シンプルにした。
+
+	* load-all.rb, test2/testtetac.rb, manager.rb, cgi/index.rb:
+	*** empty log message ***
+
+	* cgi/tetris.css, cgi/index.rb: 作成。
+
+	* test/testpattern.rb:
+	Windows に入れた MinGW の ruby 1.8.1 を使ったら乱数の偏りが激しくて
+	ときどきテストに失敗するのでループ回数を多くしてみた。
+
+	* test.conf: 削除予定。
+
+	* simulator.rb, simulator-reform.rb: CONFIG関連の整理。
+
+	* recfile.rb: 最後のテストの部分が動かなくなっていたので修正。
+
+	* manager.rb: ディレクトリ関連の整理。
+
+	* dbtest.conf: 削除予定。
+
+	* dbconfig.rb: expand_path を使わないようにした。
+
+	* dataclear.sh: *** empty log message ***
+
+	* config.rb:
+	大幅に変更。simdir2 などの xxx2 系をすべて廃止してシンプルにした。
+	またスクリプトはすべてまとめてユーザーの任意のディレクトリにインストールすることにする。
+
+	* ToDo: *** empty log message ***
+
+2003-11-29  akicho8  <akicho8@gmail.com>
+
+	* backtrack.rb, manager.rb, play.rb, tetac.rb:
+	catch (:foo) だと警告がでるので catch(:foo) とした。
+
+2003-11-28  akicho8  <akicho8@gmail.com>
+
+	* manager.rb: requier "graph" がなくてバグっていた。
+	数ヶ月前に中途半端な状態で放っておいた罰だろう。
+
+	* ChangeLog, test2/testinput2.rb:
+	リネームに失敗していたところをDrawAllに変更。
+
+	* modes/tgm_mode.rb, manager.rb:
+	require "sound" でエラーになっていたので外した。
+
+	* config.rb: OUTSIDEからINSIDEに変更
+
+2003-11-24  akicho8  <akicho8@gmail.com>
+
+	* sound.rb, graph.rb, input/input_base.rb, input/input_base2.rb, manager.rb, modes/tap_vs_doubles_mode.rb, modes/tap_vs_mode.rb, modes/tgm_plus_mode.rb, recfile.rb, sample/test_play.rb, simulator.rb, test2/testgraph.rb, test2/testrecfile.rb, tetac.rb, ui/field.rb, ui/frame.rb:
+	まとめてコミット。
+
+2003-10-03  akicho8  <akicho8@gmail.com>
+
+	* ui/console/draw.rb: module階層の統一。
+
+	* graph.rb, input/input_base.rb, input/input_base2.rb, manager.rb, modes/tap_death_mode.rb, modes/tap_doubles_mode.rb, modes/tap_extend_mode.rb, modes/tap_master_2p.rb, modes/tap_master_marathon_mode.rb, modes/tap_master_mode.rb, modes/tap_vs_doubles_mode.rb, modes/tap_vs_mode.rb, modes/tgm_debug_mode.rb, modes/tgm_mode.rb, modes/tgm_plus_mode.rb, play.rb, recfile.rb, sample/field-view.rb, sample/test_play.rb, simulator.rb, test/testpattern.rb, test/testplayer.rb, test2/testgraph.rb, test2/testinput2.rb, test2/testrecfile.rb, ui/field.rb, ui/frame.rb, ui/gdk/draw.rb, ui/gdk/input.rb, ui/sdl/draw.rb:
+	SdlBase → UI::Sdl::Draw への変更。
+	テストを全て動作するようにした。
+
+	* .cvsignore: 追加。
+
+	* pattern.rb: Patternモジュール内に入れた。
+
+	* ui/field.rb: 縁取り(内側/外側)の両方に対応。
+
+	* config.rb: :edgeオプション追加。
+
+	* tetris.rb: Cell.new("c") と nil の比較(==)が失敗していたので修正。
+
+	* test/testcell.rb: Cell.new("c) == nil のチェックを追加。
+
+2003-09-29  akicho8  <akicho8@gmail.com>
+
+	* sample/test_play.rb: 追加。
+
+	* ui/field.rb,v, training/テトリス情報ページぼやき.rb, training/ブロック操作最適化.rb, training/詰めテト-ZON.rb, training/詰めテト-いぺぱぴ.rb, training/詰めテト・シンクロ編-いぺぱぴ.rb, training/未整理.rb, training/テトリス基本技集-ぱのお.rb:
+	削除。
+
+	* sound/with-sound.rb, rs-input.rb, sample/field-view.rb, signal-observer.rb, simulator/test.rb, ui/abstract.rb, ui/color.rb, ui/console/draw.rb, ui/field.rb, ui/field.rb,v, ui/frame.rb, ui/gdk/draw.rb, ui/gdk/input.rb, ui/joy/input.rb, ui/joy/joy.rb, ui/sdl/draw.rb, ui/sdl/input.rb, ui/sdl/sound.rb, test2/sample.mp3:
+	追加。
+
+	* test2/mappy.mp3, test2/testsdlsound.rb, cui-base.rb, gui-abstract.rb, gui-backtrack.rb, gui-display.rb, gui-gdk-base.rb, gui-sdl-base.rb, gui-tgm.rb, joy.rb, sdl-sound.rb, tech.rb:
+	削除。
+
+	* test3/README, test3/kill-process.sh, test3/sample.mp3, test3/sample.wav, test3/testall.rb, test3/testsdlsound.rb:
+	サウンド関係テスト追加
+
+	* ToDo, config.rb, graph.rb, input.rb, manager.rb, input/input_base.rb, input/input_base2.rb, modes/tap_death_mode.rb, modes/tap_doubles_mode.rb, modes/tap_extend_mode.rb, modes/tap_master_2p.rb, play.rb, recfile.rb, simulator.rb, sound.rb, test.conf, testall.rb, tetac.rb, modes/tap_master_marathon_mode.rb, modes/tap_master_mode.rb, modes/tap_vs_doubles_mode.rb, modes/tap_vs_mode.rb, modes/tgm_debug_mode.rb, modes/tgm_mode.rb, modes/tgm_plus_mode.rb, test/testall.rb, test/testfield.rb, test/testinput.rb, test/testplayer.rb, test2/testall.rb, test2/testinput2.rb, test2/testrecfile.rb, test2/testsimulator.rb:
+	かなり変更。まとめてコミット。
+
+	* tetris.rb:
+	Field#get で 負のインデックスでアクセスしたら nil を返すようにした。
+
+2003-09-20  akicho8  <akicho8@gmail.com>
+
+	* test2/testsdlsound.rb: 追加。
+
+	* sdl-sound.rb: 途中だけどcommit
+
+2003-09-19  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog, ToDo, graph.rb, gui-display.rb, gui-tgm.rb, input/input_base.rb, input/input_base2.rb, manager.rb, play.rb, recfile.rb, simulator.rb, tech.rb, tetris.rb, modes/tap_vs_mode.rb, modes/tgm_mode.rb, test/testfield.rb, test2/testall.rb, test2/testrecfile.rb, test2/testsimulator.rb:
+	リファクタリング。
+
+	* sound.rb: 追加。
+
+2003-09-17  akicho8  <akicho8@gmail.com>
+
+	* tool.rb, test2/testtool.rb: GenericTool -> Tool に変更。
+
+	* test2/testtool.rb, test2/mappy.mp3: 追加。
+
+	* test2/testsimulator.rb:
+	どこから testsimulator を呼んでも mappy.mp3 を読めるようにした。
+
+	* config.rb, graph.rb, input/input_base.rb, input/input_base2.rb, joy.rb, manager.rb, play.rb, recfile.rb, simulator.rb, test/testtetrimino.rb, test2/ChangeLog, test2/testall.rb, test2/testinput2.rb, test2/testsimulator.rb, testall.rb:
+	リファクタリング。
+
+	* test2/testsimulator.rb: 追加。
+
+	* testall.rb: 作成。
+
+	* test2/ChangeLog: *** empty log message ***
+
+	* test2/testrec.rb: 削除。
+
+	* test2/testall.rb, test2/testinput2.rb:
+	動かなくなっていたので動作するようにした。
+
+	* test2/testgraph.rb, test2/testrecfile.rb: 追加。
+
+	* graph.rb: 作成。
+
+	* ToDo: *** empty log message ***
+
+	* config.rb, dbconfig.rb, gui-display.rb, gui-sdl-base.rb, gui-tgm.rb, recfile.rb, simulator/ブロック操作最適化.rb, tech.rb, tool.rb:
+	リファクタリング。
+
+	* simulator.rb: MPEG変換のコード追加
+
+2003-09-16  akicho8  <akicho8@gmail.com>
+
+	* tetris.rb: replace 'parse_tetrimino_string' to 'parse_string'
+
+2003-09-15  akicho8  <akicho8@gmail.com>
+
+	* simulator.rb: mpeg関連のモジュール関数を多数追加した。
+	そしたらわけがわからなくなった。
+
+2003-09-13  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog: *** empty log message ***
+
+	* backtrack.rb, input.rb, input/input_base.rb, input/input_base2.rb, manager.rb, play.rb, simulator.rb, simulator/ブロック操作最適化.rb, test/testtetrimino.rb, tetris.rb:
+	リファクタリング。
+
+	* manager.rb:
+	SectionCList の set_row_data にセグメント情報自体を渡すようにした以前
+	の修正のせいで、set_row_data にはセグメント番号だけが入っていると仮定
+	し、コーディングしていた部分が動作しなくなっていた。それを修正。
+
+2003-09-12  akicho8  <akicho8@gmail.com>
+
+	* input/input_base.rb: rotate_tetrimino を改良。
+
+	* ToDo, simulator.rb, simulator/テトリス基本技集-ぱのお.rb, simulator/テトリス情報ページぼやき.rb, simulator/ブロック操作最適化.rb, simulator/詰めテト-ZON.rb, simulator/詰めテト-いぺぱぴ.rb, simulator/詰めテト・シンクロ編-いぺぱぴ.rb, simulator/未整理.rb, tetris.rb:
+	とりあえず全部コミット。simulator関連の入力完了。Train -> Sim に変更。
+
+2003-09-11  akicho8  <akicho8@gmail.com>
+
+	* simulator/テトリス情報ページぼやき.rb: やっと全部入力。
+
+	* input.rb:
+	GTKでキーボード操作したときのシンクロキーの割り当てが間違っていた。(致命的バグ)
+
+2003-09-10  akicho8  <akicho8@gmail.com>
+
+	* simulator/テトリス情報ページぼやき.rb: 60割ほど入力完了。
+
+2003-09-09  akicho8  <akicho8@gmail.com>
+
+	* simulator/詰めテト-ZON.rb: 新しい書き方に変更。
+
+	* simulator/ブロック操作最適化.rb: "l_"    => %[l* l l l l       d_ *],
+	という形式で書いたバージョン。
+
+	* simulator/テトリス基本技集-ぱのお.rb: 新しい表記に修正。
+
+2003-09-08  akicho8  <akicho8@gmail.com>
+
+	* simulator/テトリス基本技集-ぱのお.rb, simulator/テトリス情報ページぼやき.rb, simulator/ブロック操作最適化.rb, simulator/詰めテト-ZON.rb, simulator/詰めテト-いぺぱぴ.rb, simulator/詰めテト・シンクロ編-いぺぱぴ.rb, simulator/未整理.rb:
+	リファクタリング。
+
+	* test/testinput.rb, test/testplayer.rb: *** empty log message ***
+
+	* simulator.rb, simulator-reform.rb: リファクタリング。
+
+	* play.rb: @input オブジェクト用のコールバックを何個か追加。
+
+	* manager.rb: リファクタリング。
+
+	* input.rb:
+2003-09-07  akicho8  <akicho8@gmail.com>
+
+	* simulator/テトリス基本技集-ぱのお.rb: キー操作関連をリファクタリング
+
+	* simulator-reform.rb: 追加。
+
+2003-09-06  akicho8  <akicho8@gmail.com>
+
+	* simulator/テトリス基本技集-ぱのお.rb: テストコード修正。
+
+	* input/input_base.rb: puton_case -> puton への変更。
+
+	* tetris.rb:
+	Dir に jinspect追加。Tetrimino に x= x y= y set_x set_y jcolor メソッドを追加。
+
+	* test.conf: 確実にリネームできてなかったの修正。
+
+	* simulator.rb:
+	play_sampleなど q が押されたときの内部の戻り値 :break を継続して返すようにした。
+
+	* play.rb:
+	level_info.fall_delay.nil? ならブロックをフィールドに書き込まないようにしてみた。
+
+	* simulator/ブロック操作最適化.rb:
+	やっぱりフィールドへの書き込みを許可した。
+
+	* simulator/ブロック操作最適化.rb:
+	全ての基本最適化パターンを追加(プログラムにより生成)
+
+2003-09-05  akicho8  <akicho8@gmail.com>
+
+	* tetris.rb:
+	puton_case を廃止して puton にブロックを指定できるようにした。
+
+	* tetris.rb:
+	Point.String2Dir[dir] => Point.String2Dir.fetch(dir) に変更。
+
+	* tetris.rb: dir = "u" などと指定できるようにした。
+
+2003-09-04  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog: OK
+
+	* simulator/テトリス基本技集-ぱのお.rb, simulator/テトリス情報ページぼやき.rb, simulator/ブロック操作最適化.rb, simulator/詰めテト-ZON.rb, simulator/詰めテト-いぺぱぴ.rb, simulator/詰めテト・シンクロ編-いぺぱぴ.rb, simulator/未整理.rb:
+	追加。
+
+	* gui-gdk-base.rb: デバック表示を抑制。
+
+	* simulator.rb: sim_next_delay 追加。
+
+	* test/testinput.rb, test/testplayer.rb:
+	input.rb の変更に追随して変更。
+
+	* input.rb: ボタンの文字列は 1 2 3 4 にしていたけど A B C D にした。
+	方向キーも同様に A B C D から a b c d にした。
+
+	* ToDo: *** empty log message ***
+
+2003-09-03  akicho8  <akicho8@gmail.com>
+
+	* training.rb: simulator.rb にリネーム。
+
+	* simulator.rb: training.rb からリネーム。
+
+	* modes/tap_doubles_mode.rb, modes/tap_vs_doubles_mode.rb, pattern.rb, play.rb, recfile.rb, test/testtetrimino.rb, test/testcell.rb, test/testfield.rb, tetac.rb, test2/testinput2.rb, joy.rb:
+	リファクタリング。
+
+	* manager.rb: training -> simulator
+
+	* gui-display.rb, gui-gdk-base.rb, gui-sdl-base.rb: リファクタリング。
+
+	* cui-base.rb: upto を使わないようにした。
+
+	* config.rb: training -> simulator
+
+	* backtrack.rb: Field.newの引数変更。
+
+	* tetris.rb: upto を使わないようにした。
+
+	* tetris.rb: Dimension -> Area に変更。
+	Rectangle -> Area に吸収。
+	Area を Array のサブクラス化。
+	BLACK_ZONE -> INVISIBLE_AREA に変更。
+	Cell のインスタンス整理。
+	あれこれリファクタリング。
+
+2003-09-02  akicho8  <akicho8@gmail.com>
+
+	* ToDo, gui-gdk-base.rb, training.rb: とりあえずコミット。
+
+	* manager.rb: 「練習」→「シミュレータ」に名前変更。
+	put_files の引数に配列を展開しないまま渡していたのを修正。
+
+	* tetris.rb:
+	青、オレンジが上向きの時の内角にブロックがあっても回転できるようにした。
+	(回転できないようにしていた制限を解除した)
+
+	* manager.rb: ManagerUtil.load_all で警告を無理矢理出さないようにした。
+
+	* rubyext.rb: without_warningを追加。
+
+	* manager.rb:
+	break unless event.is_a? Gdk::EventButton というコードが 1.8.0 だと
+	`call': break from proc-closure (LocalJumpError)
+	というエラーになるので、
+	if event.is_a? Gdk::EventButton
+	end
+	に変更。
+
+2003-09-01  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog, ToDo: *** empty log message ***
+
+	* tool.rb: open_urlを追加。
+
+	* training.rb:
+	h={:x => nil}; h.fetch(:x){0} としても 0 にならないので h[:x] || 0 とすることにした。
+
+	* manager.rb: 用語集にジャンプできるようにした。
+
+	* gui-tgm.rb, input/input_base.rb, input/input_base2.rb, modes/tap_death_mode.rb, modes/tap_doubles_mode.rb, modes/tap_extend_mode.rb, modes/tap_master_2p.rb, modes/tap_master_marathon_mode.rb, modes/tap_master_mode.rb, modes/tap_vs_doubles_mode.rb, modes/tap_vs_mode.rb, modes/tgm_debug_mode.rb, modes/tgm_mode.rb, modes/tgm_plus_mode.rb, tetris.rb, training.rb:
+	Field.new で毎回 10x22 を指定しているので、内部で 10x22 のフィールドを
+	生成するファクトリーメソッド Field.create を作成した。それにあちこちの
+	ファイルを対応させた。
+
+	* tetris.rb:
+	フィールドの配列生成時に 1.8 の Array.new{} で生成するようにした。
+
+	* test/testtetrimino.dat, training.rb:
+	練習ファイルを読んで、同様のデータ表記で整えてファイルに出力できるようにした。
+
+	* gui-abstract.rb, tetris.rb: Magenta -> Purple に変更。
+
+	* test/testplayer.rb: m -> p に変更
+
+	* backtrack.rb, config.rb, cui-base.rb, db-client.rb, db-server.rb, dbconfig.rb, gui-abstract.rb, gui-backtrack.rb, gui-display.rb, gui-gdk-base.rb, gui-sdl-base.rb, gui-tgm.rb, input.rb, input/input_base.rb, input/input_base2.rb, joy.rb, modes/tap_death_mode.rb, modes/tap_doubles_mode.rb, modes/tap_extend_mode.rb, modes/tap_master_2p.rb, modes/tap_master_marathon_mode.rb, modes/tap_master_mode.rb, modes/tap_vs_doubles_mode.rb, modes/tap_vs_mode.rb, modes/tgm_debug_mode.rb, modes/tgm_mode.rb, modes/tgm_plus_mode.rb, pattern.rb, play.rb, recfile.rb, rubyext.rb, score.rb, tech.rb, test/testall.rb, test/testbacktrack.rb, test/testtetrimino.rb, test/testcell.rb, test/testfield.rb, test/testframe.rb, test/testinput.rb, test/testpattern.rb, test/testplayer.rb, tetac.rb, tetris.rb, tgm.rb, tool.rb, training.rb, vsync.rb, test2/testall.rb, test2/testinput2.rb, test2/testrec.rb:
+	UnitTestを1.8に対応。コード自体も2点変更して1.8に対応。
+	Range#length を使用していたのを to_a.size に変更。
+	str =~ mark を str.include?(mark)に変更。
+
+	* ToDo, config.rb, gui-display.rb, gui-gdk-base.rb, gui-sdl-base.rb, manager.rb, training.rb:
+	1.7への移行前のコミット。何を変更したか覚えてない。
+
+	* modes/tap_master_marathon_mode.rb: マラソン Lv9999 モード作成。
+
+2003-08-31  akicho8  <akicho8@gmail.com>
+
+	* training/テトリス情報ページぼやき.rb: 2000年5月分まで入力。
+
+2003-08-29  akicho8  <akicho8@gmail.com>
+
+	* training/テトリス情報ページぼやき.rb: 修正。
+
+	* training/テトリス情報ページぼやき.rb:
+	1999-04-30 〜 1999-08-01 を取り込んだ。
+
+	* manager.rb: *** empty log message ***
+
+2003-08-28  akicho8  <akicho8@gmail.com>
+
+	* manager.rb:
+	CList#set_row_data に登録したオブジェクトがいつのまにかGCされていたバグ修正。
+
+2003-08-27  akicho8  <akicho8@gmail.com>
+
+	* input.rb, ChangeLog: *** empty log message ***
+
+	* input.rb, test/testinput.rb:
+	ReactionSuppressionクラスの完成。テストも完成。KeyUnit1/2 に組み込んだ。
+
+2003-08-26  akicho8  <akicho8@gmail.com>
+
+	* cui-base.rb, gui-display.rb, vsync.rb:
+	VSyncWaitからFPS測定部分をCheckFPSクラスとして分離した。
+
+2003-08-25  akicho8  <akicho8@gmail.com>
+
+	* config.rb, cui-base.rb, db-client.rb, db-server.rb, dbconfig.rb, dbtest.conf, gui-sdl-base.rb, gui-tgm.rb, manager.rb, recfile.rb, rubyext.rb, tech.rb, test.conf, test/testtetrimino.rb, test/testcell.rb, test/testfield.rb, test/testframe.rb, test/testinput.rb, test/testplayer.rb, test2/testinput2.rb, test2/testrec.rb, tetac.rb, tool.rb, training.rb, vsync.rb, training/テトリス基本技集-ぱのお.rb, training/テトリス情報ページぼやき.rb, training/詰めテト-ZON.rb, training/詰めテト-いけだ.rb, training/詰めテト-いぺぱぴ.rb, training/詰めテト・シンクロ編-いぺぱぴ.rb, training/未整理.rb:
+	リファクタリング。
+
+	* play.rb, recfile.rb, manager.rb: リファクタリング
+
+	* gui-gdk-base.rb: 表示座標の調整
+
+	* manager.rb:
+	upload と upload_all を upload_files を使って一つの処理にするようにした。
+
+2003-08-24  akicho8  <akicho8@gmail.com>
+
+	* manager.rb:
+	gnuplotが無い場合は、グラフ表示メニューの選択を不可にした。
+	区間を指定しての「スタート」を有効にした。
+
+2003-08-23  akicho8  <akicho8@gmail.com>
+
+	* gui-gdk-base.rb, gui-sdl-base.rb: 追加。
+
+	* gdk-base.rb, gui-abstract.rb, gui-base.rb, gui-display.rb, gui-tgm.rb, input.rb, play.rb, recfile.rb, tech.rb, vsync.rb, input/input_base.rb, input/input_base2.rb, modes/tap_vs_doubles_mode.rb, modes/tap_vs_mode.rb, modes/tgm_plus_mode.rb, test2/testrec.rb:
+	GdkとSdlの両方に対応するための大きなソース変更。
+
+	* manager.rb: Gdkでプレビューできるようにした。が、問題が多々ある。
+
+2003-08-22  akicho8  <akicho8@gmail.com>
+
+	* tetac.rb: SDL/GDKの両方に対応。
+
+	* gui-display.rb: リファクタリング
+
+	* gui-abstract.rb: Color追加。
+
+	* gui-abstract.rb: Gdk/SDLのクラス設計図
+
+	* luxirr.ttf: フォントデータ。
+
+2003-08-21  akicho8  <akicho8@gmail.com>
+
+	* config.rb, cui-base.rb, gdk-base.rb, gui-backtrack.rb, gui-base.rb, gui-display.rb, gui-tgm.rb, manager.rb, test.conf:
+	Gui関連のクラスのリファクタリング。GdkとSdlで同様の表示ができるようにした。
+
+	* gdk-base.rb: Gdkによるテトリスフィールド描画。
+
+2003-08-20  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog: *** empty log message ***
+
+	* config.rb, db-client.rb, gui-base.rb, gui-display.rb, manager.rb, tool.rb:
+	SGE/mplayer/mencoderの有無チェック関連。
+
+	* RuRadioButtonGroup.rb: 削除。
+
+	* config.rb, db-client.rb, db-server.rb, dbconfig.rb, dbtest.conf, input.rb, input/input_base.rb, input/input_base2.rb, recfile.rb:
+	ツールチップ対応。ラジオボタン関係をクラス化。アップロード・ダウンロー
+	ド・MPEG変換時のダイアログメッセージ表示。about表示。に関連する変更。
+
+	* manager.rb:
+	ツールチップ対応。ラジオボタン関係をクラス化。アップロード・ダウンロー
+	ド・MPEG変換時のダイアログメッセージ表示。about表示。
+
+2003-08-19  akicho8  <akicho8@gmail.com>
+
+	* RuRadioButtonGroup.rb: 整形。
+
+	* RuRadioButtonGroup.rb: 便利そうなので追加。
+
+2003-08-18  akicho8  <akicho8@gmail.com>
+
+	* manager.rb: treeを実装したバージョン
+
+2003-08-17  akicho8  <akicho8@gmail.com>
+
+	* ToDo, manager.rb: 3ペイン化
+
+2003-08-16  akicho8  <akicho8@gmail.com>
+
+	* manager.rb, play.rb, recfile.rb:
+	まとめてコミット。recfile.rb と manager.rb を中心に子バグの修正。
+
+2003-08-13  akicho8  <akicho8@gmail.com>
+
+	* modes/tap_vs_mode.rb, input/input_base2.rb: 作成。
+
+	* ChangeLog, ToDo: まとめてコミット。
+
+	* config.rb, cui-base.rb, gui-backtrack.rb, input.rb, input/input_base.rb, modes/tap_master_2p.rb, modes/tap_master_mode.rb, modes/tap_vs_doubles_mode.rb, modes/tgm_mode.rb, pattern.rb, play.rb, recfile.rb, rubyext.rb, test.conf, test/testfield.rb, test2/testinput2.rb, test2/testrec.rb, tetris.rb:
+	まとめてコミット。ダブルス対戦モード追加。モナーフォント対応。
+
+	* manager.rb:
+	Dimension(Debian)からLibretto(Vine)にリモートで継いで ./manager.rb Gtk
+	のフォントが化ける問題があったので goRua.rb を参考にモナーフォントを使
+	うようにしてみた。
+
+2003-08-11  akicho8  <akicho8@gmail.com>
+
+	* modes/tap_vs_doubles_mode.rb: 作成。
+
+	* tetris.rb: _clear_lines, cell_count, roughness2 を追加。
+
+	* input/input_base.rb:
+	上入れ即落下に対応していない場合は、下を押して落下させるようにした。
+
+	* training.rb: field → fields 修正
+
+2003-08-09  akicho8  <akicho8@gmail.com>
+
+	* modes/tap_master_2p.rb: 作成。
+
+	* gui-display.rb, gui-tgm.rb, input/input_base.rb, modes/tap_death_mode.rb, modes/tap_doubles_mode.rb, modes/tap_extend_mode.rb, modes/tap_master_mode.rb, modes/tgm_debug_mode.rb, modes/tgm_mode.rb, play.rb, test/testfield.rb, tetris.rb:
+	2P対戦とTGM+の改善。
+
+	* score.rb: *** empty log message ***
+
+	* modes/tgm_plus_mode.rb: TGM+用のコードを抜き出して汎用化した。
+
+2003-08-08  akicho8  <akicho8@gmail.com>
+
+	* backtrack.rb, pattern.rb, play.rb, test/testtetrimino.rb, test/testfield.rb, test/testpattern.rb, tetac.rb, tetris.rb:
+	BlockGroup → Tetrimino
+	Tetrimino → Base
+	BlockBlue → Blue に置換。他の色も同様。
+
+2003-09-17  akicho8  <akicho8@gmail.com>
+
+	* testsimulator.rb: 追加。
+
+	* ChangeLog: *** empty log message ***
+
+	* testrec.rb: 削除。
+
+	* testall.rb, testinput2.rb: 動かなくなっていたので動作するようにした。
+
+	* testgraph.rb, testrecfile.rb: 追加。
+
+2003-09-03  akicho8  <akicho8@gmail.com>
+
+	* testinput2.rb: リファクタリング。
+
+2003-09-01  akicho8  <akicho8@gmail.com>
+
+	* testall.rb, testinput2.rb, testrec.rb:
+	UnitTestを1.8に対応。コード自体も2点変更して1.8に対応。
+	Range#length を使用していたのを to_a.size に変更。
+	str =~ mark を str.include?(mark)に変更。
+
+2003-08-25  akicho8  <akicho8@gmail.com>
+
+	* testinput2.rb, testrec.rb: リファクタリング。
+
+2003-08-23  akicho8  <akicho8@gmail.com>
+
+	* testrec.rb: GdkとSdlの両方に対応するための大きなソース変更。
+
+2003-08-13  akicho8  <akicho8@gmail.com>
+
+	* testinput2.rb, testrec.rb:
+	まとめてコミット。ダブルス対戦モード追加。モナーフォント対応。
+
+2003-08-07  akicho8  <akicho8@gmail.com>
+
+	* testall.rb: まとめてコミット。
+
+2003-08-05  akicho8  <akicho8@gmail.com>
+
+	* testinput2.rb: 思考ルーチン関係追加。
+
+	* testall.rb, testrec.rb: to_s2で空文字列を返すようになったときの対処。
+	あれこれリファクタリング。
+	黄色が最初に出現可能になっていたのを修正(前のバージョンで直した気もする)
+
+2003-08-03  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog: OK
+
+	* testall.rb, testrec.rb: 実際にプレイが必要なテスト
+
+2003-08-07  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog: *** empty log message ***
+
+	* input/input_base.rb: 追加。
+
+	* test/testbacktrack.rb, test/testtetrimino.rb, test/testcell.rb, test/testfield.rb, test/testpattern.rb:
+	まとめてコミット。tetris.rb を中心にTetriminoクラスのリファクタリング。それら伴う他のファイルの変更。
+
+	* input2.rb: input2.rb は input/ 以下に移動。
+
+	* ToDo, backtrack.rb, config.rb, gui-display.rb, manager.rb, pattern.rb, play.rb, recfile.rb, test.conf, tetris.rb:
+	まとめてコミット。tetris.rb を中心にTetriminoクラスのリファクタリング。それら伴う他のファイルの変更。
+
+	* tgm.rb: 空になった。
+
+	* training.rb: FrameTrain等をこっちに移動。
+
+	* modes/tap_death_mode.rb, modes/tap_doubles_mode.rb, modes/tap_extend_mode.rb, modes/tap_master_mode.rb, modes/tgm_debug_mode.rb, modes/tgm_mode.rb:
+	追加。
+
+	* ChangeLog, ToDo, backtrack.rb, config.rb, joy.rb, rubyext.rb, score.rb, test.conf, test2/testall.rb, tetris.rb, tgm.rb, training.rb, training/テトリス基本技集-ぱのお.rb, training/テトリス情報ページぼやき.rb, training/ブロック操作最適化.rb, training/詰めテト-ZON.rb, training/詰めテト-いけだ.rb, training/詰めテト-いぺぱぴ.rb, training/詰めテト・シンクロ編-いぺぱぴ.rb, training/未整理.rb:
+	まとめてコミット。
+
+	* recfile.rb, play.rb: Frame2を移動してきた。
+
+	* pattern.rb, db-server.rb, db-client.rb: *** empty log message ***
+
+	* manager.rb: モードとプレイヤーをモジュール化
+
+2003-08-06  akicho8  <akicho8@gmail.com>
+
+	* test/testpattern.rb, test/ChangeLog: *** empty log message ***
+
+	* config.rb: evalを使っていた部分をinternに変更した。
+
+2003-08-05  akicho8  <akicho8@gmail.com>
+
+	* input2.rb, test2/testinput2.rb: 思考ルーチン関係追加。
+
+	* test/testinput.rb, test2/testall.rb, test2/testrec.rb, ChangeLog, ToDo, test/ChangeLog, test/testtetrimino.rb, test/testfield.rb, tetris.rb, tgm.rb:
+	to_s2で空文字列を返すようになったときの対処。
+	あれこれリファクタリング。
+	黄色が最初に出現可能になっていたのを修正(前のバージョンで直した気もする)
+
+	* test-gnuplot/tetrimino.dat, test-gnuplot/section.dat, test-gnuplot/test.gp:
+	追加。
+
+	* manager.rb, play.rb:
+	入力クラス(思考ルーチン)の選択をできるようにした。
+
+	* input.rb:
+	RecordHistory モジュールを削除してベースのクラスに入れるようにした。
+	GTKメニューの中で選択可能なクラスはPlayersモジュールに入れるようにした。
+
+	* gui-tgm.rb: 無駄なコードの削除。
+
+	* db-server.rb: コンフィグを require してシンプルにした。
+
+	* config.rb:
+	gnuplotのスクリプトを生成するキャッシュディレクトリの追加。
+
+2003-08-03  akicho8  <akicho8@gmail.com>
+
+	* test2/ChangeLog: OK
+
+	* dataclear, testrec.rb, tgm-plus.rb: *** empty log message ***
+
+	* test2/testall.rb, test2/testrec.rb: 実際にプレイが必要なテスト
+
+	* manager.rb: *** empty log message ***
+
+	* testrec.rb: recfile.rb の RubyUnit 用テストファイル
+
+	* config.rb, db-client.rb, db-server.rb, gui-base.rb, gui-tgm.rb, input.rb, manager.rb, play.rb, recfile.rb, rubyext.rb, tetris.rb, tgm.rb, training.rb, test/testinput.rb, training/テトリス基本技集-ぱのお.rb, training/テトリス情報ページぼやき.rb, training/未整理.rb:
+	まとめてコミット。環境設定の方法などを改善。
+
+2003-07-30  akicho8  <akicho8@gmail.com>
+
+	* play.rb: サブクラスで溜め時間を変更可能にした。
+	上入れの先行入力対応。
+	リファクタリング。
+
+2003-07-29  akicho8  <akicho8@gmail.com>
+
+	* ToDo: *** empty log message ***
+
+	* dataclear, rubyext.rb, tgm-plus.rb, training/テトリス基本技集-ぱのお.rb, training/テトリス情報ページぼやき.rb, training/ブロック操作最適化.rb, training/詰めテト-ZON.rb, training/詰めテト-いけだ.rb, training/詰めテト-いぺぱぴ.rb, training/詰めテト・シンクロ編-いぺぱぴ.rb, training/未整理.rb:
+	ファイルを追加。
+
+	* cui-base.rb, gui-base.rb, gui-display.rb, gui-tgm.rb, manager.rb, pattern.rb, play.rb, recfile.rb, test/testfield.rb, tetris.rb, tgm.rb:
+	まとめてコミット。TGM+モードの作成。リプレイ方法の改良。
+
+	* tetris.rb: 黄色が最初に出てしまっていたのを修正。
+	TGMがせりあがる部分作成。(Fieldクラス)
+
+	* test/testplayer.rb:
+	Array.new(2)だと[nil,nil]になってしまい、キーボード入力で nil を入力し
+	たことになってしまっていたのを修正。
+
+	* gui-tgm.rb, input.rb, manager.rb, pattern.rb, play.rb, test/testtetrimino.rb, test/testpattern.rb, tetris.rb, tgm.rb, training.rb:
+	まとめてコミット。
+
+2003-07-28  akicho8  <akicho8@gmail.com>
+
+	* play.rb: 上下同時押しで上が優先されていたのを下優先にした。
+
+2003-07-27  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog, gui-backtrack.rb, gui-display.rb, gui-tgm.rb, manager.rb, play.rb, recfile.rb, tech.rb, tgm.rb, training.rb:
+	リファクタリング済み。
+
+	* test/testplayer.rb: *** empty log message ***
+
+2003-07-26  akicho8  <akicho8@gmail.com>
+
+	* training.rb, gui-display.rb, gui-tgm.rb, manager.rb, play.rb, recfile.rb, tetris.rb, tgm.rb:
+	動かないかもしれないけど、とりあえずまとめてコミット。
+
+2003-07-25  akicho8  <akicho8@gmail.com>
+
+	* tgm.rb: 20Gモードの作成。
+
+2003-07-24  akicho8  <akicho8@gmail.com>
+
+	* manager.rb: 練習モードのClistを作成。
+
+	* tetris.rb: 青とオレンジの特徴を追加した。
+
+	* input.rb: シンクロ入力用の check_synchronize_key を追加。
+
+2003-07-23  akicho8  <akicho8@gmail.com>
+
+	* manager.rb: OK
+
+2003-07-22  akicho8  <akicho8@gmail.com>
+
+	* cui-base.rb, training.rb, config.rb, gui-display.rb, gui-tgm.rb, input.rb, joy.rb, manager.rb, pattern.rb, play.rb, recfile.rb, tech.rb, test/testpattern.rb, tetris.rb, tgm.rb:
+	まとめてコミット。
+
+	* pattern.rb: *** empty log message ***
+
+2003-07-21  akicho8  <akicho8@gmail.com>
+
+	* gui-display.rb: vsync関連を改善。
+
+	* manager.rb: ダブルスモード追加。
+
+	* tgm.rb: throw するときの原因を返すようにした。
+	ダブルスモードの追加。
+
+	* play.rb: throw するときの原因を返すようにした。
+
+	* gui-tgm.rb: fps関連のコードを改善。
+
+	* gui-base.rb: *** empty log message ***
+
+	* vsync.rb: 作成。
+
+	* tetac.rb: ターミナルで表示できるようにした。-c オプション追加。
+
+2003-07-20  akicho8  <akicho8@gmail.com>
+
+	* test/testall.rb: quiet_modeに変更。
+
+	* config.rb, recfile.rb, ChangeLog, manager.rb:
+	*** empty log message ***
+
+	* play.rb:
+	save_frame で save_data を何回も呼んでいたため、データ内容が Time.now
+	によって変化してしまい、リプレイファイルが特定できなくなっていたのを修
+	正。
+
+	* gui-tgm.rb: FrameReplay.new(recfile) が間違っていたので修正。
+
+	* tgm.rb: FrameCustomを追加。
+
+	* play.rb: *** empty log message ***
+
+	* tech.rb: テンプレート作成。
+
+	* tech.rb: 作成。
+
+	* test/testcell.rb, test/testtetrimino.rb, test/testbacktrack.rb:
+	*** empty log message ***
+
+	* tetris.rb:
+	replace, get_cell_count_for_ac, to_s3, resize, tetrimino_size_max 追加。
+
+	* tetac.rb: 作成。
+
+	* play.rb: リプレイファイルに保存しなくてもリプレイできるようにした。
+
+	* input.rb: TextKeyUnit の引数の配列を flatten するようにした。
+
+	* pattern.rb:
+	PatternRecordモジュールで使っていたメンバ変数 @history が衝突してリプ
+	レイがバグっていたのを修正。
+
+	* gui-display.rb: Colorモジュールのcol_mapの変更。
+
+	* gui-tgm.rb:
+	リプレイファイルに保存しなくてもリプレイできるようにした。
+
+	* gui-backtrack.rb: *** empty log message ***
+
+	* backtrack.rb:
+	ブロックのツモ順指定を数値文字列からアルファベットの文字列に変更した。
+	見た目が同じになるフィールドは、新しい結果とみなさないようにした。
+	見るからに残りのブロックでは全消しできそうにない高い積み方を排除するようにした。
+
+2003-07-19  akicho8  <akicho8@gmail.com>
+
+	* test/testfield.rb: *** empty log message ***
+
+	* test/testfield.rb: test_get_cell_count_for_ac を追加
+
+	* tetac: 削除しました。
+
+	* tetac: 作成。
+
+2003-07-18  akicho8  <akicho8@gmail.com>
+
+	* tool.rb: 作成。汎用の便利ツールを集めていれておく。
+
+	* test/testfield.rb: test_create2 を追加。
+
+	* test/ChangeLog: *** empty log message ***
+
+	* test/testpattern.rb:
+	test_original_pattern_rec の追加。履歴機能のテスト。
+
+	* test/testfield.rb: test_clear!, test_replace, test_create を追加。
+
+2003-07-17  akicho8  <akicho8@gmail.com>
+
+	* pattern.rb:
+	履歴取得機能の付きのクラスを定義した。理由は、アルゴリズムに関係なく履
+	歴をそのまま再生させるため。
+
+2003-07-16  akicho8  <akicho8@gmail.com>
+
+	* ChangeLog: *** empty log message ***
+
+	* input.rb:
+	joy を先頭で require するようにした。そうしないと mamager.rb で
+	Marshal.load した際に Joystick クラスが無いと言われてしまう。
+
+	* test/ChangeLog: *** empty log message ***
+
+	* test/testtetrimino.rb.dat: まとめてコミット。
+
+	* test/testtetrimino.dat: testtetrimino.rb.dat から改名。
+
+	* test/testtetrimino.rb: データファイル名を変更した。
+
+	* play.rb: *** empty log message ***
+
+	* score.rb: euc-jp-unixに変更。
+
+	* test/testcell.rb, test/testetc.rb, test/testframe.rb, test/testplayer.rb, test/testall.rb:
+	ファイルが JIS になっているのがあったので全て euc-jp-unix に変更した。
+
+2003-07-15  akicho8  <akicho8@gmail.com>
+
+	* gui-display.rb: 引数でFPSの指定ができるようにした。
+	が、どうもクラス設計がヘボすぎる。@gui を内部で使いまくってるのが気にくわん。
+	なので、継承するように変更する。
+
+	* gui-tgm.rb: 作成。
+
+2003-07-16  akicho8  <akicho8@gmail.com>
+
+	* input.rb:
+	joy を先頭で require するようにした。そうしないと mamager.rb で
+	Marshal.load した際に Joystick クラスが無いと言われてしまう。
+
+2003-07-15  akicho8  <akicho8@gmail.com>
+
+	* gui-display.rb: 引数でFPSの指定ができるようにした。
+	が、どうもクラス設計がヘボすぎる。@gui を内部で使いまくってるのが気にくわん。
+	なので、継承するように変更する。
+
+	* gui-tgm.rb: 作成。
+
+2003-07-16  akicho8  <akicho8@gmail.com>
+
+	* share.rb: 削除した。
+
+	* tetris.rb: share.rbの中身をこっちに持ってきた。
+
+	* gui-base.rb: $gpos を廃止。
+
+	* db-client.rb: client.rb からリネーム作成
+
+	* db-server.rb: server.rb からリネーム
+
+	* gui-base.rb: 機能ごとにモジュール分けした。
+
+	* gui-display.rb: 今までは、内部でGuiクラスのインスタンスを生成し
+	ていたが、継承するように変更した。
+
+	* play.rb: リファクタリング。
+
+	* gui-tgm.rb: リファクタリング。
+
+	* manager.rb: デスモード・マスター・TGMモード・更新・mpeg変換・再
+	生のを動作するようにした。
+
+	* gui-tgm.rb: リプレイとして保存するデータにGUI環境で実行した場合
+	にのみFPS情報を付加するようにした。
+
+2003-07-15  akicho8  <akicho8@gmail.com>
+
+	* play.rb: リプレイとして保存するデータをプレイヤー自身に変更した。
+
+2003-07-14  akicho8  <akicho8@gmail.com>
+
+	* replay.rb (Module): 作成
+
+	* tgm.rb: Simple モジュール作成。クラス整理。
+
+	* play.rb: ファイル保存部分を PStore から Marshal にして変更。
+	ファイル名は md5sum + .rec にした。
+
+	* manager.rb: クラス化。
+	クライアントディレクトリを設定できるようにした。
+	「更新」がまともに動作するようになった。
+	「リプレイ」は ./replay.rb を呼ぶようにしてみた。
+
+	* gui-display.rb: Singleton 廃止の影響ですこし変更
+
+	* gui-base.rb: Singletonだったのをやめた。
+
+	* tgm.rb: PStore から Marshal.dump に変更。
+	理由は、ファイル名を md5sum の結果にしたかったから
+
+2003-07-13  akicho8  <akicho8@gmail.com>
+
+	* replay.rb: リプレイ再生するためのコマンドとして作成
+
+	* tgm.rb: 各レベルの情報をシンプルにした。
+	リプレイできるようにした。
+
+	* input.rb: 履歴の入力情報の構造をシンプルにした
+
+	* manager.rb: 作成
+	Ruby/Gtkでゲームプレイとリプレイができるようにした。
+
+	Todo:
+	・Ruby/Gtkで更新するとCListの内容が増えるのを修正
+	・Clistの表示をスムーズに行う
+	・SDL実行後にGtkが停止するのを修正
+
+2003-07-12  akicho8  <akicho8@gmail.com>
+
+	* joy.rb: ジョイスティック関連の低レベルなクラス作成
+
+	* gui-display.rb: FPS表示できるようにした。
+
+	* input.rb: ジョイスティック対応
+
+2003-07-11  akicho8  <akicho8@gmail.com>
+
+	* tgm.rb: あれこれ追加
+	スコアが反映されるようにした。
+	グレード名が出るようにした。
+	スピードが順に早くなるようにしようとしたが、まだうまく行ってない。
+
+	Todo: tgm.rbで LevelInfo 内のメンバがnilになっている。それがそのま
+	ま設定されてしまうのを避ける。
+
+2003-07-17  akicho8  <akicho8@gmail.com>
+
+	* play.rb: ユーザーが操作出来る最小構成を作成
+
+	Todo:
+	複数のブロックを１つのフィールドで動作
+	テキスト画面（コンソールで表示）（最優先）
+	(絶対にかざりつけのような機能は今からはいれない)
+	最小限で動くクラスを汚さない
+	リプレイ機能をモジュールとして入れる
+	guiを完全に引数としてTetrisPlayクラスに渡す
+	グローバル変数を無くす
+	テスト部分を別ソースにする
+	思考ルーチンメインで動作させる
+	入力部分を分離
+	文字列で操作出来るようにする
+
+2003-07-10  akicho8  <akicho8@gmail.com>
+
+	* CVSで管理できるようにした。
+
+	* input.rb: コメントを記述
+	久々に見たら訳がわからなくなっていたのでコメントを書いて思い出してみる。
+
+2003-07-07  akicho8  <akicho8@gmail.com>
+
+	* tetris.rb: font.ttfが読めなかった部分を修正
+
+2002-08-10  akicho8  <akicho8@gmail.com>
+
+	* tetris.rb: 全消しパターン探索ができる程度のテトリスクラス集作成。

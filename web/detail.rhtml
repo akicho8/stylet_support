@@ -1,0 +1,46 @@
+<h1><%=header%></h1>
+
+<div class="detail">
+<table>
+ <%
+ e = @data.to_website
+ fname = mpeg_filename(@curno)
+ %>
+ <tr>
+  <th>タイトル</th><td class="even"><%=e[:title]%></td>
+ </tr>
+ <tr>
+  <th>作者</th><td class="odd"><%=e[:author]%></td>
+ </tr>
+ <tr>
+  <th>日付</th><td class="even"><%=e[:timestamp]%></td>
+ </tr>
+ <tr>
+  <th>コメント</th><td class="odd"><%=e[:comment]%></td>
+ </tr>
+ <tr>
+  <th>難易度</th><td class="even"><%=e[:difficulty]%></td>
+ </tr>
+ <tr>
+  <th>解説ページ</th><td class="odd"><%=!e[:url].empty? ? %(<a href="#{e[:url]}">#{e[:url]}</a>) : "" %></td>
+ </tr>
+ <tr>
+  <th>動画</th><td class="even"><%= File.exist?(fname) ? %(<a href="#{fname}">再生 (#{File.size(fname)/1024+1}KB)</a>) : "" %></td>
+ </tr>
+ <tr>
+  <th>静止画像</th>
+  <td class="odd">
+   <% if snapshot_files(@curno).size >= 1 %>
+   <a href="<%=snapshot_filename(@curno)%>"><%=snapshot_files(@curno).size%>フレーム</a>
+   <% end %>
+  </td>
+ </tr>
+ <tr>
+  <th>ツモ順</th><td class="even"><%=e[:pattern]%></td>
+ </tr>
+ <tr>
+  <th>フィールド</th><td class="odd" id="field"><%=e[:field]%></td>
+ </tr>
+</table>
+</div>
+<a href="<%=base_filename%>">戻る</a>

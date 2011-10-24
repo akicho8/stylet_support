@@ -1,0 +1,28 @@
+<h1><%=header%></h1>
+
+<div class="contents">
+<table>
+ <tr>
+  <th>動画</th>
+  <th>タイトル</th>
+  <th>難易度</th>
+  <th></th>
+ </tr>
+ <%
+ @library.each_with_index{|data, i|
+ e = data.to_website
+ trclass = ["odd", "even"][i.modulo(2)]
+ mpeg = mpeg_filename(i)
+ detail = detail_filename(i)
+ %>
+ <tr class="<%=trclass%>">
+  <td class="mpeg"><%= File.exist?(mpeg) ? %(<a href="#{mpeg}">再生</a>) : "" %></td>
+  <td class="title"><%= !e[:url].empty? ? %(<a href="#{e[:url]}">#{e[:title]}</a>) : e[:title] %></td>
+<!--   <td class="title"><%=e[:title]%></td> -->
+  <td class="difficulty"><%=e[:difficulty]%></td>
+  <td class="detail"><a href="<%=detail%>">詳細</a></td>
+ </tr>
+<% } %>
+</table>
+<a href="./">戻る</a>
+</div>

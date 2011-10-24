@@ -1,0 +1,17 @@
+-*- outline -*-
+
+unflatten を消す
+bmpをロードして背景にする
+
+* 緊急
+
+www/mpeg/foo.mpg の生成
+
+* Ruby 1.8.0関連
+
+1.8.0のyamlでmanagerの消してもいい変更部分を保存する。
+1.8.0のfileutilsを検討。
+1.8.0のlib/pathnameを検討。
+1.8.0のlib/tmpdirを検討。
+
+method_missing禁止
