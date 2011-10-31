@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby -Ku
+# -*- coding: utf-8 -*-
 require "environment"
 
 Library = {
@@ -10,18 +10,18 @@ Library = {
   :comment => "赤で土台を作って緑シンクロ",
   :controller => SimulateWithSoundController.new,
   :pattern => "rgoy",
-  :field => <<-EOS,
+  :field => <<-EOT,
   .....bbbbb
   o....bbbbb
   o....bbbbb
   oo...bbbbb
-  EOS
-  :input => <<-EOS,
+  EOT
+  :input => <<-EOT,
   A* l d
   A* l . Al d
   Bl| . B d
   l| d *
-  EOS
+  EOT
 }
 
 if $0 == __FILE__

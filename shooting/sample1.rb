@@ -1,4 +1,3 @@
-#!/usr/local/bin/ruby -Ku
 $LOAD_PATH << ".." if $0 == __FILE__
 require "shooting"
 

@@ -1,6 +1,4 @@
-#!/usr/local/bin/ruby -Ku
-
-
+# -*- coding: utf-8 -*-
 require "test/unit"
 
 $LOAD_PATH << ".."
@@ -25,12 +23,12 @@ Library = [
     :comment => "COMMENT",
     :controller => SimulateController.new,
     :pattern => "r",
-    :field => <<-EOS,
+    :field => <<-EOT,
     cccccc....
-    EOS
-    :input => <<-EOS
+    EOT
+    :input => <<-EOT
     r| d *
-    EOS
+    EOT
   },
   {
     :title => "詰めTGM - ダブル回転入れ",
@@ -41,18 +39,18 @@ Library = [
     :comment => "そんなに難しくはないです",
     :controller => SimulateController.new,
     :pattern => "prob",
-    :field => <<-EOS,
+    :field => <<-EOT,
     yy......yy
     yy......yy
     yyy....yyy
-    EOS
-    :input => <<-EOS
+    EOT
+    :input => <<-EOT
     Al| d
     u_ d
     Br* r| B d
     A* C d
     *
-    EOS
+    EOT
   },
 ]
 

@@ -1,17 +1,17 @@
-#!/usr/local/bin/ruby -Ku
+# -*- coding: utf-8 -*-
 require "environment"
 
 Library = {
   :title => "IRSが必要になるケース",
   :controller => SimulateWithSoundController.new,
   :pattern => "bb",
-  :field => <<-EOS,
+  :field => <<-EOT,
   ...o......
   ...o......
   bb.oo.r.o.
   bbbyy.r.o.
   bbbyy.r.oo
-  EOS
+  EOT
 }
 
 if $0 == __FILE__

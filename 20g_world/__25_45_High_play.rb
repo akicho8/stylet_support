@@ -5,14 +5,14 @@ Library = {
   :title => "45列目を高くして振り分ける",
   :controller => SimulateWithSoundController.new,
   :pattern => "rbcypgorbcypgor",
-  :field => <<-EOS,
+  :field => <<-EOT,
   ..bbbb....
   .bbbbbb...
   .bbbbbbb..
   bbbbbbbbb.
   bbbbbbbbb.
   bbbbbbbbb.
-  EOS
+  EOT
 }
 
 if $0 == __FILE__

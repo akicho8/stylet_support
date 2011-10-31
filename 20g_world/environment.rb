@@ -1,6 +1,6 @@
 #!/usr/local/bin/ruby -Ku
 
-require File.expand_path(File.dirname(__FILE__) + "/../init")
+require File.expand_path(File.join(File.dirname(__FILE__), "../init"))
 
 require "tgm_debug_mode"
 require "tds_mode"

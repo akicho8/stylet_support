@@ -1,5 +1,3 @@
-#!/usr/local/bin/ruby -Ku
-
 require "environment"
 
 class DemoIRSController < SimulateWithSoundController

@@ -1,6 +1,3 @@
-#!/usr/local/bin/ruby -Ku
-
-
 require "test/unit"
 
 $LOAD_PATH << ".."

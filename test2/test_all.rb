@@ -1,6 +1,3 @@
-#!/usr/local/bin/ruby -Ku
-
-
 require "test_recfile"
 require "test_input2"
 require "test_simulator"

@@ -1,6 +1,4 @@
-#!/usr/local/bin/ruby -Ku
-
-
+# -*- coding: utf-8 -*-
 require "test/unit"
 require "fileutils"
 

@@ -1,11 +1,11 @@
-#!/usr/local/bin/ruby -Ku
+# -*- coding: utf-8 -*-
 require "environment"
 
 Library = {
   :title => "橙の渡し",
   :controller => SimulateWithSoundController.new,
   :pattern => "o",
-  :field => <<-EOS,
+  :field => <<-EOT,
   .oo..o....
   ooo..o....
   ooo..o....
@@ -15,11 +15,11 @@ Library = {
   oooo.o..o.
   ooo..o..o.
   oooooo..oo
-  EOS
-  :input => <<-EOS,
+  EOT
+  :input => <<-EOT,
   _ AC r| Ar d *
   _ AC l| Bl d *
-  EOS
+  EOT
 }
 
 if $0 == __FILE__

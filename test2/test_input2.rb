@@ -1,6 +1,3 @@
-#!/usr/local/bin/ruby -Ku
-
-
 require "test/unit"
 
 $LOAD_PATH << ".."
@@ -60,18 +57,18 @@ class TestInput2 < Test::Unit::TestCase
   end
 
   def test_irs
-    field = <<END
+    field = <<-EOT
 ggggg gggg
 ggggg gggg
 ggggg gggg
 ggggg gggg
-END
-    assert_equal(<<END, start(input=Players::ThinkLevel1.new, "r", 20.0, field, 2).to_s(:ustrip => true))
+EOT
+    assert_equal(<<-EOT, start(input=Players::ThinkLevel1.new, "r", 20.0, field, 2).to_s(:ustrip => true))
 gggggrgggg
 gggggrgggg
 gggggrgggg
 gggggrgggg
-END
+EOT
   end
 
   def test_minos
@@ -79,9 +76,9 @@ END
   end
 
   def test_case1
-    field = <<END
+    field = <<-EOT
 ggggg gggg
-END
+EOT
     start(input=Players::ThinkLevel1.new, "bobo", 0.0, field).to_s(:ustrip => true)
   end
 
