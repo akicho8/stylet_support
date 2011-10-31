@@ -1,8 +1,8 @@
-$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/.."))
-require "test_helper"
+# -*- coding: utf-8 -*-
+require "spec_helper"
 
-class TestState < Test::Unit::TestCase
-  def test_call
+describe State do
+  it "call" do
     trace_ary = []
     object = State.new(:idol)
     loop_flag = true
@@ -21,6 +21,6 @@ class TestState < Test::Unit::TestCase
         end
       end
     end
-    assert_equal [[:idol, 0], [:idol, 1], [:active, 0], [:active, 1]], trace_ary
+    trace_ary.should == [[:idol, 0], [:idol, 1], [:active, 0], [:active, 1]]
   end
 end

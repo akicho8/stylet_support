@@ -1,6 +1,5 @@
 #!/usr/local/bin/ruby -Ku
 
-
 class TGMController
   def level_count_increment_signal(*args)
     super

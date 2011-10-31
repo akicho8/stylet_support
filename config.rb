@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # 環境設定
 
-
 require "ftools"
 
 class ConfigHash < Hash

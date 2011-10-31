@@ -1,6 +1,5 @@
 #!/usr/local/bin/ruby -Ku
 
-
 require "test/unit"
 
 class TestTetac < Test::Unit::TestCase

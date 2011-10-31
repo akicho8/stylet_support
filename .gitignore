@@ -1,3 +1,5 @@
+*.db
+*.log
 /doc/app
 /_data
 .picasa.ini
@@ -8,3 +10,4 @@ TAGS
 *.mpg
 *.mpeg
 *.wav
+

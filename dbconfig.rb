@@ -11,8 +11,8 @@ require "pathname"
 # デフォルト設定
 DBCONF = {
   :uri   => "druby://localhost:8470",
-  :dbdir => Pathname(__FILE__).dirname.join("_database").expand_path,
-  :log   => Pathname(__FILE__).dirname.join("_access_log").expand_path,
+  :dbdir => Pathname(__FILE__).dirname.join("_database.db").expand_path,
+  :log   => Pathname(__FILE__).dirname.join("_access.log").expand_path,
   :dbserver   => "libretto",
   :dbname   => "server_tetris",
 }

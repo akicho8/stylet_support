@@ -1,7 +1,7 @@
-$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/.."))
-require "test_helper"
+# -*- coding: utf-8 -*-
+require "spec_helper"
 
-class TestController < BaseController
+class MockController < BaseController
   def initialize(params = {})
     super()
     @level_info = LevelInfo.new
@@ -19,26 +19,26 @@ class TestController < BaseController
   end
 end
 
-class TestPlayer < Test::Unit::TestCase
+describe Player do
   def frame_at(tm, dim, pos, controller, order, params = {})
     field = Field.new(dim)
-    player = Player.new(field, pos, TextInputUnit.new(controller), Pattern::Original.new(order), TestController.new(params))
+    player = Player.new(field, pos, TextInputUnit.new(controller), Pattern::Original.new(order), MockController.new(params))
     tm.times {player.next_frame}
     player.puton
     field.to_s(:ustrip => true)
   end
 
-  def test_irs
-    expected = <<-END
+  it "irs" do
+    expected = <<-EOT
 ...c....
 ...cc...
 ...c....
-      END
-    assert_equal(expected, frame_at(1, [8, 5], 3, %w(A), "c"))
+      EOT
+    frame_at(1, [8, 5], 3, %w(A), "c").should == expected
   end
 
-  def test_transit
-    expected = <<-END
+  it "transit" do
+    expected = <<-EOT
 ..rrrr..
 ..ccc...
 ...c....
@@ -52,13 +52,13 @@ class TestPlayer < Test::Unit::TestCase
 ....b...
 ...yy...
 ...yy...
-      END
-    assert_equal(expected, frame_at(7, [8, 20], 3, [""]*7, "ybogpcr", :lock_delay => 0))
+      EOT
+    frame_at(7, [8, 20], 3, [""]*7, "ybogpcr", :lock_delay => 0).should == expected
   end
 
-  def test_kill_line
-    expected = <<-END
-    END
-    assert_equal(expected, frame_at(2, [4, 5], 1, [""]*2, "r", :lock_delay => 0, :fall_delay => 1))
+  it "kill_line" do
+    expected = <<-EOT
+    EOT
+    frame_at(2, [4, 5], 1, [""]*2, "r", :lock_delay => 0, :fall_delay => 1).should == expected
   end
 end
