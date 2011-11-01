@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 # TGM依存の表示関連
 
-$LOAD_PATH << ".." if $0 == __FILE__
-require "ui/field"
-
-require "ui/sdl/input"
+require File.expand_path(File.join(File.dirname(__FILE__), "field")) # as require_relative("field")
+require File.expand_path(File.join(File.dirname(__FILE__), "sdl/input")) # as require_relative("sdl/input")
 
 # Linuxかつ /dev/input/js0 等が使えるときだけ用
 #
@@ -89,7 +87,10 @@ module UI
       # gprint(0, 64, frame.simulator_params[:title])
 
       # relative_gprint(:cb, -6*2, 3, "%3d" % frame.simulator_params[:title].to_i)
-      relative_gprint(:lt2, -8*6, 8*0.5, "%3d" % frame.simulator_params[:title].to_i)
+
+      if frame.respond_to?(:simulator_params)
+        relative_gprint(:lt2, -8*6, 8*0.5, "%3d" % frame.simulator_params[:title].to_i)
+      end
     end
 
     # def system_line

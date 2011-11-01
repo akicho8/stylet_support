@@ -4,16 +4,12 @@
 require "parsedate"
 require "uri"
 
-require "play"
-require "input"
-require "pattern"
-require "recfile"
-
-require "signal_observer"
-require "with_sound"
-
-require "ui/sdl/input"
-require "ui/frame"
+require File.expand_path(File.join(File.dirname(__FILE__), "core"))
+require File.expand_path(File.join(File.dirname(__FILE__), "recfile"))
+require File.expand_path(File.join(File.dirname(__FILE__), "signal_observer"))
+require File.expand_path(File.join(File.dirname(__FILE__), "with_sound"))
+require File.expand_path(File.join(File.dirname(__FILE__), "ui/sdl/input"))
+require File.expand_path(File.join(File.dirname(__FILE__), "ui/frame"))
 
 class SimulateController < BaseController
   def initialize(speed=nil)

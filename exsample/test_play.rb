@@ -1,14 +1,4 @@
-# -*- compile-command: "rsdl test_play.rb" -*-
-
-$LOAD_PATH << ".." if $0 == __FILE__
-
-require "config"
-
-require "tap_master_mode"
-require "ui/frame"
-
-require "signal_observer"
-require "with_sound"
+require File.expand_path(File.join(File.dirname(__FILE__), "../lib/ruby_tetris"))
 
 frame = Modes::FrameMaster.new
 frame.players.each{|player|
@@ -17,5 +7,4 @@ frame.players.each{|player|
   MusicPlayer.new(player.controller)
 }
 UI::DrawAll.new(frame)
-# UI::DrawAll.new(frame)
 frame.start

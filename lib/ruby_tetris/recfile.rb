@@ -1,16 +1,18 @@
 #!/usr/local/bin/ruby -Ku
+# -*- coding: utf-8 -*-
 # リプレイデータファイル関連
-
 
 begin
   require "postgres"
 rescue LoadError
 end
 
-require "config"
-require "load_all"
-require "ui/frame"
+require File.expand_path(File.join(File.dirname(__FILE__), "config")) # as require_relative("config")
 
+# require "config"
+# require "load_all"
+
+require File.expand_path(File.join(File.dirname(__FILE__), "ui/frame")) # as require_relative("ui/frame")
 
 # セクション情報管理
 class RecFile

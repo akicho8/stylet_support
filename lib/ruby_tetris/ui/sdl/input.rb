@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 入力をSDLに対応させる
 
-require "ui/sdl/draw"
+require File.expand_path(File.join(File.dirname(__FILE__), "draw"))
 
 module SDLInput
   module JoyStickCheckMethods

@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-$LOAD_PATH << '..'
-require "simulator"
+require File.expand_path(File.join(File.dirname(__FILE__), "../lib/ruby_tetris/simulator"))
 
 data = {
   :title => "ブロック表示テスト",
   :controller => SimulateController.new,
-  :field => <<-EOT,
+  :field => <<-EOS,
   o...o.o.o.
   oo.o.o.ooo
   r.rr.r.rr.
@@ -29,9 +28,10 @@ data = {
   .o.o.o.o.o
   o.o.o.o.o.
   oooooooooo
-  EOT
+  EOS
 }
 
 [nil, :INSIDE, :OUTSIDE].each{|CONFIG[:edge]|
   Simulator.view(data)
+  sleep(2)
 }
