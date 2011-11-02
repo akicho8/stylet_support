@@ -7,8 +7,8 @@ class ConfigHash < Hash
   def setup
     expand_values
     makedirs
-    $LOAD_PATH << CONFIG[:modesdir] << CONFIG[:inputdir] << CONFIG[:sounddir] << File.dirname(File.expand_path(__FILE__))
-    $LOAD_PATH.uniq!
+    # $LOAD_PATH << CONFIG[:modesdir] << CONFIG[:inputdir] << CONFIG[:sounddir] << File.dirname(File.expand_path(__FILE__))
+    # $LOAD_PATH.uniq!
   end
 
   private

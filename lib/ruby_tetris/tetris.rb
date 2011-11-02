@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 # テトリスベースクラス
 
-$KCODE = "UTF8"
-
-require "jcode"
+require "pp"
 require "kconv"
 require "pathname"
 require "generator"
-require "pp"
+require "jcode"
 
 require File.expand_path(File.join(File.dirname(__FILE__), "rubyext"))
 require File.expand_path(File.join(File.dirname(__FILE__), "area"))
@@ -423,10 +421,10 @@ module Mino
   end
 end
 
-require File.expand_path(File.join(File.dirname(__FILE__), "classic")) # as require_relative("classic")
-require File.expand_path(File.join(File.dirname(__FILE__), "world")) # as require_relative("filename")
-require File.expand_path(File.join(File.dirname(__FILE__), "cell")) # as require_relative("cell")
-require File.expand_path(File.join(File.dirname(__FILE__), "life_cell")) # as require_relative("life_cell")
+require File.expand_path(File.join(File.dirname(__FILE__), "classic"))
+require File.expand_path(File.join(File.dirname(__FILE__), "world"))
+require File.expand_path(File.join(File.dirname(__FILE__), "cell"))
+require File.expand_path(File.join(File.dirname(__FILE__), "life_cell"))
 
 class Field
   INVISIBLE_AREA = 2          # フィールド上の不可視領域の推奨ライン数
@@ -759,7 +757,6 @@ class Field
       }
     }
   end
-
 end
 
 class Field

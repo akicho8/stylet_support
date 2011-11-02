@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+#
 # テトリス消しから開始する連続消しコンボを調べる
+#
 module ComboController
   def initialize
     super

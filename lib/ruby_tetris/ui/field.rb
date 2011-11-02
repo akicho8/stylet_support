@@ -5,8 +5,8 @@
 require "delegate"
 
 require File.expand_path(File.join(File.dirname(__FILE__), "../config"))
-require File.expand_path(File.join(File.dirname(__FILE__), "sdl/draw")) # as require_relative("sdl/draw")
-require File.expand_path(File.join(File.dirname(__FILE__), "../vsync")) # as require_relative("../vsync")
+require File.expand_path(File.join(File.dirname(__FILE__), "sdl/draw"))
+require File.expand_path(File.join(File.dirname(__FILE__), "../vsync"))
 
 # 将来、delegateとして上位クラスを動的に切り替えるかもしれないので draw_begin/draw_endなどを継承するように書いてはならない。
 # というより、重要なのは update だけなので、draw_begin などは普通に @obj.draw_begin の形にする方がいいのかな。

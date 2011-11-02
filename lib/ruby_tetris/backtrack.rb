@@ -1,28 +1,28 @@
 # -*- coding: utf-8 -*-
 # バックトラックにより全消しパータンを調べる
 
-require File.expand_path(File.join(File.dirname(__FILE__), "tetris")) # as require_relative("tetris")
+require File.expand_path(File.join(File.dirname(__FILE__), "tetris"))
 
 require "observer"
 
 class FieldHist < Field         # 履歴機能付きフィールド
   attr_accessor :history
-  
+
   def initialize(*arg)
     super
     @history = []
   end
-  
+
   def push_history(mino)       # 書き込み履歴を取る
     @history << mino
   end
-  
+
   def pop_history               # 最新の履歴を削除
     @history.pop
   end
-  
+
   alias inspect_old inspect
-  
+
   def inspect
     %(#{"<0x%08x>" % self.object_id} #{width}*#{height} history.size=#{history.size})
   end
@@ -30,9 +30,9 @@ end
 
 class BackTrack
   include Observable
-  
+
   attr_reader :field
-  
+
   # 全て探索する
   # 途中経過表示
   def initialize(minos, width=10, height=20, tryall=false, &pblock)
@@ -43,7 +43,7 @@ class BackTrack
     @callback = pblock
     @history = []
   end
-  
+
   def backtrack(index = 0)
     return false if @minos.empty?
     mino = Mino::Classic.create(@minos[index])

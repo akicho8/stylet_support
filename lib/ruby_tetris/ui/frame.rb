@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # TGM依存の表示関連
 
-require File.expand_path(File.join(File.dirname(__FILE__), "field")) # as require_relative("field")
-require File.expand_path(File.join(File.dirname(__FILE__), "sdl/input")) # as require_relative("sdl/input")
+require File.expand_path(File.join(File.dirname(__FILE__), "field"))
+require File.expand_path(File.join(File.dirname(__FILE__), "sdl/input"))
 
 # Linuxかつ /dev/input/js0 等が使えるときだけ用
 #

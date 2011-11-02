@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+begin
+  require "ruby_tetris/tetac_cli"
+rescue LoadError
+  require "rubygems"
+  require "ruby_tetris/tetac_cli"
+end
+RubyTetris::TetacCLI.execute(ARGV)
