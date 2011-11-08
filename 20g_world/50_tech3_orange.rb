@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require "environment"
+require File.expand_path(File.join(File.dirname(__FILE__), "environment"))
 
 Library = {
   :title => "橙の渡し",

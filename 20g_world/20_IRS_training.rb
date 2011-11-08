@@ -1,4 +1,4 @@
-require "environment"
+require File.expand_path(File.join(File.dirname(__FILE__), "environment"))
 
 class DemoIRSController < SimulateWithSoundController
   def initialize(*)

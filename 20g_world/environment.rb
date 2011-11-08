@@ -1,33 +1,5 @@
-#!/usr/local/bin/ruby -Ku
-
-require File.expand_path(File.join(File.dirname(__FILE__), "../init"))
-
-require "tgm_debug_mode"
-require "tds_mode"
-require "tap_vs_doubles_mode"
-require "tap_master_mode"
-require "tap_master_20g_mode"
-require "tap_death_swap_mode"
-require "tap_master_multi_2p"
-require "tap_extend_m_mode"
-require "tap_extend_gm_mode"
-require "tgm_mode"
-require "tap_master_swap_mode"
-require "tap_master_marathon_mode"
-require "tap_vs_mode"
-require "tgm_20g_mode"
-require "tap_doubles_mode"
-require "tap_death_mode"
-require "tgm_plus_mode"
-
-require "ui/sdl/input"
-require "ui/frame"
-
-require "simulator"
-require "sound_controller"
-
-require "signal_observer"
-require "with_sound"
+require File.expand_path(File.join(File.dirname(__FILE__), "../lib/ruby_tetris/all"))
+require File.expand_path(File.join(File.dirname(__FILE__), "../lib/ruby_tetris/simulator"))
 
 class SimulateWithSoundController < SimulateController
   include SoundController

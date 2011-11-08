@@ -1,5 +1,3 @@
-#!/usr/local/bin/ruby -Ku
-
 require File.expand_path(File.join(File.dirname(__FILE__), "ui/sdl/sound")) # as require_relative("ui/sdl/sound")
 
 class SignalRecoder

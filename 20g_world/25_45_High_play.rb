@@ -1,5 +1,6 @@
 #!/usr/local/bin/ruby -Ku
-require "environment"
+# -*- coding: utf-8 -*-
+require File.expand_path(File.join(File.dirname(__FILE__), "environment"))
 
 Library = {
   :title => "45列目を高くして振り分ける",
