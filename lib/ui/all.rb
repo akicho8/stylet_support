@@ -1,0 +1,5 @@
+require File.expand_path(File.join(File.dirname(__FILE__), "color"))
+require File.expand_path(File.join(File.dirname(__FILE__), "draw"))
+require File.expand_path(File.join(File.dirname(__FILE__), "frame"))
+require File.expand_path(File.join(File.dirname(__FILE__), "input"))
+require File.expand_path(File.join(File.dirname(__FILE__), "sound"))
