@@ -1,4 +1,4 @@
-class JoyPlayStation3 < UI::JoyBase
+class UI::Arashi < UI::JoyBase
   def lever_on?(dir)
     case dir
     when :up

@@ -1,4 +1,4 @@
-class JoyElecomUsbPad < UI::JoyBase
+class UI::ElecomUsbPad < UI::JoyBase
   def x_index
     3
   end
