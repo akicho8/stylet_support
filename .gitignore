@@ -11,4 +11,6 @@ TAGS
 *.mpg
 *.mpeg
 *.wav
+_*
+/Gemfile.lock
 

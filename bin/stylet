@@ -1,0 +1,8 @@
+#!/usr/bin/env rsdl
+begin
+  require "stylet"
+rescue LoadError
+  require "rubygems"
+  require "stylet"
+end
+Stylet::Base.main_loop
