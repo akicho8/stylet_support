@@ -1,0 +1,5 @@
+*.wav diff=exif
+*.png diff=exif
+*.gif diff=exif
+*.jpg diff=exif
+*.bmp diff=exif
