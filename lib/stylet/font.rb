@@ -39,8 +39,15 @@ module Stylet
     def vputs(str)
       str = str.to_s
       return if str.empty?
-      vprint(0, @vputs_ypos * Config[:font_line_height], str)
+      vprint(0, @vputs_ypos * (@font.line_skip + Config[:font_margin]), str)
       @vputs_ypos += 1
     end
+  end
+end
+
+if $0 == __FILE__
+  require File.expand_path(File.join(File.dirname(__FILE__), "../stylet"))
+  Stylet::Base.main_loop do |base|
+    25.times{|i|base.vputs [i, ("A".."Z").to_a.join].join(" ")}
   end
 end
