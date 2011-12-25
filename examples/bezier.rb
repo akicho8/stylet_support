@@ -50,7 +50,7 @@ class Bezier < Stylet::Base
 
     @points = []            # ポイント配列
     @dragging_current = nil # 現在どのポイントをドラッグしているか？
-    @nlines = 256           # 軌跡確認用弧線の構成ライン数初期値(確認用)
+    @line_count = 256       # 軌跡確認用弧線の構成ライン数初期値(確認用)
   end
 
   def update
@@ -62,20 +62,20 @@ class Bezier < Stylet::Base
 
     if false
       # 構成ライン数の減算
-      @nlines += @button.btC.repeat
-      @nlines -= @button.btD.repeat
-      @nlines = [2, @nlines].max
-      gputs "@nlines = #{@nlines}"
+      @line_count += @button.btC.repeat
+      @line_count -= @button.btD.repeat
+      @line_count = [2, @line_count].max
+      vputs "@line_count = #{@line_count}"
     end
 
     # ドラッグ中またはAボタンを押したときは詳細表示
     if @dragging_current || @button.btA.press?
       # ポイントの番号の表示
-      @points.each_with_index{|e, i|gprint(e.x, e.y, i)}
+      @points.each_with_index{|e, i|vprint(e.x, e.y, i)}
 
       # 弧線の描画
       xys = points_all
-      @nlines.times{|i|
+      @line_count.times{|i|
         p0 = xys[i]
         p1 = xys[i.next]
         draw_line(p0.x, p0.y, p1.x, p1.y)
@@ -89,7 +89,7 @@ class Bezier < Stylet::Base
         pos = 0.5 + (Stylet::Fee.rsinf(1.0 / 128 * @count) * 0.5)
         xy = bezier_point(@points, pos)
         draw_circle(xy, :radius => 16, :vertex => 32)
-        gputs(pos)
+        vputs(pos)
       else
         # △の表示で進んでいる方向を頂点にする
         pos0 = 0.5 + (Stylet::Fee.rsinf(1.0 / 128 * @count) * 0.5)      # 現在の位置(0.0〜1.0)
@@ -98,8 +98,8 @@ class Bezier < Stylet::Base
         p1 = bezier_point(@points, pos1)                                 # 未来の座標
         dir = Stylet::Fee.rdirf(p0.x, p0.y, p1.x, p1.y)                 # 現在から未来への向きを取得 FIXME: ruby 1.9 だと綺麗にかける
         draw_circle(p0, :offset => dir, :radius => 64, :vertex => 3)     # 三角の頂点を未来への向きに設定して三角描画
-        gputs(pos0)
-        gputs(dir)
+        vputs(pos0)
+        vputs(dir)
       end
 
       if @button.btB.trigger?
@@ -115,7 +115,7 @@ class Bezier < Stylet::Base
           update_title
         end
       end
-      gputs "#{@points.size} (B+ C-)"
+      vputs "#{@points.size} (B+ C-)"
     end
   end
 
@@ -124,8 +124,8 @@ class Bezier < Stylet::Base
   end
 
   def points_all
-    (0...@nlines.next).collect{|i|
-      bezier_point(@points, 1.0 / @nlines * i)
+    (0...@line_count.next).collect{|i|
+      bezier_point(@points, 1.0 / @line_count * i)
     }
   end
 end

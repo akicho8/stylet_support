@@ -5,7 +5,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
 class App < Stylet::Base
   def update
     super
-    gputs(SDL::Mouse.state.inspect)
+    vputs(SDL::Mouse.state.inspect)
   end
 end
 

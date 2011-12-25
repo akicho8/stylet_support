@@ -102,7 +102,7 @@ module Stylet
 
     def before_update
       super
-      gputs(system_line)
+      vputs(system_line)
     end
 
     private

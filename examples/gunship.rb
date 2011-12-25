@@ -1,14 +1,13 @@
 class GunShip
   include Stylet::Input::Base
 
-  attr_reader :x, :y
+  attr_reader :pos
   attr_accessor :target
 
-  def initialize(base, x, y, *)
+  def initialize(base, pos)
     super()
     @base = base
-    @x = x
-    @y = y
+    @pos = pos
     @speed = 3
     @target = nil
     @size = 8
@@ -27,16 +26,16 @@ class GunShip
     key_counter_update_all
 
     if dir = directionf
-      tx = @x + Stylet::Fee.rcosf(dir) * @speed
-      ty = @y + Stylet::Fee.rsinf(dir) * @speed
-      if (@base.min_x..@base.max_x).include?(tx)
-        @x = tx
+      x = @pos.x + Stylet::Fee.rcosf(dir) * @speed
+      y = @pos.y + Stylet::Fee.rsinf(dir) * @speed
+      if (@base.min_x..@base.max_x).include?(x)
+        @pos.x = x
       end
-      if (@base.min_y..@base.max_y).include?(ty)
-        @y = ty
+      if (@base.min_y..@base.max_y).include?(y)
+        @pos.y = y
       end
     end
 
-    @base.fill_rect(@x - @size, @y - @size, @size * 2, @size * 2, "white")
+    @base.fill_rect(@pos.x - @size, @pos.y - @size, @size * 2, @size * 2, "white")
   end
 end

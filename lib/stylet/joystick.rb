@@ -23,7 +23,7 @@ module Stylet
     def before_update
       super if defined? super
       @joys.each_with_index{|js_obj, index|
-        gputs(js_obj.inspect_str)
+        vputs(js_obj.inspect_str)
       }
     end
   end

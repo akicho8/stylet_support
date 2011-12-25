@@ -4,9 +4,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), "gunship"))
 module BulletTrigger
   def update
     super
-    dir = Stylet::Fee.rdirf(@x, @y, @target.x, @target.y)
+    dir = Stylet::Fee.rdirf(@pos.x, @pos.y, @target.pos.x, @target.pos.y)
     if @button.btA.count.modulo(8) == 1
-      @base.objects << Bullet.new(@base, @x, @y, dir, 4.00)
+      @base.objects << Bullet.new(@base, @pos.clone, dir, 4.00)
     end
   end
 end
@@ -34,10 +34,9 @@ class GunShip2 < GunShip
 end
 
 class Bullet
-  def initialize(base, cx, cy, dir, speed)
+  def initialize(base, pos, dir, speed)
     @base = base
-    @cx = cx
-    @cy = cy
+    @pos = pos
     @dir = dir
     @speed = speed
 
@@ -46,10 +45,10 @@ class Bullet
   end
 
   def screen_out?
-    unless (@base.min_x - @size .. (@base.max_x + @size)).include?(@x)
+    unless (@base.min_x - @size .. (@base.max_x + @size)).include?(@pos.x)
       return true
     end
-    unless (@base.min_y - @size .. (@base.max_y + @size)).include?(@y)
+    unless (@base.min_y - @size .. (@base.max_y + @size)).include?(@pos.y)
       return true
     end
     if @radius < 0
@@ -60,9 +59,9 @@ class Bullet
 
   def update
     @radius += @speed
-    @x = @cx + Stylet::Fee.rcosf(@dir) * @radius
-    @y = @cy + Stylet::Fee.rsinf(@dir) * @radius
-    @base.fill_rect(@x - @size, @y - @size, @size * 2, @size * 2, "white")
+    x = @pos.x + Stylet::Fee.rcosf(@dir) * @radius
+    y = @pos.y + Stylet::Fee.rsinf(@dir) * @radius
+    @base.fill_rect(x - @size, y - @size, @size * 2, @size * 2, "white")
   end
 end
 
@@ -72,8 +71,8 @@ class App < Stylet::Base
   def before_main_loop
     super
     @objects = []
-    ship1 = GunShip1.new(self, half_x, half_y - half_y * 0.8)
-    ship2 = GunShip2.new(self, half_x, half_y + half_y * 0.8)
+    ship1 = GunShip1.new(self, Stylet::Point.new(half_x, half_y - half_y * 0.8))
+    ship2 = GunShip2.new(self, Stylet::Point.new(half_x, half_y + half_y * 0.8))
     ship1.target = ship2
     ship2.target = ship1
     @objects << ship1

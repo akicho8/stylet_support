@@ -14,9 +14,9 @@ class Player
   def update
     super if defined? super
     key_counter_update_all
-    @base.gputs(to_s)
-    @base.gputs(direction.to_s)
-    @base.gputs(directionf.to_s)
+    @base.vputs(to_s)
+    @base.vputs(direction.to_s)
+    @base.vputs(directionf.to_s)
   end
 end
 

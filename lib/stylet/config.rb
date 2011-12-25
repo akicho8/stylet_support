@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 module Stylet
   Config = {
     :font_name        => "FAMania2.6.otf",

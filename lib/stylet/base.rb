@@ -58,7 +58,7 @@ module Stylet
   # 全機能入りのクラス
   #
   #   Stylet::Base.main_loop do |win|
-  #     win.gputs("Hello, World")
+  #     win.vputs("Hello, World")
   #   end
   #
   class Base
@@ -82,6 +82,6 @@ if $0 == __FILE__
   p Stylet.spec
   count = 0
   Stylet::Base.main_loop do |win|
-    win.gputs(count += 1)
+    win.vputs(count += 1)
   end
 end

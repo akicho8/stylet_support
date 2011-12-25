@@ -18,7 +18,7 @@ module Stylet
 
     def before_draw
       super if defined? super
-      @gputs_ypos = 0
+      @vputs_ypos = 0
     end
 
     def after_main_loop
@@ -28,17 +28,19 @@ module Stylet
       end
     end
 
-    def gprint(x, y, str)
-      return if (str = str.to_s) == ""
+    def vprint(x, y, str)
+      str = str.to_s
+      return if str.empty?
       if @font
         @font.drawBlendedUTF8(@screen, str, x, y, *Palette["font"])
       end
     end
 
-    def gputs(str)
-      return if (str = str.to_s) == ""
-      gprint(0, @gputs_ypos * Config[:font_line_height], str)
-      @gputs_ypos += 1
+    def vputs(str)
+      str = str.to_s
+      return if str.empty?
+      vprint(0, @vputs_ypos * Config[:font_line_height], str)
+      @vputs_ypos += 1
     end
   end
 end

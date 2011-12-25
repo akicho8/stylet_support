@@ -53,10 +53,10 @@ module Helper
         @cursor.y += Stylet::Fee.rsinf(dir) * @cursor_speed
       end
 
-      gputs(@mpos.to_a)
-      gputs(mouse_moved?)
+      vputs @mpos.to_a
+      vputs mouse_moved?
 
-      gputs(@objects.size)
+      vputs @objects.size
       @objects.each{|e|e.update}
       @objects.reject!{|e|e.screen_out?}
       draw_circle(@cursor, :radius => 16, :vertex => 3, :offset => 1.0 / 64 * @count)

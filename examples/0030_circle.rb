@@ -2,11 +2,6 @@
 # 円の書き方
 require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
 
-class App < Stylet::Base
-  def update
-    super
-    draw_circle(half_pos)
-  end
+Stylet::Base.main_loop do |base|
+  base.draw_circle(base.half_pos)
 end
-
-App.main_loop
