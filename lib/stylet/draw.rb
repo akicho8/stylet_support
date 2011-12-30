@@ -25,6 +25,7 @@ module Stylet
       end
       w, h = Config[:screen_size]
       @screen ||= SDL::Screen.open(w, h, Config[:color_depth], options)
+      @screen_rect = Rect.new(0, 0, @screen.w, @screen.h)
 
       if Config[:background] && Config[:background_image]
         background_image = Pathname(File.expand_path(File.join(File.dirname(__FILE__), "assets", Config[:background_image])))
