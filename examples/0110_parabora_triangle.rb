@@ -1,23 +1,21 @@
 # -*- coding: utf-8 -*-
+#
+# マウスの位置からZボタンで放物線を描く三角を表示
+#
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Ball
-  def initialize(base, s, v, a)
+  def initialize(base, p, v, a)
     @base = base
-    @s = s
+    @p = p
     @v = v
     @a = a
-    # x_wide = 0.8
-    # x = rand(x_wide) - x_wide / 2
-    # @a = Stylet::Point.new(0, -rand(0.1))
   end
 
   def update
-    @v.x += @a.x
-    @v.y += @a.y
-    @s.x += @v.x
-    @s.y += @v.y
-    @base.draw_circle(@s, :radius => 16, :vertex => 3, :offset => 1.0 / 64 * @base.count)
+    @v += @a
+    @p += @v
+    @base.draw_circle(@p, :radius => 16, :vertex => 3, :offset => 1.0 / 64 * @base.count)
   end
 
   def screen_out?

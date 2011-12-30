@@ -29,10 +29,15 @@ module Helper
     include Stylet::Input::JoystickBinding
     include Stylet::Input::MouseButtonAsCounter
 
+    attr_reader :cursor, :cursor_radius, :cursor_vertex, :objects
+
     def before_main_loop
       super if defined? super
       @cursor = @mpos.clone
       @cursor_speed = 5
+      @cursor_vertex = 3
+      @cursor_radius = 16
+      @cursor_display = true
       @objects = []
     end
 
@@ -53,13 +58,15 @@ module Helper
         @cursor.y += Stylet::Fee.rsinf(dir) * @cursor_speed
       end
 
-      vputs @mpos.to_a
-      vputs mouse_moved?
+      # vputs @mpos.to_a
+      # vputs mouse_moved?
 
-      vputs @objects.size
+      vputs "objects=#{@objects.size}"
       @objects.each{|e|e.update}
       @objects.reject!{|e|e.screen_out?}
-      draw_circle(@cursor, :radius => 16, :vertex => 3, :offset => 1.0 / 64 * @count)
+      if @cursor_display
+        draw_circle(@cursor, :radius => @cursor_radius, :vertex => @cursor_vertex, :offset => 1.0 / 64 * @count)
+      end
     end
   end
 end

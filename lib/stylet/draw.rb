@@ -6,7 +6,7 @@ module Stylet
   module Draw
     include ScreenAccessors
 
-    attr_accessor :count, :check_fps, :sdl_event
+    attr_accessor :count, :check_fps, :sdl_event, :screen_rect
 
     def initialize
       super
@@ -81,6 +81,12 @@ module Stylet
       end
     end
 
+    def key_down?(key_sym)
+      if @sdl_event.kind_of? SDL::Event::KeyDown
+        @sdl_event.sym == key_sym
+      end
+    end
+
     def draw_line(x0, y0, x1, y1, color = "white")
       @screen.draw_line(x0, y0, x1, y1, Palette[color])
     end
@@ -91,6 +97,18 @@ module Stylet
 
     def fill_rect(x, y, w, h, color = "white")
       @screen.fill_rect(x, y, w, h, Palette[color])
+    end
+
+    def draw_line2(p0, p1, color = "white")
+      @screen.draw_line(p0.x, p0.y, p1.x, p1.y, Palette[color])
+    end
+
+    def draw_rect2(rect, color = "white")
+      @screen.draw_rect(rect.x, rect.y, rect.w, rect.h, Palette[color])
+    end
+
+    def fill_rect2(rect, color = "white")
+      @screen.fill_rect(rect.x, rect.y, rect.w, rect.h, Palette[color])
     end
 
     def save_bmp(fname)

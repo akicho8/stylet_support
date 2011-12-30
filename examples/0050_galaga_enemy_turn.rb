@@ -11,12 +11,15 @@ class Ball
   end
 
   def update
-    pos0 = pos_new(@base.count)
-    pos1 = pos_new(@base.count.next)
-    dir = Stylet::Fee.rdirf(pos0.x, pos0.y, pos1.x, pos1.y)
-    @base.draw_circle(pos0, :radius => 20, :vertex => 3, :offset => dir)
+    p0 = pos_new(@base.count)      # 現在の位置を取得
+    p1 = pos_new(@base.count.next) # 次のフレームの位置を取得
+    dir = p0.rdirf(p1)             # 現在の位置から見て未来の角度を取得
+    @base.draw_circle(p0, :radius => 20, :vertex => 3, :offset => dir) # 次に進む方向に向けて三角を表示
   end
 
+  #
+  # countフレーム地点の位置を取得
+  #
   def pos_new(count)
     pos = Stylet::Point.new
     pos.x = @base.half_x + Stylet::Fee.rcosf(1.0 / 512 * (count * 3 + @index * 24)) * @base.half_x
@@ -27,12 +30,12 @@ end
 
 class App < Stylet::Base
   def before_main_loop
-    super
+    super if defined? super
     @objects = Array.new(8){|i|Ball.new(self, i)}
   end
 
   def update
-    super
+    super if defined? super
     @objects.each{|e|e.update}
   end
 end

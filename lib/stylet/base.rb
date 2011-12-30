@@ -14,8 +14,10 @@ require File.expand_path(File.join(File.dirname(__FILE__), "vsync_wait"))
 require File.expand_path(File.join(File.dirname(__FILE__), "check_fps"))
 require File.expand_path(File.join(File.dirname(__FILE__), "logger"))
 require File.expand_path(File.join(File.dirname(__FILE__), "point"))
+require File.expand_path(File.join(File.dirname(__FILE__), "rect"))
 require File.expand_path(File.join(File.dirname(__FILE__), "fee"))
 require File.expand_path(File.join(File.dirname(__FILE__), "collision_support"))
+require File.expand_path(File.join(File.dirname(__FILE__), "etc"))
 
 # 描画系
 require File.expand_path(File.join(File.dirname(__FILE__), "core"))

@@ -39,4 +39,12 @@ describe Stylet::Input::KeyOne do
     a.update
     a.count.should == 1
   end
+
+  it "キーを離した瞬間がわかる" do
+    a = Stylet::Input::KeyOne.new
+    a.update(true)
+    a.free_trigger?.should be_false
+    a.update(false)
+    a.free_trigger?.should be_true
+  end
 end
