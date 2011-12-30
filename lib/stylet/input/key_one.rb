@@ -7,12 +7,33 @@ module Stylet
     #   state をセットして update することでカウンタが更新される
     #
     class KeyOne
-      attr_reader :mark, :count
+      # キーリピート2としたときの挙動
+      # 3フレーム目に押された場合
+      #
+      #        2 3 4 5 6 7 (frame)
+      #  count 0 1 2 3 4 5
+      # repeat 0 1 0 0 2 3
+      #            ^ ^  の数(1と2の間がの数)がkey_repeat
+      #
+      def self.repeat(count, key_repeat)
+        repeat = 0
+        if count == 1
+          repeat = 1
+        elsif count > key_repeat + 1
+          repeat = count - key_repeat
+        else
+          repeat = 0
+        end
+        repeat
+      end
+
+      attr_reader :mark, :count, :free_count
       # attr_accessor :state
 
       def initialize(mark = "?")
         @mark = mark.to_s.scan(/./) # "AR" だったら A と R に対応
         @count = 0
+        @free_count = 0
         @state = false              # 直近のフラグ
       end
 
@@ -51,8 +72,10 @@ module Stylet
         end
         if @state
           @count += 1
+          @free_count = 0
         else
           @count = 0
+          @free_count += 1
         end
         @state = false
       end
@@ -66,15 +89,7 @@ module Stylet
       #            ^ ^  の数(1と2の間がの数)がkey_repeat
       #
       def repeat(key_repeat = 12)
-        repeat = 0
-        if @count == 1
-          repeat = 1
-        elsif @count > key_repeat + 1
-          repeat = count - key_repeat
-        else
-          repeat = 0
-        end
-        repeat
+        self.class.repeat(@count, key_repeat)
       end
 
       #
@@ -96,6 +111,13 @@ module Stylet
       #
       def trigger?
         @count == 1
+      end
+
+      #
+      # 離した瞬間？
+      #
+      def free_trigger?
+        @free_count == 1
       end
 
       #
