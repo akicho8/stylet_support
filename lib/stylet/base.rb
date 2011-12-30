@@ -21,6 +21,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "etc"))
 
 # 描画系
 require File.expand_path(File.join(File.dirname(__FILE__), "core"))
+require File.expand_path(File.join(File.dirname(__FILE__), "system_pause"))
 require File.expand_path(File.join(File.dirname(__FILE__), "draw"))
 require File.expand_path(File.join(File.dirname(__FILE__), "font"))
 
@@ -73,6 +74,7 @@ module Stylet
     include Joystick
     include Keyboard
     include Mouse
+    include SystemPause
 
     def self.main_loop(*args, &block)
       instance.send(__method__, *args, &block)

@@ -31,6 +31,9 @@ module Stylet
       catch(:exit) do
         loop do
           polling
+          if system_pause?
+            next
+          end
           before_draw
           background_clear
           before_update
