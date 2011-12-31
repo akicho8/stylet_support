@@ -18,7 +18,7 @@ module Stylet
 
     def before_draw
       super if defined? super
-      @vputs_ypos = 0
+      @__vputs_lines = 0
     end
 
     def after_main_loop
@@ -28,19 +28,31 @@ module Stylet
       end
     end
 
-    def vprint(x, y, str)
-      str = str.to_s
-      return if str.empty?
-      if @font
-        @font.drawBlendedUTF8(@screen, str, x, y, *Palette["font"])
-      end
-    end
+    # def vprint(x, y, str)
+    #   str = str.to_s
+    #   return if str.empty?
+    #   if @font
+    #     @font.drawBlendedUTF8(@screen, str, x, y, *Palette["font"])
+    #   end
+    # end
 
-    def vputs(str)
+    #
+    # フォント表示
+    #
+    #   vputs "Hello"                             # 垂れ流し
+    #   vputs "Hello", :point => Point.new(1, 2)  # 座標指定
+    #
+    def vputs(str, options = {})
+      return unless @font
       str = str.to_s
       return if str.empty?
-      vprint(0, @vputs_ypos * (@font.line_skip + Config[:font_margin]), str)
-      @vputs_ypos += 1
+
+      if options[:point]
+        @font.drawBlendedUTF8(@screen, str, options[:point].x, options[:point].y, *Palette["font"])
+      else
+        vputs(str, :point => Point.new(0, @__vputs_lines * (@font.line_skip + Config[:font_margin])))
+        @__vputs_lines += 1
+      end
     end
   end
 end

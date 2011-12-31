@@ -10,7 +10,7 @@ module Stylet
         :vertex => 8,
         :color => "white",
         :fill => false,
-        :offset => 0,
+        :offset => 0,           # 開始地点
       }.merge(options)
 
       points = (0...options[:vertex]).collect{|i|

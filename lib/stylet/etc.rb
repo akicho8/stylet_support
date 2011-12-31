@@ -15,6 +15,10 @@ module Stylet
     def lower_limited(v, r = 0.0)
       [v, r].max
     end
+
+    def abs_limited(v, r = 1.0)
+      range_limited(v, (-r..r))
+    end
   end
 end
 

@@ -2,8 +2,15 @@
 
 module Stylet
   Config = {
-    :font_name        => "FAMania2.6.otf",
-    :font_size        => 12,
+    # :font_name        => "FAMania2.6.otf",
+    # :font_size        => 12,
+
+    # :font_name        => "gamecuben.ttf",
+    # :font_size        => 12,
+
+    :font_name        => "luxirr.ttf",
+    :font_size        => 20,
+
     :font_margin      => 3,    # 行間
     :font_bold        => false,
     :full_screen      => false,

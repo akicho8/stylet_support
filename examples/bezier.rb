@@ -71,7 +71,7 @@ class Bezier < Stylet::Base
     # ドラッグ中またはAボタンを押したときは詳細表示
     if @dragging_current || @button.btA.press?
       # ポイントの番号の表示
-      @points.each_with_index{|e, i|vprint(e.x, e.y, i)}
+      @points.each_with_index{|e, i|vputs(i, :point => e)}
 
       # 弧線の描画
       xys = points_all
