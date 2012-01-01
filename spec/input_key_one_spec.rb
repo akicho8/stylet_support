@@ -47,4 +47,12 @@ describe Stylet::Input::KeyOne do
     a.update(false)
     a.free_trigger?.should be_true
   end
+
+  it "0.0 or 1.0 を返す(キーリピート対応)" do
+    a = Stylet::Input::KeyOne.new
+    a.update(true)
+    a.repeat_0or1.should == 1.0
+    a.update(false)
+    a.repeat_0or1.should == 0.0
+  end
 end

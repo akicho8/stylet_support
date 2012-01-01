@@ -28,6 +28,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "font"))
 # 描画サポート
 require File.expand_path(File.join(File.dirname(__FILE__), "draw_support/circle"))
 require File.expand_path(File.join(File.dirname(__FILE__), "draw_support/polygon"))
+require File.expand_path(File.join(File.dirname(__FILE__), "draw_support/arrow"))
 
 # 入力系
 require File.expand_path(File.join(File.dirname(__FILE__), "joystick"))

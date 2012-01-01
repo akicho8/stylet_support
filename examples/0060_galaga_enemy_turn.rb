@@ -13,8 +13,8 @@ class Ball
   def update
     p0 = pos_new(@base.count)      # 現在の位置を取得
     p1 = pos_new(@base.count.next) # 次のフレームの位置を取得
-    dir = p0.angle(p1)             # 現在の位置から見て未来の角度を取得
-    @base.draw_circle(p0, :radius => 20, :vertex => 3, :offset => dir) # 次に進む方向に向けて三角を表示
+    dir = p0.angle_to(p1)          # 現在の位置から見て未来の角度を取得
+    @base.draw_circle(p0, :radius => 20, :vertex => 3, :angle => dir) # 次に進む方向に向けて三角を表示
   end
 
   #
@@ -22,9 +22,9 @@ class Ball
   #
   def pos_new(count)
     pos = Stylet::Vector.new
-    pos.x = @base.half_x + Stylet::Fee.cos(1.0 / 512 * (count * 3 + @index * 24)) * @base.half_x
-    pos.y = @base.half_y + Stylet::Fee.sin(1.0 / 512 * (count * 4 + @index * 24)) * @base.half_y
-    pos
+    pos.x = Stylet::Fee.cos(1.0 / 512 * (count * 3 + @index * 24)) * @base.half_x
+    pos.y = Stylet::Fee.sin(1.0 / 512 * (count * 4 + @index * 24)) * @base.half_y
+    @base.half_pos + pos
   end
 end
 

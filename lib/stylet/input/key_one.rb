@@ -114,6 +114,17 @@ module Stylet
       end
 
       #
+      # 押していないとき 0.0 で押している間は 1.0 を返す
+      #
+      def repeat_0or1
+        if repeat >= 1
+          1.0
+        else
+          0.0
+        end
+      end
+
+      #
       # 離した瞬間？
       #
       def free_trigger?

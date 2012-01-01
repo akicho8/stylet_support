@@ -26,12 +26,12 @@ class Joint
         # 1.0 なら相手との間隔をすべて埋めることになるので紐になる
         # 0.1 ならゆっくりと自分に近付いてくる
         len = gap * @base.hard_level
-        dir = @target.p0.angle(@p0)
+        dir = @target.p0.angle_to(@p0)
         @target.p0.x += Stylet::Fee.cos(dir) * len
         @target.p0.y += Stylet::Fee.sin(dir) * len
 
         # 固さ 1.0 のときは次のように p0 の方から相手をひっぱる方法でもよいが前者の方が、ゆっくり移動させるなど応用が効く
-        # dir = @p0.angle(@target.p0)
+        # dir = @p0.angle_to(@target.p0)
         # @target.p0.x = @p0.x + Stylet::Fee.cos(dir) * @base.length
         # @target.p0.y = @p0.y + Stylet::Fee.sin(dir) * @base.length
       end

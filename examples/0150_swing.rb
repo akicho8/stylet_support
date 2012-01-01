@@ -76,7 +76,7 @@ class Swing
 
     # Aボタンが押されているときだけ鉄球の位置をカーソルの方向に向ける
     if @base.button.btA.press?
-      @dir1 = @p0.angle(@base.cursor)
+      @dir1 = @p0.angle_to(@base.cursor)
       @speed = 0
     end
 
@@ -137,7 +137,6 @@ class App < Stylet::Base
   def before_main_loop
     super if defined? super
     @objects << Swing.new(self, half_pos.clone)
-    @cursor_display = false     # 三角カーソル非表示
 
     @debug_mode = false   # デバッグモード
     @gravity = 1           # 重力加速度(整数で指定すること)

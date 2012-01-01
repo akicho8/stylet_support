@@ -32,15 +32,15 @@ class IccHockeyBall
     # ボタンをクリックした瞬間に、
     if @base.button.btA.trigger?
       # 自分の円のなかにカーソルがあればロックする
-      if @pos.distance(@base.mpos) < @body_radius
+      if @pos.distance(@base.mouse_vector) < @body_radius
         @lock = true
       end
     end
 
     # ロックしているときに、ボタンが押されっぱなしなら
     if @lock && @base.button.btA.press?
-      @p0 = @base.mpos.clone        # 円の座標をマウスと同じにする
-      @power = @base.__mouse_vector # マウスの直前からの移動距離を速度と考える
+      @p0 = @base.mouse_vector.clone        # 円の座標をマウスと同じにする
+      @power = @base.__mouse_before_distance # マウスの直前からの移動距離を速度と考える
       @speed = 0                    # 速度を0とする
       @radius = 0                   # 半径を0とする
     end
@@ -52,7 +52,7 @@ class IccHockeyBall
       # 速度が設定されていれば
       if @power
         @speed = @power        # 速度を円に反映し、
-        @dir = @base.mouse_dir # 円の方向のにマウスが移動した方向を合わせる
+        @dir = @base.mouse_angle # 円の方向にマウスが移動した方向を合わせる
         @power = nil           # 球が動いているときにボタンを連打すると @dir が再設定されてしまうので nil にしておく
       end
     end
@@ -78,7 +78,7 @@ class IccHockeyBall
 
     @base.draw_circle(@pos, :radius => @body_radius, :vertex => 32)
     @base.vputs @power
-    @base.vputs @pos.distance(@base.mpos)
+    @base.vputs @pos.distance(@base.mouse_vector)
     @base.vputs @speed
     @base.vputs @radius
   end

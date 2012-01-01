@@ -10,17 +10,34 @@ module Stylet
         :vertex => 8,
         :color => "white",
         :fill => false,
-        :offset => 0,           # 開始地点
+        :angle => Fee.r270,      # 開始地点
       }.merge(options)
 
       points = (0...options[:vertex]).collect{|i|
-        dir = (1.0 / options[:vertex]) * i
-        Vector.new(
-          p0.x + Fee.cos(options[:offset] + dir) * options[:radius],
-          p0.y + Fee.sin(options[:offset] + dir) * options[:radius]
-          )
+        a = options[:angle] + (1.0 / options[:vertex]) * i
+        p0 + Vector.sincos(a) * options[:radius]
       }
       draw_polygon(points, options)
+    end
+
+    #
+    # 三角形の表示
+    #
+    def draw_triangle(p0, options = {})
+      options = {
+        :vertex => 3,
+      }.merge(options)
+      draw_circle(p0, options)
+    end
+
+    #
+    # 正方形の表示
+    #
+    def draw_square(p0, options = {})
+      options = {
+        :vertex => 4,
+      }.merge(options)
+      draw_circle(p0, options)
     end
   end
 end

@@ -19,7 +19,7 @@ class Bezier < Stylet::Base
     def update
       unless @dragging
         if @base.button.btA.trigger?
-          if Stylet::CollisionSupport.squire_collision?(self, @base.mpos)
+          if Stylet::CollisionSupport.squire_collision?(self, @base.mouse_vector)
             # 他の奴がアクティブじゃなかったときだけ自分を有効にできる
             # これを入れないと同時に複数のポイントをドラッグできてしまう
             unless @base.dragging_current
@@ -36,8 +36,8 @@ class Bezier < Stylet::Base
       end
 
       if self == @base.dragging_current
-        self.x = @base.mpos.x
-        self.y = @base.mpos.y
+        self.x = @base.mouse_vector.x
+        self.y = @base.mouse_vector.y
         @base.draw_circle(self, :radius => @radius, :vertex => 32)
       else
         @base.draw_circle(self, :radius => 2)
@@ -97,7 +97,7 @@ class Bezier < Stylet::Base
         p0 = bezier_point(@points, pos0)                                 # 現在の座標
         p1 = bezier_point(@points, pos1)                                 # 未来の座標
         dir = Stylet::Fee.angle(p0.x, p0.y, p1.x, p1.y)                 # 現在から未来への向きを取得 FIXME: ruby 1.9 だと綺麗にかける
-        draw_circle(p0, :offset => dir, :radius => 64, :vertex => 3)     # 三角の頂点を未来への向きに設定して三角描画
+        draw_triangle(p0, :angle => dir, :radius => 64)     # 三角の頂点を未来への向きに設定して三角描画
         vputs(pos0)
         vputs(dir)
       end

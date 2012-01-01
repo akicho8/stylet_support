@@ -15,7 +15,7 @@ class Ball
   def update
     @v += @a
     @p += @v
-    @base.draw_circle(@p, :radius => 16, :vertex => 3, :offset => 1.0 / 64 * @base.count)
+    @base.draw_triangle(@p, :radius => 16, :angle => 1.0 / 64 * @base.count)
   end
 
   def screen_out?

@@ -33,10 +33,10 @@ module Helper
 
     def before_main_loop
       super if defined? super
-      @cursor = @mpos.clone
+      @cursor = @mouse_vector.clone
       @cursor_speed = 5
       @cursor_vertex = 3
-      @cursor_radius = 16
+      @cursor_radius = 8
       @cursor_display = true
       @objects = []
     end
@@ -50,22 +50,23 @@ module Helper
       key_counter_update_all
 
       if mouse_moved?
-        @cursor = @mpos.clone
+        @cursor = @mouse_vector.clone
       end
 
       if dir = axis_angle
-        @cursor.x += Stylet::Fee.cos(dir) * @cursor_speed
-        @cursor.y += Stylet::Fee.sin(dir) * @cursor_speed
+        @cursor += Stylet::Vector.sincos(dir) * @cursor_speed
       end
 
-      # vputs @mpos.to_a
+      # vputs @mouse_vector.to_a
       # vputs mouse_moved?
 
-      vputs "objects=#{@objects.size}"
+      unless @objects.empty?
+        vputs "objects=#{@objects.size}"
+      end
       @objects.each{|e|e.update}
       @objects.reject!{|e|e.screen_out?}
       if @cursor_display
-        draw_circle(@cursor, :radius => @cursor_radius, :vertex => @cursor_vertex, :offset => 1.0 / 64 * @count)
+        draw_circle(@cursor, :radius => @cursor_radius, :vertex => @cursor_vertex, :angle => 1.0 / 64 * @count)
       end
     end
   end

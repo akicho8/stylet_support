@@ -20,7 +20,7 @@ class Ball
 
       if @base.button.btA.press?
         # カーソルの方向から円の位置の方向に一方的に移動させる
-        dir = @base.cursor.angle(@pos)
+        dir = @base.cursor.angle_to(@pos)
         @pos.x = @base.cursor.x + Stylet::Fee.cos(dir) * radius2
         @pos.y = @base.cursor.y + Stylet::Fee.sin(dir) * radius2
       end
