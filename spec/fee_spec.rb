@@ -3,17 +3,17 @@ require "spec_helper"
 
 describe Stylet::Fee do
   it "角度を整数で渡す系" do
-    Stylet::Fee.rsin(0).should == 0.0
-    Stylet::Fee.rcos(0).should == 1.0
+    Stylet::Fee.isin(0).should == 0.0
+    Stylet::Fee.icos(0).should == 1.0
   end
 
   it "一周を1.0として渡せる系" do
-    Stylet::Fee.rsinf(0).should == 0.0
-    Stylet::Fee.rcosf(0).should == 1.0
+    Stylet::Fee.sin(0).should == 0.0
+    Stylet::Fee.cos(0).should == 1.0
   end
 
   it "二点間の角度を求める" do
-    Stylet::Fee.rdir(0, 0, 0, 1).should == Stylet::Fee.one / 4
+    Stylet::Fee.iangle(0, 0, 0, 1).should == Stylet::Fee.one / 4
   end
 
   it "時計の時で方向指定" do
@@ -32,7 +32,7 @@ describe Stylet::Fee do
   end
 
   it "左右どちらにいるか？" do
-    Stylet::Fee.rRight?(Stylet::Fee.clock(3)).should be_true
-    Stylet::Fee.rLeft?(Stylet::Fee.clock(9)).should be_true
+    Stylet::Fee.cright?(Stylet::Fee.clock(3)).should be_true
+    Stylet::Fee.cleft?(Stylet::Fee.clock(9)).should be_true
   end
 end

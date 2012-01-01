@@ -4,36 +4,45 @@
 #
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
+#
+# 円の中心
+#    p0 (見えない)
+#      \
+#       \ radius
+#        \
+#         座標 pos (見える)
+#          方向 dir
+#
 class IccHockeyBall
-  def initialize(base, cpos)
+  def initialize(base, p0)
     @base = base
-    @cpos = cpos
-    @pos = @cpos.clone
-    @radius = 64       # 物体の大きさ
-    @vr_max = 12       # 速度最大
-    @friction = 0.15 # 摩擦
-    @vr = 0
-    @r = 0
-    @dir = 0
+    @p0 = p0          # 物体の中心点
+    @pos = @p0.clone  # 物体の位置
+    @speed = 0        # 速度
+    @radius = 0       # 中心からの移動量
+    @dir = 0          # 中心からの移動角度
     @lock = false
+
+    @body_radius = 64 # 物体の大きさ
+    @speed_max = 12   # 速度最大
+    @friction = 0.15  # 摩擦
   end
 
   def update
     # ボタンをクリックした瞬間に、
     if @base.button.btA.trigger?
       # 自分の円のなかにカーソルがあればロックする
-      if @pos.distance(@base.mpos) < @radius
+      if @pos.distance(@base.mpos) < @body_radius
         @lock = true
       end
     end
 
     # ロックしているときに、ボタンが押されっぱなしなら
     if @lock && @base.button.btA.press?
-      @cpos = @base.mpos.clone # 円の座標をマウスと同じにする
-      @vr = 0                  # 速度を0とする
-      @r = 0                   # 半径を0とする
-      # マウスの移動距離と、速度と考えて @power に設定する
-      @power = @base.__mouse_vector
+      @p0 = @base.mpos.clone        # 円の座標をマウスと同じにする
+      @power = @base.__mouse_vector # マウスの直前からの移動距離を速度と考える
+      @speed = 0                    # 速度を0とする
+      @radius = 0                   # 半径を0とする
     end
 
     # ボタンが離された瞬間
@@ -42,39 +51,36 @@ class IccHockeyBall
       @lock = false
       # 速度が設定されていれば
       if @power
-        # 速度を円に反映し、
-        @vr = @power
-        # 円の方向のにマウスが移動した方向を合わせる
-        @dir = @base.mouse_dir
-        # 球が動いているときにボタンを連打すると @dir が再設定されてしまうので nil にしておく
-        @power = nil
+        @speed = @power        # 速度を円に反映し、
+        @dir = @base.mouse_dir # 円の方向のにマウスが移動した方向を合わせる
+        @power = nil           # 球が動いているときにボタンを連打すると @dir が再設定されてしまうので nil にしておく
       end
     end
 
-    # 摩擦によって速度が減っていく
-    @vr -= @friction
+    # 摩擦によって速度が落ちる
+    @speed -= @friction
 
     # 速度調整
-    @vr = Stylet::Etc.range_limited(@vr, (0..@vr_max))
+    @speed = Stylet::Etc.range_limited(@speed, (0..@speed_max))
 
     # 速度反映
-    @r += @vr
+    @radius += @speed
 
     # 進んだ位置を計算
-    _p = Stylet::Point.new
-    _p.x = @cpos.x + Stylet::Fee.rcosf(@dir) * @r
-    _p.y = @cpos.y + Stylet::Fee.rsinf(@dir) * @r
+    _p = Stylet::Vector.new
+    _p.x = @p0.x + Stylet::Fee.cos(@dir) * @radius
+    _p.y = @p0.y + Stylet::Fee.sin(@dir) * @radius
 
     # 画面内なら更新
     if Stylet::CollisionSupport.rect_collision?(@base.screen_rect, _p)
       @pos = _p
     end
 
-    @base.draw_circle(@pos, :radius => @radius, :vertex => 32)
+    @base.draw_circle(@pos, :radius => @body_radius, :vertex => 32)
     @base.vputs @power
     @base.vputs @pos.distance(@base.mpos)
-    @base.vputs @vr
-    @base.vputs @r
+    @base.vputs @speed
+    @base.vputs @radius
   end
 
   def screen_out?

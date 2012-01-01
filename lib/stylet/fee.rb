@@ -10,21 +10,21 @@ module Stylet
       @sin_table = (0...@one).collect{|i|Math.sin(2 * Math::PI * i / @one)}
     end
 
-    def rsin(r)
+    def isin(r)
       @sin_table[r.modulo(@sin_table.size)]
     end
 
-    def rcos(r)
-      rsin(r + @sin_table.size / 4)
+    def icos(r)
+      isin(r + @sin_table.size / 4)
     end
 
-    def rsinf(r)
-      r %= 1.0
+    def sin(r)
+      r %= 1.0 # これいらない？ 何周もしているときに r * @sin_table.size で桁あふれするかもしれないけどrubyなら問題ないけど重くなる？
       @sin_table[(r * @sin_table.size).modulo(@sin_table.size)]
     end
 
-    def rcosf(r)
-      rsinf(r + 1.0 / 4)
+    def cos(r)
+      sin(r + 1.0 / 4)
     end
   end
 
@@ -45,17 +45,16 @@ module Stylet
       ]
     end
 
-    # 一周したときに 1.0 にならないようにするにはさらに v %= 1.0 すればよいがいまのところ必要なさそう
-    def rdirf(ox, oy, tx, ty)
-      v = rdir(ox, oy, tx, ty) / @one.to_f
-      v % 1.0
+    def angle(ox, oy, tx, ty)
+      v = iangle(ox, oy, tx, ty) / @one.to_f
+      v % 1.0 # 一周したとき 1.0 にならないようにするため
     end
 
     #    4 0
     #  5     1
     #  7     3
     #    6 2
-    def rdir(ox, oy, tx, ty)
+    def iangle(ox, oy, tx, ty)
       dir = nil
 
       sx = tx - ox
@@ -123,7 +122,7 @@ module Stylet
 
   module Initialize
     def initialize
-      @one = 4096 * 4
+      @one = 4096 * 4           # シューティングなら4096で問題ないが、振り子では精度が低い
       @dir_offset = 0
     end
   end
@@ -137,52 +136,46 @@ module Stylet
     attr_reader :one
 
     class << self
-      [:rdir, :rsin, :rcos, :rdirf, :rsinf, :rcosf, :one].each{|method|
+      [:iangle, :isin, :icos, :angle, :sin, :cos, :one].each{|method|
         define_method(method){|*args, &block|
           instance.send(method, *args, &block)
         }
       }
     end
 
+    # 一周をアナログ時計の単位と考えたときの角度(抽象化のため)
     def self.clock(hour = 6, minute = 0)
       t = -(1.0 / 4) + (1.0 * (hour % 12) / 12)
       t += 1.0 * minute / (60 * 12)
       t.modulo(1.0) / 1.0.to_f
     end
 
-    def self.r0
-      0
+    # 一周を360度と考えたときの角度(抽象化のため)
+    def self.r0; 0; end
+    def self.r45; 1.0 / 8.0; end
+    def self.r90; 1.0 / 4.0; end
+    def self.r180; 1.0 / 2.0; end
+    def self.r270; r90 * 3; end
+
+    # 円の右側か？
+    def self.cright?(v)
+      !cleft?(v)
     end
 
-    def self.r45
-      1.0 / 8.0
-    end
-
-    def self.r90
-      1.0 / 4.0
-    end
-
-    def self.r180
-      1.0 / 2.0
-    end
-
-    def self.rRight?(v)
-      !rLeft?(v)
-    end
-
-    def self.rLeft?(v)
-      (r90 ... (r90 + r180)).include?(v % 1.0)
+    # 円の左側か？
+    def self.cleft?(v)
+      (r90...r270).include?(v % 1.0)
     end
   end
 end
 
 if $0 == __FILE__
-  # p Stylet::Fee.rsin(0)
-  # p Stylet::Fee.rcos(0)
-  # p Stylet::Fee.rdir(0, 0, 0, 1)
-  # p Stylet::Fee.rsinf(0)
-  # p Stylet::Fee.rcosf(0)
-  # p Stylet::Fee.rdir(320.0, 240.0, 447.990361835411, 240.429243)
+  # p Stylet::Fee.isin(0)
+  # p Stylet::Fee.icos(0)
+  # p Stylet::Fee.iangle(0, 0, 0, 1)
+  # p Stylet::Fee.sin(0)
+  # p Stylet::Fee.cos(0)
+  # p Stylet::Fee.iangle(320.0, 240.0, 447.990361835411, 240.429243)
   (0..12).each{|i|
     p [i, Stylet::Fee.clock(i)]
   }

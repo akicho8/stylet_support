@@ -36,13 +36,13 @@ module Stylet
     end
 
     def half_pos
-      Point.new(half_x, half_y)
+      Vector.new(half_x, half_y)
     end
   end
 end
 
 if $0 == __FILE__
-  p0 = Stylet::Point.new(1, 1)
-  p1 = Stylet::Point.new(1, 1)
+  p0 = Stylet::Vector.new(1, 1)
+  p1 = Stylet::Vector.new(1, 1)
   p(p0 == p1)
 end

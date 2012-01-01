@@ -29,7 +29,7 @@ class App < Stylet::Base
   def update
     super if defined? super
     if @button.btA.count.modulo(4) == 1
-      @objects << Ball.new(self, @cursor.clone, Stylet::Point.new(0, -12), Stylet::Point.new(0, 0.2))
+      @objects << Ball.new(self, @cursor.clone, Stylet::Vector.new(0, -12), Stylet::Vector.new(0, 0.2))
     end
   end
 end

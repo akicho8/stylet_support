@@ -53,9 +53,9 @@ module Helper
         @cursor = @mpos.clone
       end
 
-      if dir = directionf
-        @cursor.x += Stylet::Fee.rcosf(dir) * @cursor_speed
-        @cursor.y += Stylet::Fee.rsinf(dir) * @cursor_speed
+      if dir = axis_angle
+        @cursor.x += Stylet::Fee.cos(dir) * @cursor_speed
+        @cursor.y += Stylet::Fee.sin(dir) * @cursor_speed
       end
 
       # vputs @mpos.to_a

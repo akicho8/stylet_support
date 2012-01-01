@@ -70,12 +70,12 @@ module Stylet
         key_objects.each{|e|e.update}
       end
 
-      def direction
-        AxisSupport.direction(@axis)
+      def axis_angle_index
+        AxisSupport.axis_angle_index(@axis)
       end
 
-      def directionf
-        AxisSupport.directionf(@axis)
+      def axis_angle
+        AxisSupport.axis_angle(@axis)
       end
     end
   end

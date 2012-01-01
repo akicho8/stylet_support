@@ -8,7 +8,7 @@ class Bezier < Stylet::Base
 
   attr_accessor :dragging_current
 
-  class MovablePoint < Stylet::Point
+  class MovablePoint < Stylet::Vector
     def initialize(base, *args)
       super(*args)
       @base = base
@@ -71,7 +71,7 @@ class Bezier < Stylet::Base
     # ドラッグ中またはAボタンを押したときは詳細表示
     if @dragging_current || @button.btA.press?
       # ポイントの番号の表示
-      @points.each_with_index{|e, i|vputs(i, :point => e)}
+      @points.each_with_index{|e, i|vputs(i, :vector => e)}
 
       # 弧線の描画
       xys = points_all
@@ -86,17 +86,17 @@ class Bezier < Stylet::Base
       # 物体をいったりきたりさせる
       if false
         # ○の表示
-        pos = 0.5 + (Stylet::Fee.rsinf(1.0 / 128 * @count) * 0.5)
+        pos = 0.5 + (Stylet::Fee.sin(1.0 / 128 * @count) * 0.5)
         xy = bezier_point(@points, pos)
         draw_circle(xy, :radius => 16, :vertex => 32)
         vputs(pos)
       else
         # △の表示で進んでいる方向を頂点にする
-        pos0 = 0.5 + (Stylet::Fee.rsinf(1.0 / 128 * @count) * 0.5)      # 現在の位置(0.0〜1.0)
-        pos1 = 0.5 + (Stylet::Fee.rsinf(1.0 / 128 * @count.next) * 0.5) # 未来の位置(0.0〜1.0)
+        pos0 = 0.5 + (Stylet::Fee.sin(1.0 / 128 * @count) * 0.5)      # 現在の位置(0.0〜1.0)
+        pos1 = 0.5 + (Stylet::Fee.sin(1.0 / 128 * @count.next) * 0.5) # 未来の位置(0.0〜1.0)
         p0 = bezier_point(@points, pos0)                                 # 現在の座標
         p1 = bezier_point(@points, pos1)                                 # 未来の座標
-        dir = Stylet::Fee.rdirf(p0.x, p0.y, p1.x, p1.y)                 # 現在から未来への向きを取得 FIXME: ruby 1.9 だと綺麗にかける
+        dir = Stylet::Fee.angle(p0.x, p0.y, p1.x, p1.y)                 # 現在から未来への向きを取得 FIXME: ruby 1.9 だと綺麗にかける
         draw_circle(p0, :offset => dir, :radius => 64, :vertex => 3)     # 三角の頂点を未来への向きに設定して三角描画
         vputs(pos0)
         vputs(dir)

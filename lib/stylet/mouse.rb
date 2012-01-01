@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require File.expand_path(File.join(File.dirname(__FILE__), "point"))
+require File.expand_path(File.join(File.dirname(__FILE__), "vector"))
 
 module Stylet
   module Mouse
@@ -8,7 +8,7 @@ module Stylet
 
     def initialize(*)
       super if defined? super
-      @mpos = Point.new(0, 0)
+      @mpos = Vector.new(0, 0)
       @before_mpos = @mpos.clone
       @start_mpos = nil
       @mouse_move_count = 0
@@ -24,7 +24,7 @@ module Stylet
         end
         @__mouse_vector = @before_mpos.distance(@mpos)
         @mlonglength = @start_mpos.distance(@mpos)
-        @mouse_dir = Stylet::Fee.rdirf(@before_mpos.x, @before_mpos.y, @mpos.x, @mpos.y)
+        @mouse_dir = Stylet::Fee.angle(@before_mpos.x, @before_mpos.y, @mpos.x, @mpos.y)
         @mouse_move_count += 1
       else
         @__mouse_vector = nil

@@ -1,12 +1,4 @@
-# -*- coding: utf-8 -*-
-# テンプレートメソッドパターン
-require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
-
-class App < Stylet::Base
-  def update
-    super
-    vputs(SDL::Mouse.state.inspect)
-  end
-end
-
-App.main_loop
+Dir[File.expand_path(File.join(File.dirname(__FILE__), "[0-9]*.rb"))].each{|filename|
+  p filename
+  # load(filename)
+}

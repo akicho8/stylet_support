@@ -28,14 +28,16 @@ module Stylet
       @screen_rect = Rect.new(0, 0, @screen.w, @screen.h)
 
       if Config[:background] && Config[:background_image]
-        background_image = Pathname(File.expand_path(File.join(File.dirname(__FILE__), "assets", Config[:background_image])))
-        if background_image.exist?
-          @backgroud_image = SDL::Surface.load_bmp(background_image)
-          if false
-            # これを設定すると黒色は透明色になって描画されない
-            @backgroud_image.set_color_key(SDL::SRCCOLORKEY, 0)
+        unless @backgroud_image
+          background_image = Pathname(File.expand_path(File.join(File.dirname(__FILE__), "assets", Config[:background_image])))
+          if background_image.exist?
+            @backgroud_image = SDL::Surface.load_bmp(background_image)
+            if false
+              # これを設定すると黒色は透明色になって描画されない
+              @backgroud_image.set_color_key(SDL::SRCCOLORKEY, 0)
+            end
+            @backgroud_image = @backgroud_image.display_format
           end
-          @backgroud_image = @backgroud_image.display_format
         end
       end
 
@@ -58,9 +60,13 @@ module Stylet
 
     def after_main_loop
       super
-      @screen.destroy
+      if @screen
+        @screen.destroy
+        @screen = nil
+      end
       if @backgroud_image
         @backgroud_image.destroy
+        @backgroud_image = nil
       end
     end
 

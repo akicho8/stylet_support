@@ -30,7 +30,7 @@ class App < Bezier
   #   ・クロスさせたい
   #
   def bezier_point(p, d)
-    o = Stylet::Point.new(0, 0)
+    o = Stylet::Vector.new(0, 0)
 
     v = (1 - d) * (1 - d) * (1 - d)
     o.x += v * p[0].x

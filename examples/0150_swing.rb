@@ -32,17 +32,17 @@ class Swing
 
   def update
     # 鉄球の座標(pA)を求める
-    @pA = Stylet::Point.new
-    @pA.x = @p0.x + Stylet::Fee.rcosf(@dir1) * @radius
-    @pA.y = @p0.y + Stylet::Fee.rsinf(@dir1) * @radius
+    @pA = Stylet::Vector.new
+    @pA.x = @p0.x + Stylet::Fee.cos(@dir1) * @radius
+    @pA.y = @p0.y + Stylet::Fee.sin(@dir1) * @radius
 
     # 鉄球の座標から重力を反映した座標(pB)を求める
-    @pB = Stylet::Point.new
+    @pB = Stylet::Vector.new
     @pB.x = @pA.x
     @pB.y = @pA.y + @base.gravity
 
     # 振り子の中心(p0)から重力反映座標(pB)の角度(@dir2)を求める
-    @dir2 = @p0.rdirf(@pB)
+    @dir2 = @p0.angle(@pB)
 
     # 振り子の中心(p0)から重力反映座標(pB)への線を表示確認
     if @base.debug_mode
@@ -58,7 +58,7 @@ class Swing
     # 対策として右半分にいるときかつ @dir2 の方が小さいとき @dir2 は一周したことにする
     # ただ 1.0 するのではなく @dir1 が進みすぎて一周したということにしたいので @dir1.round を加算してみたが、これはおかしくなる
     # 1.0 加算するのが正解っぽい
-    if Stylet::Fee.rRight?(@dir1)
+    if Stylet::Fee.cright?(@dir1)
       if @dir2 < @dir1
         @dir2 += 1.0
       end
@@ -76,7 +76,7 @@ class Swing
 
     # Aボタンが押されているときだけ鉄球の位置をカーソルの方向に向ける
     if @base.button.btA.press?
-      @dir1 = @p0.rdirf(@base.cursor)
+      @dir1 = @p0.angle(@base.cursor)
       @speed = 0
     end
 
@@ -117,13 +117,13 @@ class Swing
 
   # 90度ずらした線を引く
   def rad90_line
-    p2 = Stylet::Point.new
-    p3 = Stylet::Point.new
+    p2 = Stylet::Vector.new
+    p3 = Stylet::Vector.new
     _r = 128
-    p2.x = @pA.x + Stylet::Fee.rcosf(@dir1 - Stylet::Fee.r90) * _r
-    p2.y = @pA.y + Stylet::Fee.rsinf(@dir1 - Stylet::Fee.r90) * _r
-    p3.x = @pA.x + Stylet::Fee.rcosf(@dir1 + Stylet::Fee.r90) * _r
-    p3.y = @pA.y + Stylet::Fee.rsinf(@dir1 + Stylet::Fee.r90) * _r
+    p2.x = @pA.x + Stylet::Fee.cos(@dir1 - Stylet::Fee.r90) * _r
+    p2.y = @pA.y + Stylet::Fee.sin(@dir1 - Stylet::Fee.r90) * _r
+    p3.x = @pA.x + Stylet::Fee.cos(@dir1 + Stylet::Fee.r90) * _r
+    p3.y = @pA.y + Stylet::Fee.sin(@dir1 + Stylet::Fee.r90) * _r
     @base.draw_line2(p2, p3)
   end
 end

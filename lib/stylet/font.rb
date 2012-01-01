@@ -40,17 +40,17 @@ module Stylet
     # フォント表示
     #
     #   vputs "Hello"                             # 垂れ流し
-    #   vputs "Hello", :point => Point.new(1, 2)  # 座標指定
+    #   vputs "Hello", :vector => Vector.new(1, 2)  # 座標指定
     #
     def vputs(str, options = {})
       return unless @font
       str = str.to_s
       return if str.empty?
 
-      if options[:point]
-        @font.drawBlendedUTF8(@screen, str, options[:point].x, options[:point].y, *Palette["font"])
+      if options[:vector]
+        @font.drawBlendedUTF8(@screen, str, options[:vector].x, options[:vector].y, *Palette["font"])
       else
-        vputs(str, :point => Point.new(0, @__vputs_lines * (@font.line_skip + Config[:font_margin])))
+        vputs(str, :vector => Vector.new(0, @__vputs_lines * (@font.line_skip + Config[:font_margin])))
         @__vputs_lines += 1
       end
     end

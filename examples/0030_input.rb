@@ -15,8 +15,8 @@ class Player
     super if defined? super
     key_counter_update_all
     @base.vputs(to_s)
-    @base.vputs(direction.to_s)
-    @base.vputs(directionf.to_s)
+    @base.vputs(axis_angle_index.to_s)
+    @base.vputs(axis_angle.to_s)
   end
 end
 

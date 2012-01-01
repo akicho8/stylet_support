@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), "point"))
+require File.expand_path(File.join(File.dirname(__FILE__), "vector"))
 
 module Stylet
   module ScreenAccessors
@@ -35,7 +35,7 @@ module Stylet
     end
 
     def half_pos
-      Point.new(half_x, half_y)
+      Vector.new(half_x, half_y)
     end
   end
 end

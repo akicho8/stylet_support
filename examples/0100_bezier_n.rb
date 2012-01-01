@@ -19,8 +19,8 @@ class App < Bezier
       n = 5
       r = half_y * 0.9
       @points = Array.new(n){|i|
-        x = half_x + Stylet::Fee.rcosf(1.0 / n * i) * r
-        y = half_y + Stylet::Fee.rsinf(1.0 / n * i) * r
+        x = half_x + Stylet::Fee.cos(1.0 / n * i) * r
+        y = half_y + Stylet::Fee.sin(1.0 / n * i) * r
         MovablePoint.new(self, x, y)
       }
     end
@@ -40,7 +40,7 @@ class App < Bezier
   #   ・クロスしまくりたい
   #
   def bezier_point(points, d)
-    o = Stylet::Point.new(0, 0)
+    o = Stylet::Vector.new(0, 0)
 
     points.size.times{|i|
       p = points[i]

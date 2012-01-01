@@ -15,9 +15,9 @@ module Stylet
 
       points = (0...options[:vertex]).collect{|i|
         dir = (1.0 / options[:vertex]) * i
-        Point.new(
-          p0.x + Fee.rcosf(options[:offset] + dir) * options[:radius],
-          p0.y + Fee.rsinf(options[:offset] + dir) * options[:radius]
+        Vector.new(
+          p0.x + Fee.cos(options[:offset] + dir) * options[:radius],
+          p0.y + Fee.sin(options[:offset] + dir) * options[:radius]
           )
       }
       draw_polygon(points, options)

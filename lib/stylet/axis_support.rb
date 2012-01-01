@@ -7,7 +7,7 @@ module Stylet
     #
     # レバーの状態から8方向の番号インデックスに変換
     #
-    def direction(axis)
+    def axis_angle_index(axis)
       dir = nil
       if axis.up.press?
         if axis.right.press?
@@ -34,10 +34,10 @@ module Stylet
     end
 
     #
-    # レバーの状態から一周を1.0としたときの方向を返す
+    # 8方向レバーの状態から一周を1.0としたときの方向を返す
     #
-    def directionf(axis)
-      if dir = direction(axis)
+    def axis_angle(axis)
+      if dir = axis_angle_index(axis)
         1.0 / 8 * dir
       end
     end

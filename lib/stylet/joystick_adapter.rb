@@ -57,7 +57,7 @@ module Stylet
       end
     end
 
-    # def direction
+    # def axis_angle_index
     #   dir = nil
     #   if lever_on?(:up)
     #     if lever_on?(:right)
@@ -83,8 +83,8 @@ module Stylet
     #   dir
     # end
     # 
-    # def directionf
-    #   if dir = direction
+    # def axis_angle
+    #   if dir = axis_angle_index
     #     1.0 / 8 * dir
     #   end
     # end
