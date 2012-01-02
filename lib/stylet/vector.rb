@@ -110,14 +110,13 @@ module Stylet
       end
     end
 
-    # hakuhin.jp/as/collision.html#COLLISION_00 の方法
+    # hakuhin.jp/as/collision.html#COLLISION_00 の方法だと x * (1.0 / c) としているけど x.to_f / c でよくないか？
     def normalize
       c = length                # x y のどちらかを最大と考えるのではなく斜線を 1.0 とする
       # if c > 0                # これは ZeroDivisionError を出さないためのものなので 0, 0 のベクトルがなければ不要
       #   c = 1.0 / c
       # end
-      c = 1.0 / c
-      self.class.new(x * c, y * c)
+      self.class.new(Float(x) / c, Float(y) / c)
     end
 
     # 距離の取得
