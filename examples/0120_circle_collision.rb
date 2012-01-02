@@ -9,6 +9,7 @@ class Ball
     @base = base
     @pos = pos
     @radius = 64
+    @speed = Stylet::Vector.new(0.84, -0.52).normalize # 自機の速度ベクトル
   end
 
   def update

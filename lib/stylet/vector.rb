@@ -2,19 +2,42 @@
 #
 # 速度ベクトルの向きを取得するには？
 #
-#   @speed.angle
+#   speed.angle
 #
 # 速度ベクトルを45度傾けるには？
 #
-#   @speed += Stylet::Vector.sincos(Stylet::Fee.r45) * @speed.radius
+#   speed += Stylet::Vector.sincos(Stylet::Fee.r45) * speed.radius
 #
 # p0の速度ベクトルをマウスの方向に設定するには？
 #
-#   @speed = Stylet::Vector.sincos(@p0.angle_to(@base.mouse_vector)) * @speed.radius
+#   speed = Stylet::Vector.sincos(p0.angle_to(base.mouse_vector)) * speed.radius
+#
+# 円の速度制限をするには？(円が線から飛び出さないようにするときに使う)
+#
+#   if speed.radius > radius
+#     speed = speed.normalize.scale(radius)
+#   end
 #
 # 線分ABの中央の位置を取得するには？
 #
-#   half_ab = @pA + Stylet::Vector.sincos(@pA.angle_to(@pB)) * (@pA.distance(@pB) / 2)
+#   half_ab = pA + Stylet::Vector.sincos(pA.angle_to(pB)) * (pA.distance(pB) / 2)
+#
+#   Vector#pos_vector_rate(pA, pB, rate)
+#
+# 円(p0,r)が点(p1)にめりこんだとき、点から円を押し出すには？
+#
+#   良い例
+#
+#     diff = p0 - p1
+#     if diff.length < r
+#       p0 = p1 + diff.normalize * r
+#     end
+#
+#   悪い例
+#
+#     if p0.distance(p1) < r
+#       p0 = p1 + Stylet::Vector.sincos(p1.angle_to(p0)) * r
+#     end
 #
 module Stylet
   #
@@ -126,22 +149,59 @@ module Stylet
     #     -2 * -2 = 4
     #      2 *  2 = 4
     #
+    #   当たり判定を次のように行なっている場合、
+    #     sx = mx - ax
+    #     sy = my - ay
+    #     if sqrt(sx * sx + sy * sy) < r
+    #     end
+    #
+    #   次のように sqrt を外すことができる
+    #     if (sx * sx + sy * sy) < (r ** 2)
+    #     end
+    #
     def length
       Math.sqrt(x ** 2 + y ** 2)
     end
 
     alias radius length
 
+    #
+    # 反対方向のベクトルを返す
+    #
+    def __negative
+      self.class.new(-x, -y)
+    end
+
     # 反射ベクトルの取得
     #
     #   s: スピードベクトル
     #   n: 法線ベクトル
     #
+    #   定石
+    #     速度ベクトル += 速度ベクトル.reflect(法線ベクトル).scale(反射係数)
+    #     @speed += @speed.reflect(@normal).scale(0.5)
+    #
+    #   反射係数
+    #     ×1.5: 謎の力によってありえない反射をする
+    #     ◎1.0: 摩擦なし(標準)
+    #     ◎0.8: 少しす滑る
+    #     ○0.6: かなり滑ってほんの少しだけ反射する
+    #     ○0.5: 線に沿って滑る
+    #     ×0.4: 線にわずかにめり込んだまま滑る
+    #     ○0.0: 線に沿って滑る(突き抜けるかと思ったけど滑る)
+    #
+    #   hakuhin.jp/as/collide.html#COLLIDE_02 の方法だと x + t * n.x * 2.0 * 0.8 と一気に書いていたけど
+    #   メソッド化するときには分解した方がわかりやすそうなのでこうした。
+    #
     def reflect(n)
       t = -(n.x * x + n.y * y) / (n.x ** 2 + n.y ** 2)
       self.class.new(
-        x + t * n.x * 2.0,
-        y + t * n.y * 2.0
+        # x + t * n.x * 2.0,
+        # y + t * n.y * 2.0
+        # x + t * n.x * 2.0 * rate,
+        # y + t * n.y * 2.0 * rate
+        t * n.x * 2.0,
+        t * n.y * 2.0
         )
     end
 
@@ -161,7 +221,6 @@ module Stylet
     #    n: 法線ベクトル
     #
     # としたら何倍したら線にぶつかるか
-    #
     def self.collision_scale(p, s, a, n)
       d = -(a.x * n.x + a.y * n.y)
       -(n.x * p.x + n.y * p.y + d) / (n.x * s.x + n.y * s.y)
@@ -240,9 +299,12 @@ module Stylet
     #     c = sqrt(a * a + b * b)
     #
     def distance(target)
-      dx = (x - target.x).abs
-      dy = (y - target.y).abs
-      Math.sqrt((dx ** 2) + (dy ** 2))
+      dx = x - target.x
+      dy = y - target.y
+      Math.sqrt(dx ** 2 + dy ** 2)
+    rescue Errno::EDOM => error
+      p [self, target]
+      raise error
     end
 
     #

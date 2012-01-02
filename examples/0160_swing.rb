@@ -37,12 +37,10 @@ class Swing
     @pA.y = @p0.y + Stylet::Fee.sin(@dir1) * @radius
 
     # 鉄球の座標から重力を反映した座標(pB)を求める
-    @pB = Stylet::Vector.new
-    @pB.x = @pA.x
-    @pB.y = @pA.y + @base.gravity
+    @pB = @pA + @base.gravity
 
     # 振り子の中心(p0)から重力反映座標(pB)の角度(@dir2)を求める
-    @dir2 = @p0.angle(@pB)
+    @dir2 = @p0.angle_to(@pB)
 
     # 振り子の中心(p0)から重力反映座標(pB)への線を表示確認
     if @base.debug_mode
@@ -117,13 +115,9 @@ class Swing
 
   # 90度ずらした線を引く
   def rad90_line
-    p2 = Stylet::Vector.new
-    p3 = Stylet::Vector.new
     _r = 128
-    p2.x = @pA.x + Stylet::Fee.cos(@dir1 - Stylet::Fee.r90) * _r
-    p2.y = @pA.y + Stylet::Fee.sin(@dir1 - Stylet::Fee.r90) * _r
-    p3.x = @pA.x + Stylet::Fee.cos(@dir1 + Stylet::Fee.r90) * _r
-    p3.y = @pA.y + Stylet::Fee.sin(@dir1 + Stylet::Fee.r90) * _r
+    p2 = @pA + Stylet::Vector.sincos(@dir1 - Stylet::Fee.r90) * _r
+    p3 = @pA + Stylet::Vector.sincos(@dir1 + Stylet::Fee.r90) * _r
     @base.draw_line2(p2, p3)
   end
 end
@@ -139,7 +133,7 @@ class App < Stylet::Base
     @objects << Swing.new(self, half_pos.clone)
 
     @debug_mode = false   # デバッグモード
-    @gravity = 1           # 重力加速度(整数で指定すること)
+    @gravity = Stylet::Vector.new(0, 1)   # 重力加速度(整数で指定すること)
   end
 
   def update
@@ -148,8 +142,8 @@ class App < Stylet::Base
     # 操作
     begin
       # 重力調整
-      @gravity += (@button.btC.repeat - @button.btD.repeat)
-      @gravity = Stylet::Etc.range_limited(@gravity, (0..100))
+      @gravity.y += (@button.btC.repeat - @button.btD.repeat)
+      @gravity.y = Stylet::Etc.range_limited(@gravity.y, (0..100))
 
       # 円の表示トグル
       if key_down?(SDL::Key::A)
@@ -160,7 +154,7 @@ class App < Stylet::Base
     # 操作説明
     vputs "A:debug_mode"
     vputs "Z:drag C:g++ V:g--"
-    vputs "gravity=#{@gravity}"
+    vputs "gravity=#{@gravity.y}"
     # vputs "hard_level=#{@hard_level}"
   end
 end
