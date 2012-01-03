@@ -18,7 +18,7 @@ class Ball
       # @base.draw_line2(@pos, @base.cursor)
       @base.vputs "COLLISION"
 
-      if @base.button.btA.press?
+      unless @base.button.btA.press?
         # カーソルの方向から円の位置の方向に一方的に移動させる
         @pos = @base.cursor + diff.normalize.scale(radius2)
         # @pos += diff.scale(diff.length)

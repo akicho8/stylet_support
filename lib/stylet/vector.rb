@@ -39,6 +39,10 @@
 #       p0 = p1 + Stylet::Vector.sincos(p1.angle_to(p0)) * r
 #     end
 #
+# 正規化とは斜めの辺の長さを 1.0 にすること
+#
+#   v.normalize.length #=> 1.0
+#
 module Stylet
   #
   # 二次元座標
@@ -221,7 +225,7 @@ module Stylet
     #    n: 法線ベクトル
     #
     # としたら何倍したら線にぶつかるか
-    def self.collision_scale(p, s, a, n)
+    def self.collision_power_scale(p, s, a, n)
       d = -(a.x * n.x + a.y * n.y)
       -(n.x * p.x + n.y * p.y + d) / (n.x * s.x + n.y * s.y)
     end
