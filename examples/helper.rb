@@ -60,11 +60,13 @@ module Helper
       # vputs @mouse_vector.to_a
       # vputs mouse_moved?
 
-      unless @objects.empty?
-        vputs "objects=#{@objects.size}"
-      end
+      # unless @objects.empty?
+      #   vputs "objects=#{@objects.size}"
+      # end
+
       @objects.each{|e|e.update}
-      @objects.reject!{|e|e.screen_out?}
+      @objects.reject!{|e| e.respond_to?(:screen_out?) && e.screen_out?}
+
       if @cursor_display
         draw_circle(@cursor, :radius => @cursor_radius, :vertex => @cursor_vertex, :angle => 1.0 / 64 * @count)
       end

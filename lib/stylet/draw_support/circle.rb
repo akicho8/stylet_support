@@ -13,9 +13,16 @@ module Stylet
         :angle => Fee.r270,      # 開始地点
       }.merge(options)
 
+      raise "options[:vertex] is not Integer" unless options[:vertex].kind_of? Integer
+      raise "options[:vertex] >= 1" if options[:vertex].to_i.zero?
+      raise if options[:vertex].zero?
+
       points = (0...options[:vertex]).collect{|i|
-        a = options[:angle] + (1.0 / options[:vertex]) * i
+        a = options[:angle] + 1.0 * i / options[:vertex]
         p0 + Vector.sincos(a) * options[:radius]
+        # p.x = p.x.to_i
+        # p.y = p.y.to_i
+        # p
       }
       draw_polygon(points, options)
     end

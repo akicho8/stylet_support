@@ -40,7 +40,7 @@ class Ray
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @base.button.btD.press?
-        @vS = Stylet::Vector.sincos(@p0.angle_to(@base.cursor)) * @vS.radius
+        @vS = (@base.cursor - @p0).normalize * @vS.radius
       end
     end
 

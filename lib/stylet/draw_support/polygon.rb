@@ -11,7 +11,7 @@ module Stylet
       points.size.times{|i|
         p0 = points[i]
         p1 = points[i.next % points.size]
-        draw_line(p0.x, p0.y, p1.x, p1.y, options[:color])
+        draw_line2(p0, p1, options[:color])
       }
     end
   end

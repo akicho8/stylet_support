@@ -24,13 +24,13 @@
 #
 #   Vector#pos_vector_rate(pA, pB, rate)
 #
-# 円(p0,r)が点(p1)にめりこんだとき、点から円を押し出すには？
+# 円(c,r)が点(dot)にめりこんだとき、点(dot)から円を押し出すには？
 #
 #   良い例
 #
-#     diff = p0 - p1
+#     diff = c - dot
 #     if diff.length < r
-#       p0 = p1 + diff.normalize * r
+#       c = dot + diff.normalize * r
 #     end
 #
 #   悪い例
@@ -39,9 +39,35 @@
 #       p0 = p1 + Stylet::Vector.sincos(p1.angle_to(p0)) * r
 #     end
 #
+# 円Aと円Bをお互い離すには？
+#
+#   diff = b - a
+#   rdiff = r * 2 - diff.length
+#   if rdiff > 0
+#     a -= diff.normalize * rdiff / 2
+#     b += diff.normalize * rdiff / 2
+#   end
+#
 # 正規化とは斜めの辺の長さを 1.0 にすること
 #
 #   v.normalize.length #=> 1.0
+#
+# A B C D ボタンとカーソルで操作できるとき物体(pA)と速度(sA)をコントロールするときの定石は？
+#
+#   # AとBで速度ベクトルの反映
+#   @pA += @sA.scale(@base.button.btA.repeat_0or1) + @sA.scale(-@base.button.btB.repeat_0or1)
+#   # @pA += @sA.scale(@base.button.btA.repeat) + @sA.scale(-@base.button.btB.repeat) # 加速したいとき
+#
+#   # Cボタンおしっぱなし + マウスで自機位置移動
+#   if @base.button.btC.press?
+#     @pA = @base.cursor.clone
+#   end
+#
+#   # Dボタンおしっぱなし + マウスで自機角度変更
+#   if @base.button.btD.press?
+#     # @sA = Stylet::Vector.sincos(@pA.angle_to(@base.cursor)) * @sA.radius # ← よくある間違い
+#     @sA = (@base.cursor - @pA).normalize * @sA.radius
+#   end
 #
 module Stylet
   #
@@ -119,6 +145,23 @@ module Stylet
       end
     end
 
+    alias mul scale
+    alias mul! scale!
+
+    ##
+    def div(s)
+      self.class.new(Float(x) / s, Float(y) / s)
+    end
+
+    alias :/ div
+
+    def div!(s)
+      tap do
+        s = div(s)
+        self.x, self.y = s.x, s.y
+      end
+    end
+
     # 自作の normalize
     # これを使うと内積の計算の0から45度のあたりがおかしくなる
     # def normalize
@@ -165,6 +208,8 @@ module Stylet
     #
     def length
       Math.sqrt(x ** 2 + y ** 2)
+    rescue Errno::EDOM
+      0
     end
 
     alias radius length
@@ -303,12 +348,13 @@ module Stylet
     #     c = sqrt(a * a + b * b)
     #
     def distance_to(target)
-      dx = x - target.x
-      dy = y - target.y
-      Math.sqrt(dx ** 2 + dy ** 2)
-    rescue Errno::EDOM => error
-      p [self, target]
-      raise error
+    #   dx = x - target.x
+    #   dy = y - target.y
+    #   Math.sqrt(dx ** 2 + dy ** 2)
+    # rescue Errno::EDOM => error
+    #   p [self, target]
+    #   raise error
+      (target - self).length
     end
 
     #
@@ -317,7 +363,8 @@ module Stylet
     #   Math.atan2(y, x) * 180 / Math.PI
     #
     def angle_to(target)
-      Stylet::Fee.angle(x, y, target.x, target.y)
+      # Stylet::Fee.angle(x, y, target.x, target.y)
+      (target - self).angle
     end
 
     #

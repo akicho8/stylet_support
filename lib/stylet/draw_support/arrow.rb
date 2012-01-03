@@ -11,7 +11,12 @@ module Stylet
       options = {
         :origin => half_pos, # 原点を画面の真中にしておく
       }.merge(options)
+
       draw_arrow(options[:origin], options[:origin] + vec, options)
+
+      if options[:label]
+        vputs options[:label], :vector => options[:origin] + vec
+      end
     end
 
     #
@@ -31,6 +36,8 @@ module Stylet
       a = p1.angle_to(p0)
       draw_line2(p1, p1 + Vector.sincos(a + options[:angle]).scale(options[:arrow_size]), options[:color])
       draw_line2(p1, p1 + Vector.sincos(a - options[:angle]).scale(options[:arrow_size]), options[:color])
+    rescue Errno::EDOM
+      # sqrt のエラーなんででる？
     end
   end
 end
