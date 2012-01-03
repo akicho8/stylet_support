@@ -17,7 +17,7 @@ class Circle
     @p0 += @speed.scale(@base.button.btA.repeat_0or1) + @speed.scale(-@base.button.btB.repeat_0or1)
 
     # 円と点の距離が円の半径より小さかったら
-    if @p0.distance(@base.cursor) < @radius
+    if @p0.distance_to(@base.cursor) < @radius
       # カーソルから円を押し出す
       @p0 = @base.cursor + Stylet::Vector.sincos(@base.cursor.angle_to(@p0)) * @radius
     end

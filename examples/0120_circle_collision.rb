@@ -12,7 +12,7 @@ class Ball
   end
 
   def update
-    distance = @pos.distance(@base.cursor)
+    distance = @pos.distance_to(@base.cursor)
     radius2 = @radius + @base.cursor_radius
     if distance < radius2
       @base.draw_line2(@pos, @base.cursor)

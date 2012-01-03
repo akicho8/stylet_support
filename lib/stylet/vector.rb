@@ -20,7 +20,7 @@
 #
 # 線分ABの中央の位置を取得するには？
 #
-#   half_ab = pA + Stylet::Vector.sincos(pA.angle_to(pB)) * (pA.distance(pB) / 2)
+#   half_ab = pA + Stylet::Vector.sincos(pA.angle_to(pB)) * (pA.distance_to(pB) / 2)
 #
 #   Vector#pos_vector_rate(pA, pB, rate)
 #
@@ -35,7 +35,7 @@
 #
 #   悪い例
 #
-#     if p0.distance(p1) < r
+#     if p0.distance_to(p1) < r
 #       p0 = p1 + Stylet::Vector.sincos(p1.angle_to(p0)) * r
 #     end
 #
@@ -298,7 +298,7 @@ module Stylet
     #
     #     c = sqrt(a * a + b * b)
     #
-    def distance(target)
+    def distance_to(target)
       dx = x - target.x
       dy = y - target.y
       Math.sqrt(dx ** 2 + dy ** 2)
@@ -327,7 +327,7 @@ module Stylet
     # 線分 A B の距離 1.0 をしたとき途中の位置ベクトルを取得
     #
     def self.pos_vector_rate(a, b, rate)
-      a + Stylet::Vector.sincos(a.angle_to(b)) * (a.distance(b) * rate)
+      a + Stylet::Vector.sincos(a.angle_to(b)) * (a.distance_to(b) * rate)
     end
   end
 end

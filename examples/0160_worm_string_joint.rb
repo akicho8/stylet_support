@@ -18,7 +18,7 @@ class Joint
     @target = @base.objects[@index.next]
 
     if @target
-      distance = @p0.distance(@target.p0)
+      distance = @p0.distance_to(@target.p0)
       gap = distance - @base.length
       if gap > 0
         # 相手の方から自分の方へ移動する

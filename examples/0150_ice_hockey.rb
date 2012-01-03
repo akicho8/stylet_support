@@ -32,7 +32,7 @@ class IccHockeyBall
     # ボタンをクリックした瞬間に、
     if @base.button.btA.trigger?
       # 自分の円のなかにカーソルがあればロックする
-      if @pos.distance(@base.mouse_vector) < @body_radius
+      if @pos.distance_to(@base.mouse_vector) < @body_radius
         @lock = true
       end
     end
@@ -78,7 +78,7 @@ class IccHockeyBall
 
     @base.draw_circle(@pos, :radius => @body_radius, :vertex => 32)
     @base.vputs @power
-    @base.vputs @pos.distance(@base.mouse_vector)
+    @base.vputs @pos.distance_to(@base.mouse_vector)
     @base.vputs @speed
     @base.vputs @radius
   end

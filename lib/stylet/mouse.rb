@@ -22,8 +22,8 @@ module Stylet
         if @mouse_move_count == 0
           @start_mouse_vector = @before_mouse_vector.clone
         end
-        @__mouse_before_distance = @before_mouse_vector.distance(@mouse_vector)
-        @mlonglength = @start_mouse_vector.distance(@mouse_vector)
+        @__mouse_before_distance = @before_mouse_vector.distance_to(@mouse_vector)
+        @mlonglength = @start_mouse_vector.distance_to(@mouse_vector)
         @mouse_angle = @before_mouse_vector.angle_to(@mouse_vector) # 直前からなのでかなり精度が低いので注意
         @mouse_move_count += 1
       else

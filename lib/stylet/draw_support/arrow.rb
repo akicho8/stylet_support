@@ -20,7 +20,7 @@ module Stylet
     def draw_arrow(p0, p1, options = {})
       options = {
         :angle => Stylet::Fee.r45,             # 傘の開き
-        :arrow_size => p0.distance(p1) * 0.1,  # 傘の大きさは線分の長さに比例
+        :arrow_size => p0.distance_to(p1) * 0.1,  # 傘の大きさは線分の長さに比例
         :color => "white",
       }.merge(options)
 

@@ -41,7 +41,7 @@ describe Stylet::Vector do
   end
 
   it "距離" do
-    @p0.distance(@p1).to_i.should == 201
+    @p0.distance_to(@p1).to_i.should == 201
   end
 
   it "方向" do
