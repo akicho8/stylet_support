@@ -61,7 +61,7 @@ class Bullet
     @radius += @speed
     x = @pos.x + Stylet::Fee.cos(@dir) * @radius
     y = @pos.y + Stylet::Fee.sin(@dir) * @radius
-    @win.fill_rect(x - @size, y - @size, @size * 2, @size * 2, "white")
+    @win.draw_rect2(Stylet::Rect.new(x - @size, y - @size, @size * 2, @size * 2), :fill => true)
   end
 end
 
@@ -71,8 +71,8 @@ class App < Stylet::Base
   def before_main_loop
     super
     @objects = []
-    ship1 = GunShip1.new(self, Stylet::Vector.new(half_x, half_y - half_y * 0.8))
-    ship2 = GunShip2.new(self, Stylet::Vector.new(half_x, half_y + half_y * 0.8))
+    ship1 = GunShip1.new(self, Stylet::Vector.new(srect.half_x, srect.half_y - srect.half_y * 0.8))
+    ship2 = GunShip2.new(self, Stylet::Vector.new(srect.half_x, srect.half_y + srect.half_y * 0.8))
     ship1.target = ship2
     ship2.target = ship1
     @objects << ship1
@@ -86,3 +86,4 @@ class App < Stylet::Base
 end
 
 App.main_loop
+

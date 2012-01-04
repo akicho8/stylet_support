@@ -8,8 +8,6 @@ module Stylet
       options = {
         :radius => 64,
         :vertex => 8,
-        :color => "white",
-        :fill => false,
         :angle => Fee.r270,      # 開始地点
       }.merge(options)
 
@@ -20,9 +18,6 @@ module Stylet
       points = (0...options[:vertex]).collect{|i|
         a = options[:angle] + 1.0 * i / options[:vertex]
         p0 + Vector.sincos(a) * options[:radius]
-        # p.x = p.x.to_i
-        # p.y = p.y.to_i
-        # p
       }
       draw_polygon(points, options)
     end

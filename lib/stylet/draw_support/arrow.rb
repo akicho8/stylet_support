@@ -23,21 +23,22 @@ module Stylet
     # p0 から p1 へ矢印の描画
     #
     def draw_arrow(p0, p1, options = {})
+      return if p0 == p1
+
       options = {
-        :angle => Stylet::Fee.r45,             # 傘の開き
-        :arrow_size => p0.distance_to(p1) * 0.1,  # 傘の大きさは線分の長さに比例
-        :color => "white",
+        :angle => Stylet::Fee.r45,               # 傘の開き
+        :arrow_size => p0.distance_to(p1) * 0.1, # 傘の大きさは線分の長さに比例
       }.merge(options)
 
       # 線分の表示
-      draw_line2(p0, p1, options[:color])
+      draw_line2(p0, p1, options)
 
       # 傘の表示
       a = p1.angle_to(p0)
-      draw_line2(p1, p1 + Vector.sincos(a + options[:angle]).scale(options[:arrow_size]), options[:color])
-      draw_line2(p1, p1 + Vector.sincos(a - options[:angle]).scale(options[:arrow_size]), options[:color])
-    rescue Errno::EDOM
-      # sqrt のエラーなんででる？
+      draw_line2(p1, p1 + Vector.sincos(a + options[:angle]).scale(options[:arrow_size]), options)
+      draw_line2(p1, p1 + Vector.sincos(a - options[:angle]).scale(options[:arrow_size]), options)
+    # rescue Errno::EDOM
+    #   # sqrt のエラーなんででる？
     end
   end
 end

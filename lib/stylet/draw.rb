@@ -6,7 +6,7 @@ module Stylet
   module Draw
     include ScreenAccessors
 
-    attr_accessor :count, :check_fps, :sdl_event, :srect
+    attr_reader :count, :check_fps, :sdl_event, :srect, :screen
 
     def initialize
       super
@@ -93,31 +93,52 @@ module Stylet
       end
     end
 
-    def draw_line(x0, y0, x1, y1, color = "white")
+    def draw_line(x0, y0, x1, y1, color)
       @screen.draw_line(x0, y0, x1, y1, Palette[color])
     end
 
-    def draw_rect(x, y, w, h, color = "white")
-      @screen.draw_rect(x, y, w, h, Palette[color])
+    #
+    # draw_rect の場合、デフォルトだと幅+1ドット描画されるため -1 してある
+    #
+    def draw_rect(x, y, w, h, options = {})
+      options = {
+        :color => "white",
+      }.merge(options)
+      raise "w, h は正を指定するように" if w < 0 || h < 0
+      return if w.zero? || h.zero?
+      if options[:fill]
+        method = :fill_rect
+        w = w.abs
+        h = h.abs
+      else
+        method = :draw_rect
+        w = w.abs - 1
+        h = h.abs - 1
+      end
+      @screen.send(method, x, y, w, h, Palette[options[:color]])
     end
 
-    def fill_rect(x, y, w, h, color = "white")
-      @screen.fill_rect(x, y, w, h, Palette[color])
-    end
+    # def fill_rect(x, y, w, h, color = "white")
+    #   return if w.abs.zero? || h.abs.zero?
+    #   @screen.fill_rect(x, y, w.abs - 1, h.abs - 1, Palette[color])
+    # end
 
-    def draw_line2(p0, p1, color = "white")
-      @screen.draw_line(p0.x, p0.y, p1.x, p1.y, Palette[color])
+    def draw_line2(p0, p1, options = {})
+      options = {
+        :color => "white",
+      }.merge(options)
+      @screen.draw_line(p0.x, p0.y, p1.x, p1.y, Palette[options[:color]])
     rescue RangeError => error
       p [error, p0, p1]
     end
 
-    def draw_rect2(rect, color = "white")
-      @screen.draw_rect(rect.x, rect.y, rect.w, rect.h, Palette[color])
+    def draw_rect2(rect, options = {})
+      draw_rect(rect.x, rect.y, rect.w, rect.h, options)
     end
 
-    def fill_rect2(rect, color = "white")
-      @screen.fill_rect(rect.x, rect.y, rect.w, rect.h, Palette[color])
-    end
+    # def __fill_rect2(rect)
+    #   fill_rect(rect.x, rect.y, rect.w, rect.h, color)
+    # end
 
     def save_bmp(fname)
       @screen.save_bmp(fname)
@@ -138,7 +159,7 @@ module Stylet
       if @backgroud_image
         SDL::Surface.blit(@backgroud_image, @srect.x, @srect.y, @srect.w, @srect.h, @screen, 0, 0)
       else
-        fill_rect(@srect.x, @srect.y, @srect.w, @srect.h, "background")
+        draw_rect2(@srect, :color => "background", :fill => true)
       end
     end
   end

@@ -5,13 +5,12 @@ module Stylet
     #
     def draw_polygon(points, options = {})
       options = {
-        :color => "white",
       }.merge(options)
 
       points.size.times{|i|
         p0 = points[i]
         p1 = points[i.next % points.size]
-        draw_line2(p0, p1, options[:color])
+        draw_line2(p0, p1, options)
       }
     end
   end

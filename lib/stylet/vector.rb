@@ -116,7 +116,7 @@ module Stylet
 
     ##
     def add(t)
-      self.class.new(x + t.x, y + t.y)
+      Vector.new(x + t.x, y + t.y)
     end
 
     alias :+ add
@@ -130,7 +130,7 @@ module Stylet
 
     ##
     def sub(t)
-      self.class.new(x - t.x, y - t.y)
+      Vector.new(x - t.x, y - t.y)
     end
 
     alias :- sub
@@ -144,7 +144,7 @@ module Stylet
 
     ##
     def scale(s)
-      self.class.new(x * s, y * s)
+      Vector.new(x * s, y * s)
     end
 
     alias :* scale
@@ -161,7 +161,7 @@ module Stylet
 
     ##
     def div(s)
-      self.class.new(Float(x) / s, Float(y) / s)
+      Vector.new(Float(x) / s, Float(y) / s)
     end
 
     alias :/ div
@@ -179,9 +179,9 @@ module Stylet
     #   max = [x.abs, y.abs].max.to_f
     #   # if max.zero?
     #   #   # FIXME: 一般的にはどうなる？
-    #   #   return self.class.new(0, 0)
+    #   #   return Vector.new(0, 0)
     #   # end
-    #   self.class.new(x / max, y / max)
+    #   Vector.new(x / max, y / max)
     # end
 
     def normalize!
@@ -208,10 +208,10 @@ module Stylet
 
       # これはダメ。ベクトルが消えてしまう
       # if c.zero?
-      #   return self.class.new(0, 0)
+      #   return Vector.new(0, 0)
       # end
 
-      self.class.safe_new(Float(x) / c, Float(y) / c)
+      Vector.safe_new(Float(x) / c, Float(y) / c)
     end
 
     # 距離の取得
@@ -243,7 +243,7 @@ module Stylet
     # 反対方向のベクトルを返す
     #
     def __negative
-      self.class.new(-x, -y)
+      Vector.new(-x, -y)
     end
 
     # 反射ベクトルの取得
@@ -269,7 +269,7 @@ module Stylet
     #
     def reflect(n)
       t = -(n.x * x + n.y * y) / (n.x ** 2 + n.y ** 2)
-      self.class.new(
+      Vector.new(
         # x + t * n.x * 2.0,
         # y + t * n.y * 2.0
         # x + t * n.x * 2.0 * rate,
@@ -327,21 +327,21 @@ module Stylet
     end
 
     def inner_product(t)
-      self.class.send(__method__, self, t)
+      Vector.send(__method__, self, t)
     end
 
     # 法線ベクトルの取得(方法1)
     # どう見ても遅い
     def slowly_normal(t)
       a = angle(t) + Stylet::Fee.r90
-      self.class.new(Stylet::Fee.cos(a), Stylet::Fee.sin(a))
+      Vector.new(Stylet::Fee.cos(a), Stylet::Fee.sin(a))
     end
 
     # 法線ベクトルの取得(方法2)
     def normal(t)
       dx = t.x - x
       dy = t.y - y
-      self.class.new(-dy, dx)
+      Vector.new(-dy, dx)
     end
 
     # 方向ベクトル
@@ -358,7 +358,7 @@ module Stylet
 
     # def sincos(t)
     #   a = angel(t)
-    #   self.class.new(Stylet::Fee.cos(a), Stylet::Fee.sin(a))
+    #   Vector.new(Stylet::Fee.cos(a), Stylet::Fee.sin(a))
     # end
 
     #

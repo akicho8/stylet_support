@@ -157,6 +157,10 @@ module Stylet
     def self.r180; 1.0 / 2.0; end
     def self.r270; r90 * 3; end
 
+    def self.degree(r)
+      r / 360.0
+    end
+
     # 円の右側か？
     def self.cright?(v)
       !cleft?(v)
