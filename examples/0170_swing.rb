@@ -32,12 +32,15 @@ class Swing
 
   def update
     # 鉄球の座標(pA)を求める
-    @pA = Stylet::Vector.new
-    @pA.x = @p0.x + Stylet::Fee.cos(@dir1) * @radius
-    @pA.y = @p0.y + Stylet::Fee.sin(@dir1) * @radius
+    @pA = @p0 + Stylet::Vector.sincos(@dir1).scale(@radius)
 
-    # 鉄球の座標から重力を反映した座標(pB)を求める
-    @pB = @pA + @base.gravity
+    # # 鉄球の座標から重力を反映した座標(pB)を求める
+    # @pB = @pA + @base.gravity
+
+    # 鉄球の座標から重力を反映した座標(pB)を求める(これはどういう数式？)
+    v = @pA - @p0
+    t = -(v.y * @base.gravity.y) / (v.x ** 2 + v.y ** 2)
+    @pB = @pA + @base.gravity + v.scale(t)
 
     # 振り子の中心(p0)から重力反映座標(pB)の角度(@dir2)を求める
     @dir2 = @p0.angle_to(@pB)
@@ -64,6 +67,8 @@ class Swing
 
     # 仮想鉄球の角度と現在の角度の差を求める
     @sub = @dir2 - @dir1
+    # @sub = (@pB - @pA).length
+    # @base.vputs @sub
 
     # 加速
     @speed += @sub
@@ -91,6 +96,8 @@ class Swing
 
       # 実鉄球から仮想鉄球への線
       @base.draw_line2(@pA, @pB)
+      @base.vputs "A", :vector => @pA
+      @base.vputs "B", :vector => @pB
 
       # 90度ずらした線を引く
       rad90_line
@@ -132,8 +139,8 @@ class App < Stylet::Base
     super if defined? super
     @objects << Swing.new(self, half_pos.clone)
 
-    @debug_mode = false   # デバッグモード
-    @gravity = Stylet::Vector.new(0, 1)   # 重力加速度(整数で指定すること)
+    @debug_mode = true   # デバッグモード
+    @gravity = Stylet::Vector.new(0, 100)   # 重力加速度(整数で指定すること)
   end
 
   def update
