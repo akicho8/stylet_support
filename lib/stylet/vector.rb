@@ -65,8 +65,10 @@
 #
 #   # Dボタンおしっぱなし + マウスで自機角度変更
 #   if @base.button.btD.press?
-#     # @sA = Stylet::Vector.sincos(@pA.angle_to(@base.cursor)) * @sA.radius # ← よくある間違い
-#     @sA = (@base.cursor - @pA).normalize * @sA.radius
+#     if @base.cursor != @pA
+#       # @sA = Stylet::Vector.sincos(@pA.angle_to(@base.cursor)) * @sA.radius # ← よくある間違い
+#       @sA = (@base.cursor - @pA).normalize * @sA.radius
+#     end
 #   end
 #
 module Stylet
@@ -101,6 +103,15 @@ module Stylet
         y = -y
       end
       new(x, y)
+    end
+
+    def self.safe_new(*args)
+      new(*args).tap{|e|
+        if e.x.zero? && e.y.zero?
+          p [self, caller]
+          warn "ベクトル0はNaNになるので入れんな"
+        end
+      }
     end
 
     ##
@@ -180,13 +191,27 @@ module Stylet
       end
     end
 
+    #
+    # 正規化
+    #
+    #   p = Vector.new(2, 3)
+    #   (p - p).normalize
+    #   とするとベクトル 0 ができてしまい
+    #
     # hakuhin.jp/as/collision.html#COLLISION_00 の方法だと x * (1.0 / c) としているけど x.to_f / c でよくないか？
     def normalize
       c = length                # x y のどちらかを最大と考えるのではなく斜線を 1.0 とする
+
       # if c > 0                # これは ZeroDivisionError を出さないためのものなので 0, 0 のベクトルがなければ不要
       #   c = 1.0 / c
       # end
-      self.class.new(Float(x) / c, Float(y) / c)
+
+      # これはダメ。ベクトルが消えてしまう
+      # if c.zero?
+      #   return self.class.new(0, 0)
+      # end
+
+      self.class.safe_new(Float(x) / c, Float(y) / c)
     end
 
     # 距離の取得
@@ -208,8 +233,8 @@ module Stylet
     #
     def length
       Math.sqrt(x ** 2 + y ** 2)
-    rescue Errno::EDOM
-      0
+      # rescue Errno::EDOM
+      #   0
     end
 
     alias radius length

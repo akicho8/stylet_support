@@ -40,7 +40,9 @@ class Ray
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @base.button.btD.press?
-        @vS = (@base.cursor - @p0).normalize * @vS.radius
+        if @base.cursor != @p0
+          @vS = (@base.cursor - @p0).normalize * @vS.radius
+        end
       end
     end
 

@@ -26,7 +26,9 @@ class Scene
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @base.button.btD.press?
-        @sA = (@base.cursor - @pA).normalize * @sA.radius
+        if @base.cursor != @pA
+          @sA = (@base.cursor - @pA).normalize * @sA.radius
+        end
       end
     end
 

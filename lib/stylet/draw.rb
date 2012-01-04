@@ -107,6 +107,8 @@ module Stylet
 
     def draw_line2(p0, p1, color = "white")
       @screen.draw_line(p0.x, p0.y, p1.x, p1.y, Palette[color])
+    rescue RangeError => error
+      p [error, p0, p1]
     end
 
     def draw_rect2(rect, color = "white")
