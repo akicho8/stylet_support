@@ -18,15 +18,15 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Scene
-  def initialize(base)
-    @base = base
+  def initialize(win)
+    @win = win
 
-    @pA = @base.half_pos.clone + Stylet::Vector.new(80, -70)
+    @pA = @win.srect.half_pos.clone + Stylet::Vector.new(80, -70)
     @sA = Stylet::Vector.sincos(Stylet::Fee.clock(6, 15)).scale(1.0)
     @am = 100
     @a_radius = 100
 
-    @pB = @base.half_pos.clone + Stylet::Vector.new(-120, -80)
+    @pB = @win.srect.half_pos.clone + Stylet::Vector.new(-120, -80)
     @sB = Stylet::Vector.sincos(Stylet::Fee.clock(4)).scale(1.0)
     @bm = 100                   # 質量
     @b_radius = 30
@@ -40,16 +40,16 @@ class Scene
     # 操作
     begin
       # AとBで速度ベクトルの反映
-      @pA += @sA.scale(@base.button.btA.repeat_0or1) + @sA.scale(-@base.button.btB.repeat_0or1)
-      @pB += @sB.scale(@base.button.btA.repeat_0or1) + @sB.scale(-@base.button.btB.repeat_0or1)
+      @pA += @sA.scale(@win.button.btA.repeat_0or1) + @sA.scale(-@win.button.btB.repeat_0or1)
+      @pB += @sB.scale(@win.button.btA.repeat_0or1) + @sB.scale(-@win.button.btB.repeat_0or1)
       # Cボタンおしっぱなし + マウスで自機位置移動
-      if @base.button.btC.press?
-        @pA = @base.cursor.clone
+      if @win.button.btC.press?
+        @pA = @win.cursor.clone
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
-      if @base.button.btD.press?
-        if @base.cursor != @pA
-          @sA = (@base.cursor - @pA).normalize * @sA.radius
+      if @win.button.btD.press?
+        if @win.cursor != @pA
+          @sA = (@win.cursor - @pA).normalize * @sA.radius
         end
       end
     end
@@ -59,11 +59,11 @@ class Scene
 
     @diff = @pB - @pA
     @rdiff = (@a_radius + @b_radius) - @diff.length
-    @base.vputs "length=#{@diff.length}"
-    @base.vputs "rdiff=#{@rdiff}"
+    @win.vputs "length=#{@diff.length}"
+    @win.vputs "rdiff=#{@rdiff}"
 
     # AとBをお互い離す
-    if @base.reflect_mode == "move"
+    if @win.reflect_mode == "move"
       if @rdiff > 0
         @pA -= @diff.normalize * @rdiff / 2
         @pB += @diff.normalize * @rdiff / 2
@@ -71,7 +71,7 @@ class Scene
     end
 
     # 反射する
-    if @base.reflect_mode == "reflect"
+    if @win.reflect_mode == "reflect"
       if @rdiff > 0
         begin
           # 反射するモードでもいったんお互いを引き離さないと絡まってしまう
@@ -129,28 +129,28 @@ class Scene
       end
     end
 
-    @base.draw_circle(@pA, :vertex => @vertex, :radius => @a_radius)
-    @base.vputs "A(#{@am})", :vector => @pA
-    @base.draw_vector(@sA.scale(@s_radius), :origin => @pA, :label => @sA.length)
+    @win.draw_circle(@pA, :vertex => @vertex, :radius => @a_radius)
+    @win.vputs "A(#{@am})", :vector => @pA
+    @win.draw_vector(@sA.scale(@s_radius), :origin => @pA, :label => @sA.length)
 
-    @base.draw_circle(@pB, :vertex => @vertex, :radius => @b_radius)
-    @base.vputs "B(#{@bm})", :vector => @pB
-    @base.draw_vector(@sB.scale(@s_radius), :origin => @pB, :label => @sB.length)
+    @win.draw_circle(@pB, :vertex => @vertex, :radius => @b_radius)
+    @win.vputs "B(#{@bm})", :vector => @pB
+    @win.draw_vector(@sB.scale(@s_radius), :origin => @pB, :label => @sB.length)
 
-    @base.vputs "#{@sA.length} + #{@sA.length} = #{(@sA + @sB).length}"
+    @win.vputs "#{@sA.length} + #{@sA.length} = #{(@sA + @sB).length}"
 
     if false
       if @resp = compute(@pA, @sA, @a_radius, @pB, @sB, @b_radius)
-        @base.vputs @resp.inspect
-        @base.vputs c_state(@resp)
+        @win.vputs @resp.inspect
+        @win.vputs c_state(@resp)
       end
 
       if @resp
         @pA2 = @pA + @sA.normalize.scale(@resp[:f0])
-        @base.draw_circle(@pA2, :vertex => @vertex, :radius => @a_radius)
+        @win.draw_circle(@pA2, :vertex => @vertex, :radius => @a_radius)
 
         @pB2 = @pB + @sB.normalize.scale(@resp[:f0])
-        @base.draw_circle(@pB2, :vertex => @vertex, :radius => @b_radius)
+        @win.draw_circle(@pB2, :vertex => @vertex, :radius => @b_radius)
       end
     end
   end

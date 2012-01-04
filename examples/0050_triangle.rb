@@ -4,6 +4,6 @@
 #
 require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
 
-Stylet::Base.main_loop do |base|
-  base.draw_circle(base.half_pos, :radius => 128, :vertex => 3, :angle => 1.0 / 256 * base.count)
+Stylet::Base.main_loop do |win|
+  win.draw_circle(win.srect.half_pos, :radius => 128, :vertex => 3, :angle => 1.0 / 256 * win.count)
 end

@@ -14,8 +14,8 @@ require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 #          方向 dir
 #
 class IccHockeyBall
-  def initialize(base, p0)
-    @base = base
+  def initialize(win, p0)
+    @win = win
     @p0 = p0          # 物体の中心点
     @pos = @p0.clone  # 物体の位置
     @speed = 0        # 速度
@@ -30,29 +30,29 @@ class IccHockeyBall
 
   def update
     # ボタンをクリックした瞬間に、
-    if @base.button.btA.trigger?
+    if @win.button.btA.trigger?
       # 自分の円のなかにカーソルがあればロックする
-      if @pos.distance_to(@base.mouse_vector) < @body_radius
+      if @pos.distance_to(@win.mouse_vector) < @body_radius
         @lock = true
       end
     end
 
     # ロックしているときに、ボタンが押されっぱなしなら
-    if @lock && @base.button.btA.press?
-      @p0 = @base.mouse_vector.clone        # 円の座標をマウスと同じにする
-      @power = @base.__mouse_before_distance # マウスの直前からの移動距離を速度と考える
+    if @lock && @win.button.btA.press?
+      @p0 = @win.mouse_vector.clone        # 円の座標をマウスと同じにする
+      @power = @win.__mouse_before_distance # マウスの直前からの移動距離を速度と考える
       @speed = 0                    # 速度を0とする
       @radius = 0                   # 半径を0とする
     end
 
     # ボタンが離された瞬間
-    if @base.button.btA.free_trigger?
+    if @win.button.btA.free_trigger?
       # ロックを解除する
       @lock = false
       # 速度が設定されていれば
       if @power
         @speed = @power        # 速度を円に反映し、
-        @dir = @base.mouse_angle # 円の方向にマウスが移動した方向を合わせる
+        @dir = @win.mouse_angle # 円の方向にマウスが移動した方向を合わせる
         @power = nil           # 球が動いているときにボタンを連打すると @dir が再設定されてしまうので nil にしておく
       end
     end
@@ -72,15 +72,15 @@ class IccHockeyBall
     _p.y = @p0.y + Stylet::Fee.sin(@dir) * @radius
 
     # 画面内なら更新
-    if Stylet::CollisionSupport.rect_collision?(@base.screen_rect, _p)
+    if Stylet::CollisionSupport.rect_collision?(@win.srect, _p)
       @pos = _p
     end
 
-    @base.draw_circle(@pos, :radius => @body_radius, :vertex => 32)
-    @base.vputs @power
-    @base.vputs @pos.distance_to(@base.mouse_vector)
-    @base.vputs @speed
-    @base.vputs @radius
+    @win.draw_circle(@pos, :radius => @body_radius, :vertex => 32)
+    @win.vputs @power
+    @win.vputs @pos.distance_to(@win.mouse_vector)
+    @win.vputs @speed
+    @win.vputs @radius
   end
 
   def screen_out?
@@ -93,7 +93,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << IccHockeyBall.new(self, half_pos.clone)
+    @objects << IccHockeyBall.new(self, srect.half_pos.clone)
     @cursor_display = false
   end
 end

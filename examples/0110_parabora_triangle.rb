@@ -5,8 +5,8 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Ball
-  def initialize(base, p, v, a)
-    @base = base
+  def initialize(win, p, v, a)
+    @win = win
     @p = p
     @v = v
     @a = a
@@ -15,11 +15,11 @@ class Ball
   def update
     @v += @a
     @p += @v
-    @base.draw_triangle(@p, :radius => 16, :angle => 1.0 / 64 * @base.count)
+    @win.draw_triangle(@p, :radius => 16, :angle => 1.0 / 64 * @win.count)
   end
 
   def screen_out?
-    @v.y > 0 && @s.y > @base.max_y
+    @v.y > 0 && @s.y > @win.srect.max_y
   end
 end
 

@@ -6,7 +6,7 @@ module BulletTrigger
     super
     dir = Stylet::Fee.angle(@pos.x, @pos.y, @target.pos.x, @target.pos.y)
     if @button.btA.count.modulo(8) == 1
-      @base.objects << Bullet.new(@base, @pos.clone, dir, 4.00)
+      @win.objects << Bullet.new(@win, @pos.clone, dir, 4.00)
     end
   end
 end
@@ -34,8 +34,8 @@ class GunShip2 < GunShip
 end
 
 class Bullet
-  def initialize(base, pos, dir, speed)
-    @base = base
+  def initialize(win, pos, dir, speed)
+    @win = win
     @pos = pos
     @dir = dir
     @speed = speed
@@ -45,10 +45,10 @@ class Bullet
   end
 
   def screen_out?
-    unless (@base.min_x - @size .. (@base.max_x + @size)).include?(@pos.x)
+    unless (@win.srect.min_x - @size .. (@win.srect.max_x + @size)).include?(@pos.x)
       return true
     end
-    unless (@base.min_y - @size .. (@base.max_y + @size)).include?(@pos.y)
+    unless (@win.srect.min_y - @size .. (@win.srect.max_y + @size)).include?(@pos.y)
       return true
     end
     if @radius < 0
@@ -61,7 +61,7 @@ class Bullet
     @radius += @speed
     x = @pos.x + Stylet::Fee.cos(@dir) * @radius
     y = @pos.y + Stylet::Fee.sin(@dir) * @radius
-    @base.fill_rect(x - @size, y - @size, @size * 2, @size * 2, "white")
+    @win.fill_rect(x - @size, y - @size, @size * 2, @size * 2, "white")
   end
 end
 

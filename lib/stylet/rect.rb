@@ -1,39 +1,35 @@
 module Stylet
-  class Rect
+  class Rect < Struct.new(:x, :y, :w, :h)
     def self.create(*args)
       new(*args)
     end
 
-    def initialize(x, y, w, h)
-      @x = x
-      @y = y
-      @width = w
-      @height = h
-    end
-
     def min_x
-      @x
+      x
     end
 
     def max_x
-      @x + @width - 1
+      x + w - 1
     end
 
     def min_y
-      @y
+      y
     end
 
     def max_y
-      @y + @height - 1
+      y + h - 1
     end
 
     def half_x
-      @x + @width / 2
+      x + w / 2
     end
 
     def half_y
-      @y + @height / 2
+      y + h / 2
     end
+
+    alias width w
+    alias height h
 
     def half_pos
       Vector.new(half_x, half_y)
@@ -42,7 +38,5 @@ module Stylet
 end
 
 if $0 == __FILE__
-  p0 = Stylet::Vector.new(1, 1)
-  p1 = Stylet::Vector.new(1, 1)
-  p(p0 == p1)
+  p Stylet::Rect.new(2, 3, 4, 5)
 end

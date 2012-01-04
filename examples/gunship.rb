@@ -4,9 +4,9 @@ class GunShip
   attr_reader :pos
   attr_accessor :target
 
-  def initialize(base, pos)
+  def initialize(win, pos)
     super()
-    @base = base
+    @win = win
     @pos = pos
     @speed = 3
     @target = nil
@@ -18,7 +18,7 @@ class GunShip
     super if defined? super
 
     if @joystick_index
-      if joy = @base.joys[@joystick_index]
+      if joy = @win.joys[@joystick_index]
         update_by_joy(joy)
       end
     end
@@ -28,14 +28,14 @@ class GunShip
     if dir = axis_angle
       x = @pos.x + Stylet::Fee.cos(dir) * @speed
       y = @pos.y + Stylet::Fee.sin(dir) * @speed
-      if (@base.min_x..@base.max_x).include?(x)
+      if (@win.srect.min_x..@win.srect.max_x).include?(x)
         @pos.x = x
       end
-      if (@base.min_y..@base.max_y).include?(y)
+      if (@win.srect.min_y..@win.srect.max_y).include?(y)
         @pos.y = y
       end
     end
 
-    @base.fill_rect(@pos.x - @size, @pos.y - @size, @size * 2, @size * 2, "white")
+    @win.fill_rect(@pos.x - @size, @pos.y - @size, @size * 2, @size * 2, "white")
   end
 end

@@ -9,38 +9,38 @@ class Bezier < Stylet::Base
   attr_accessor :dragging_current
 
   class MovablePoint < Stylet::Vector
-    def initialize(base, *args)
+    def initialize(win, *args)
       super(*args)
-      @base = base
+      @win = win
       @dragging = false # ドラッグ中か？
       @radius = 16      # 当り判定の大きさ
     end
 
     def update
       unless @dragging
-        if @base.button.btA.trigger?
-          if Stylet::CollisionSupport.squire_collision?(self, @base.mouse_vector)
+        if @win.button.btA.trigger?
+          if Stylet::CollisionSupport.squire_collision?(self, @win.mouse_vector)
             # 他の奴がアクティブじゃなかったときだけ自分を有効にできる
             # これを入れないと同時に複数のポイントをドラッグできてしまう
-            unless @base.dragging_current
+            unless @win.dragging_current
               @dragging = true
-              @base.dragging_current = self
+              @win.dragging_current = self
             end
           end
         end
       else
-        unless @base.button.btA.press?
+        unless @win.button.btA.press?
           @dragging = false
-          @base.dragging_current = nil
+          @win.dragging_current = nil
         end
       end
 
-      if self == @base.dragging_current
-        self.x = @base.mouse_vector.x
-        self.y = @base.mouse_vector.y
-        @base.draw_circle(self, :radius => @radius, :vertex => 32)
+      if self == @win.dragging_current
+        self.x = @win.mouse_vector.x
+        self.y = @win.mouse_vector.y
+        @win.draw_circle(self, :radius => @radius, :vertex => 32)
       else
-        @base.draw_circle(self, :radius => 2)
+        @win.draw_circle(self, :radius => 2)
       end
     end
   end

@@ -5,8 +5,8 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Ray
-  def initialize(base, p0)
-    @base = base
+  def initialize(win, p0)
+    @win = win
 
     @p0 = p0                               # 自機の位置ベクトル
     @dot_radius = 3                        # 点の大きさ
@@ -14,14 +14,14 @@ class Ray
     @vS = Stylet::Vector.new(0.84, -0.52).normalize  # 速度ベクトル
 
     # 線分AB
-    @pA = @base.half_pos + Stylet::Vector.new(@base.half_x * 0.3, -@base.half_y * 0.5)
-    @pB = @base.half_pos + Stylet::Vector.new(@base.half_x * 0.1, +@base.half_y * 0.5)
+    @pA = @win.srect.half_pos + Stylet::Vector.new(@win.half_x * 0.3, -@win.half_y * 0.5)
+    @pB = @win.srect.half_pos + Stylet::Vector.new(@win.half_x * 0.1, +@win.half_y * 0.5)
 
     mdoe_init
   end
 
   def mdoe_init
-    if @base.ray_mode
+    if @win.ray_mode
       @radius = 1         # 自機の大きさ
     else
       @radius = 50        # 自機の大きさ
@@ -33,15 +33,15 @@ class Ray
     # 操作
     begin
       # AとBで速度ベクトルの反映
-      @p0 += @vS.scale(@base.button.btA.repeat_0or1) + @vS.scale(-@base.button.btB.repeat_0or1)
+      @p0 += @vS.scale(@win.button.btA.repeat_0or1) + @vS.scale(-@win.button.btB.repeat_0or1)
       # Cボタンおしっぱなし + マウスで自機位置移動
-      if @base.button.btC.press?
-        @p0 = @base.cursor.clone
+      if @win.button.btC.press?
+        @p0 = @win.cursor.clone
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
-      if @base.button.btD.press?
-        if @base.cursor != @p0
-          @vS = (@base.cursor - @p0).normalize * @vS.radius
+      if @win.button.btD.press?
+        if @win.cursor != @p0
+          @vS = (@win.cursor - @p0).normalize * @vS.radius
         end
       end
     end
@@ -49,13 +49,13 @@ class Ray
     begin
       # 法線取得
       @normal = @pA.normal(@pB).normalize
-      # @base.vputs "Normal: #{@normal.length}"
+      # @win.vputs "Normal: #{@normal.length}"
 
       # 線分ABの法線を見える化(長さに意味はない)
       vN = @normal.normalize.scale(64)
       origin = Stylet::Vector.pos_vector_rate(@pA, @pB, 0.5)
-      @base.draw_vector(vN, :origin => origin, :arrow_size => 8)
-      @base.vputs "vN", :vector => origin + vN
+      @win.draw_vector(vN, :origin => origin, :arrow_size => 8)
+      @win.vputs "vN", :vector => origin + vN
     end
 
     # t と C1 の取得
@@ -65,66 +65,66 @@ class Ray
       @t1 = Stylet::Vector.collision_power_scale(@p0, @vS, @pA, @normal)
 
       # 裏面(通りすぎている) <= 0.0 < 衝突 <= 1.0 < 表面(まだあたっていない)
-      @base.vputs "C1 t1: #{@t1} (#{ps_state(@t1)})"
+      @win.vputs "C1 t1: #{@t1} (#{ps_state(@t1)})"
 
       # スピードを t 倍したとき本当にラインに接触するのかを見える化
-      # @base.draw_vector(@vS.scale(@t1), :origin => @p0)
+      # @win.draw_vector(@vS.scale(@t1), :origin => @p0)
 
       # 交差点の取得
       @pC1 = @p0 + @vS.scale(@t1)
 
       # 交差点の視覚化
-      @base.draw_triangle(@pC1, :radius => @dot_radius, :angle => @vS.angle)
-      @base.vputs "C1", :vector => @pC1
+      @win.draw_triangle(@pC1, :radius => @dot_radius, :angle => @vS.angle)
+      @win.vputs "C1", :vector => @pC1
 
       # 線分ABの中に衝突しているか調べる方法
       # 内積の取得
       @ac1 = @pC1 - @pA
       @bc1 = @pC1 - @pB
       @ip1 = Stylet::Vector.inner_product(@ac1, @bc1)
-      @base.vputs "C1 inner_product(AC1, BC1): #{@ip} (#{inner_product_state(@ip1)})"
+      @win.vputs "C1 inner_product(AC1, BC1): #{@ip} (#{inner_product_state(@ip1)})"
 
       # 二つのベクトルがどちらを向いているか視覚化(お互いが衝突していたら線の中にいることがわかる)
       if @ac1.normalize.scale(20).x.nan?
         raise "Nan"
       end
 
-      @base.draw_vector(@ac1.normalize.scale(20), :origin => @pA + @normal.scale(-20*1), :arrow_size => 8)
-      @base.draw_vector(@bc1.normalize.scale(20), :origin => @pB + @normal.scale(-20*1), :arrow_size => 8)
+      @win.draw_vector(@ac1.normalize.scale(20), :origin => @pA + @normal.scale(-20*1), :arrow_size => 8)
+      @win.draw_vector(@bc1.normalize.scale(20), :origin => @pB + @normal.scale(-20*1), :arrow_size => 8)
     end
 
     # t2 と C2 の取得
     begin
       # 自機から面と垂直な線を出して面と交差するか調べる(ここが点の場合と違う)
       @vP = Stylet::Vector.sincos(@normal.__negative.angle).scale(@radius)
-      @base.draw_vector(@vP, :origin => @p0)
-      @base.vputs "vP", :vector => @vP + @p0
+      @win.draw_vector(@vP, :origin => @p0)
+      @win.vputs "vP", :vector => @vP + @p0
 
       # 自機の原点・速度ベクトル・法線の原点(pAでもpBでもよい)・法線ベクトルを渡すと求まる
       @t2 = Stylet::Vector.collision_power_scale(@p0, @vP, @pA, @normal)
-      @base.vputs "C2 t2: #{@t2} (#{ps_state(@t2)})"
+      @win.vputs "C2 t2: #{@t2} (#{ps_state(@t2)})"
 
       # 交差点の取得
       @pC2 = @p0 + @vP.scale(@t2)
 
       # 交差点の視覚化
-      @base.draw_triangle(@pC2, :radius => @dot_radius, :angle => @vP.angle)
-      @base.vputs "C2", :vector => @pC2
+      @win.draw_triangle(@pC2, :radius => @dot_radius, :angle => @vP.angle)
+      @win.vputs "C2", :vector => @pC2
 
       # 内積の取得
       @ac2 = @pC2 - @pA
       @bc2 = @pC2 - @pB
       @ip2 = Stylet::Vector.inner_product(@ac2, @bc2)
-      @base.vputs "C2 inner_product(AC2, BC2): #{@ip2} (#{inner_product_state(@ip2)})"
+      @win.vputs "C2 inner_product(AC2, BC2): #{@ip2} (#{inner_product_state(@ip2)})"
 
       # 二つのベクトルがどちらを向いているか視覚化(お互いが衝突していたら線の中にいることがわかる)
-      @base.draw_vector(@ac2.normalize.scale(20), :origin => @pA + @normal.scale(-20*2), :arrow_size => 8)
-      @base.draw_vector(@bc2.normalize.scale(20), :origin => @pB + @normal.scale(-20*2), :arrow_size => 8)
+      @win.draw_vector(@ac2.normalize.scale(20), :origin => @pA + @normal.scale(-20*2), :arrow_size => 8)
+      @win.draw_vector(@bc2.normalize.scale(20), :origin => @pB + @normal.scale(-20*2), :arrow_size => 8)
     end
 
     # 線の表裏どちらにいるか。また衝突しているか？ (この時点では無限線)
-    if @base.reflect_mode
-      if @base.ray_mode && false
+    if @win.reflect_mode
+      if @win.ray_mode && false
         # レイモードの反射は難しい
         # Zで通りすぎてXボタンでバックして再び突進すると線を通りすぎてしまう。
         # これは「移動距離 < 半径」の法則が慣りたってないから。
@@ -181,25 +181,25 @@ class Ray
     end
 
     begin
-      if @base.ray_mode
+      if @win.ray_mode
         # 自機(ドット)の表示
-        @base.draw_triangle(@p0, :radius => @dot_radius, :angle => @vS.angle)
+        @win.draw_triangle(@p0, :radius => @dot_radius, :angle => @vS.angle)
       else
         # 自機(円)の表示
-        @base.draw_circle(@p0, :radius => @radius, :vertex => @vertex, :angle => @vS.angle)
+        @win.draw_circle(@p0, :radius => @radius, :vertex => @vertex, :angle => @vS.angle)
       end
-      @base.vputs "p0", :vector => @p0
+      @win.vputs "p0", :vector => @p0
 
       # 自機の速度ベクトルの可視化(長さに意味はない)
       pS = @vS
-      @base.draw_vector(pS, :origin => @p0)
-      @base.vputs "vS", :vector => @p0 + pS
-      @base.vputs "Speed Vector: #{@vS.to_a.inspect}"
+      @win.draw_vector(pS, :origin => @p0)
+      @win.vputs "vS", :vector => @p0 + pS
+      @win.vputs "Speed Vector: #{@vS.to_a.inspect}"
 
       # 線分ABの視覚化
-      @base.draw_line2(@pA, @pB)
-      @base.vputs "A", :vector => @pA
-      @base.vputs "B", :vector => @pB
+      @win.draw_line2(@pA, @pB)
+      @win.vputs "A", :vector => @pA
+      @win.vputs "B", :vector => @pB
     end
   end
 
@@ -241,7 +241,7 @@ class App < Stylet::Base
     @ray_mode = true           # true:ドット false:円
     @reflect_mode = true       # true:反射する
 
-    @objects << Ray.new(self, half_pos.clone)
+    @objects << Ray.new(self, srect.half_pos.clone)
     @cursor_vertex = 3
   end
 

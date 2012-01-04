@@ -6,7 +6,7 @@ module Stylet
   module Draw
     include ScreenAccessors
 
-    attr_accessor :count, :check_fps, :sdl_event, :screen_rect
+    attr_accessor :count, :check_fps, :sdl_event, :srect
 
     def initialize
       super
@@ -25,7 +25,7 @@ module Stylet
       end
       w, h = Config[:screen_size]
       @screen ||= SDL::Screen.open(w, h, Config[:color_depth], options)
-      @screen_rect = Rect.new(0, 0, @screen.w, @screen.h)
+      @srect = Rect.new(0, 0, @screen.w, @screen.h)
 
       if Config[:background] && Config[:background_image]
         unless @backgroud_image
@@ -136,10 +136,15 @@ module Stylet
 
     def background_clear
       if @backgroud_image
-        SDL::Surface.blit(@backgroud_image, min_x, min_y, width, height, @screen, 0, 0)
+        SDL::Surface.blit(@backgroud_image, @srect.x, @srect.y, @srect.w, @srect.h, @screen, 0, 0)
       else
-        fill_rect(0, 0, width, height, "background")
+        fill_rect(@srect.x, @srect.y, @srect.w, @srect.h, "background")
       end
     end
   end
+end
+
+if $0 == __FILE__
+  require File.expand_path(File.join(File.dirname(__FILE__), "../stylet"))
+  Stylet::Base.main_loop
 end

@@ -19,13 +19,13 @@ require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 #              dir2 (pBの方向)
 #
 class Swing
-  def initialize(base, p0)
-    @base = base
+  def initialize(win, p0)
+    @win = win
     @p0 = p0                     # 間接の座標
     @dir1 = Stylet::Fee.clock(1) # 角度
     @speed = 0                   # 角速度
     @friction = 0.0              # 摩擦(0.0:なし 1.0:最大)
-    @radius = @base.half_y * 0.8 # 糸の長さ
+    @radius = @win.half_y * 0.8 # 糸の長さ
     @ball_radius = 32            # 鉄球自体の半径
     @dir2 = nil                  # 振り子の中心(p0)からの重力反映座標(pB)の角度
   end
@@ -35,19 +35,19 @@ class Swing
     @pA = @p0 + Stylet::Vector.sincos(@dir1).scale(@radius)
 
     # # 鉄球の座標から重力を反映した座標(pB)を求める
-    # @pB = @pA + @base.gravity
+    # @pB = @pA + @win.gravity
 
     # 鉄球の座標から重力を反映した座標(pB)を求める(これはどういう数式？)
     v = @pA - @p0
-    t = -(v.y * @base.gravity.y) / (v.x ** 2 + v.y ** 2)
-    @pB = @pA + @base.gravity + v.scale(t)
+    t = -(v.y * @win.gravity.y) / (v.x ** 2 + v.y ** 2)
+    @pB = @pA + @win.gravity + v.scale(t)
 
     # 振り子の中心(p0)から重力反映座標(pB)の角度(@dir2)を求める
     @dir2 = @p0.angle_to(@pB)
 
     # 振り子の中心(p0)から重力反映座標(pB)への線を表示確認
-    if @base.debug_mode
-      @base.draw_line2(@p0, @pB)
+    if @win.debug_mode
+      @win.draw_line2(@p0, @pB)
     end
 
     # 鉄球の角度が     dir1=0.9 (時計の14分の角度)
@@ -68,7 +68,7 @@ class Swing
     # 仮想鉄球の角度と現在の角度の差を求める
     @sub = @dir2 - @dir1
     # @sub = (@pB - @pA).length
-    # @base.vputs @sub
+    # @win.vputs @sub
 
     # 加速
     @speed += @sub
@@ -78,41 +78,41 @@ class Swing
     @dir1 += @speed
 
     # Aボタンが押されているときだけ鉄球の位置をカーソルの方向に向ける
-    if @base.button.btA.press?
-      @dir1 = @p0.angle_to(@base.cursor)
+    if @win.button.btA.press?
+      @dir1 = @p0.angle_to(@win.cursor)
       @speed = 0
     end
 
     # 中心と鉄球の線
-    @base.draw_line2(@p0, @pA)
+    @win.draw_line2(@p0, @pA)
 
     # 鉄球
-    @base.draw_circle(@pA, :radius => @ball_radius, :vertex => 16)
+    @win.draw_circle(@pA, :radius => @ball_radius, :vertex => 16)
 
     # デバッグモード
-    if @base.debug_mode
+    if @win.debug_mode
       # 仮想鉄球への紐
-      @base.draw_line2(@p0, @pA)
+      @win.draw_line2(@p0, @pA)
 
       # 実鉄球から仮想鉄球への線
-      @base.draw_line2(@pA, @pB)
-      @base.vputs "A", :vector => @pA
-      @base.vputs "B", :vector => @pB
+      @win.draw_line2(@pA, @pB)
+      @win.vputs "A", :vector => @pA
+      @win.vputs "B", :vector => @pB
 
       # 90度ずらした線を引く
       rad90_line
 
       # 軌道の円周
-      @base.draw_circle(@p0, :radius => @radius, :vertex => 32)
+      @win.draw_circle(@p0, :radius => @radius, :vertex => 32)
 
-      # @base.vputs(@pA.to_a.inspect)
-      # @base.vputs(@pB.to_a.inspect)
-      # @base.vputs(@p0.to_a.inspect)
+      # @win.vputs(@pA.to_a.inspect)
+      # @win.vputs(@pB.to_a.inspect)
+      # @win.vputs(@p0.to_a.inspect)
 
-      @base.vputs "dir1=%+.8f" % @dir1
-      @base.vputs "dir2=%+.8f" % @dir2
-      @base.vputs "sub=%+.8f" % @sub
-      @base.vputs "speed=%+.8f" % @speed
+      @win.vputs "dir1=%+.8f" % @dir1
+      @win.vputs "dir2=%+.8f" % @dir2
+      @win.vputs "sub=%+.8f" % @sub
+      @win.vputs "speed=%+.8f" % @speed
     end
   end
 
@@ -125,7 +125,7 @@ class Swing
     _r = 128
     p2 = @pA + Stylet::Vector.sincos(@dir1 - Stylet::Fee.r90) * _r
     p3 = @pA + Stylet::Vector.sincos(@dir1 + Stylet::Fee.r90) * _r
-    @base.draw_line2(p2, p3)
+    @win.draw_line2(p2, p3)
   end
 end
 
@@ -137,7 +137,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << Swing.new(self, half_pos.clone)
+    @objects << Swing.new(self, srect.half_pos.clone)
 
     @debug_mode = true   # デバッグモード
     @gravity = Stylet::Vector.new(0, 100)   # 重力加速度(整数で指定すること)

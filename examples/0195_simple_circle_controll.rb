@@ -5,10 +5,10 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Scene
-  def initialize(base)
-    @base = base
+  def initialize(win)
+    @win = win
 
-    @pA = @base.half_pos.clone
+    @pA = @win.srect.half_pos.clone
     @sA = Stylet::Vector.sincos(Stylet::Fee.clock(8))
 
     @radius = 50
@@ -19,21 +19,21 @@ class Scene
     # 操作
     begin
       # AとBで速度ベクトルの反映
-      @pA += @sA.scale(@base.button.btA.repeat_0or1) + @sA.scale(-@base.button.btB.repeat_0or1)
+      @pA += @sA.scale(@win.button.btA.repeat_0or1) + @sA.scale(-@win.button.btB.repeat_0or1)
       # Cボタンおしっぱなし + マウスで自機位置移動
-      if @base.button.btC.press?
-        @pA = @base.cursor.clone
+      if @win.button.btC.press?
+        @pA = @win.cursor.clone
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
-      if @base.button.btD.press?
-        if @base.cursor != @pA
-          @sA = (@base.cursor - @pA).normalize * @sA.radius
+      if @win.button.btD.press?
+        if @win.cursor != @pA
+          @sA = (@win.cursor - @pA).normalize * @sA.radius
         end
       end
     end
 
-    @base.draw_circle(@pA, :vertex => @vertex, :radius => @radius)
-    @base.draw_vector(@sA.scale(@radius), :origin => @pA)
+    @win.draw_circle(@pA, :vertex => @vertex, :radius => @radius)
+    @win.draw_vector(@sA.scale(@radius), :origin => @pA)
   end
 
   def screen_out?

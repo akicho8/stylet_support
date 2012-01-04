@@ -1,7 +1,7 @@
 module Stylet
   module DrawSupport
     #
-    # draw_polygon(half_pos)
+    # draw_polygon(srect.half_pos)
     #
     def draw_polygon(points, options = {})
       options = {
@@ -20,7 +20,7 @@ end
 if $0 == __FILE__
   require File.expand_path(File.join(File.dirname(__FILE__), "../../stylet"))
   Stylet::Base.main_loop do |win|
-    points = Array.new(3){Stylet::Vector.new(rand(win.width), rand(win.height))}
+    points = Array.new(3){Stylet::Vector.new(rand(win.srect.w), rand(win.srect.h))}
     win.draw_polygon(points)
   end
 end

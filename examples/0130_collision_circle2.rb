@@ -5,30 +5,30 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Ball
-  def initialize(base, pos)
-    @base = base
+  def initialize(win, pos)
+    @win = win
     @pos = pos
     @radius = 64
   end
 
   def update
-    radius2 = @radius + @base.cursor_radius
-    diff = @pos - @base.cursor
+    radius2 = @radius + @win.cursor_radius
+    diff = @pos - @win.cursor
     if diff.length < radius2
-      # @base.draw_line2(@pos, @base.cursor)
-      @base.vputs "COLLISION"
+      # @win.draw_line2(@pos, @win.cursor)
+      @win.vputs "COLLISION"
 
-      unless @base.button.btA.press?
+      unless @win.button.btA.press?
         # カーソルの方向から円の位置の方向に一方的に移動させる
-        @pos = @base.cursor + diff.normalize.scale(radius2)
+        @pos = @win.cursor + diff.normalize.scale(radius2)
         # @pos += diff.scale(diff.length)
       end
     end
-    @base.draw_circle(@pos, :radius => @radius, :vertex => 32)
-    # if @base.count.modulo(5) == 0
-    #   @base.draw_line2(@pos, @base.cursor)
+    @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
+    # if @win.count.modulo(5) == 0
+    #   @win.draw_line2(@pos, @win.cursor)
     # end
-    # @base.vputs "radius2=#{radius2}"
+    # @win.vputs "radius2=#{radius2}"
   end
 
   def screen_out?
@@ -41,7 +41,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << Ball.new(self, half_pos.clone)
+    @objects << Ball.new(self, srect.half_pos.clone)
     @cursor_radius = 64
     @cursor_vertex = 32
   end

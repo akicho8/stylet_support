@@ -3,8 +3,8 @@ require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
 
 module Helper
   module SpaceObject
-    def initialize(base, *)
-      @base = base
+    def initialize(win, *)
+      @win = win
       @count = 0
     end
 

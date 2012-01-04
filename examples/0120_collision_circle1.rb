@@ -5,32 +5,32 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Ball
-  def initialize(base, pos)
-    @base = base
+  def initialize(win, pos)
+    @win = win
     @pos = pos
     @radius = 64
   end
 
   def update
-    distance = @pos.distance_to(@base.cursor)
-    radius2 = @radius + @base.cursor_radius
+    distance = @pos.distance_to(@win.cursor)
+    radius2 = @radius + @win.cursor_radius
     if distance < radius2
-      @base.draw_line2(@pos, @base.cursor)
-      @base.vputs "COLLISION"
+      @win.draw_line2(@pos, @win.cursor)
+      @win.vputs "COLLISION"
 
-      if @base.button.btA.press?
+      if @win.button.btA.press?
         # カーソルの方向から円の位置の方向に一方的に移動させる
-        dir = @base.cursor.angle_to(@pos)
-        @pos.x = @base.cursor.x + Stylet::Fee.cos(dir) * radius2
-        @pos.y = @base.cursor.y + Stylet::Fee.sin(dir) * radius2
+        dir = @win.cursor.angle_to(@pos)
+        @pos.x = @win.cursor.x + Stylet::Fee.cos(dir) * radius2
+        @pos.y = @win.cursor.y + Stylet::Fee.sin(dir) * radius2
       end
     end
-    @base.draw_circle(@pos, :radius => @radius, :vertex => 32)
-    if @base.count.modulo(5) == 0
-      @base.draw_line2(@pos, @base.cursor)
+    @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
+    if @win.count.modulo(5) == 0
+      @win.draw_line2(@pos, @win.cursor)
     end
-    @base.vputs "radius2=#{radius2}"
-    @base.vputs "distance=#{distance}"
+    @win.vputs "radius2=#{radius2}"
+    @win.vputs "distance=#{distance}"
   end
 
   def screen_out?
@@ -43,7 +43,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << Ball.new(self, half_pos.clone)
+    @objects << Ball.new(self, srect.half_pos.clone)
     @cursor_radius = 64
     @cursor_vertex = 32
   end

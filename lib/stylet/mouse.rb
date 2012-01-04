@@ -41,12 +41,12 @@ end
 
 if $0 == __FILE__
   require File.expand_path(File.join(File.dirname(__FILE__), "../stylet"))
-  Stylet::Base.main_loop do |base|
-    base.vputs "start_mouse_vector: #{base.start_mouse_vector.to_a.inspect}"
-    base.vputs "before_mouse_vector: #{base.before_mouse_vector.to_a.inspect}"
-    base.vputs "mouse_vector: #{base.mouse_vector.to_a.inspect}"
-    base.vputs "__mouse_before_distance: #{base.__mouse_before_distance}"
-    base.vputs "mlonglength: #{base.mlonglength}"
-    base.vputs "mouse_move_count: #{base.mouse_move_count}"
+  Stylet::Base.main_loop do |win|
+    win.vputs "start_mouse_vector: #{win.start_mouse_vector.to_a.inspect}"
+    win.vputs "before_mouse_vector: #{win.before_mouse_vector.to_a.inspect}"
+    win.vputs "mouse_vector: #{win.mouse_vector.to_a.inspect}"
+    win.vputs "__mouse_before_distance: #{win.__mouse_before_distance}"
+    win.vputs "mlonglength: #{win.mlonglength}"
+    win.vputs "mouse_move_count: #{win.mouse_move_count}"
   end
 end

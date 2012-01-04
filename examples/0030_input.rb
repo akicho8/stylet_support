@@ -6,17 +6,17 @@ class Player
   include Stylet::Input::Base
   include Stylet::Input::StandardKeybord
 
-  def initialize(base)
+  def initialize(win)
     super if defined? super
-    @base = base
+    @win = win
   end
 
   def update
     super if defined? super
     key_counter_update_all
-    @base.vputs(to_s)
-    @base.vputs(axis_angle_index.to_s)
-    @base.vputs(axis_angle.to_s)
+    @win.vputs(to_s)
+    @win.vputs(axis_angle_index.to_s)
+    @win.vputs(axis_angle.to_s)
   end
 end
 

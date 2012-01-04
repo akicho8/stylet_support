@@ -10,7 +10,7 @@
 #
 # p0の速度ベクトルをマウスの方向に設定するには？
 #
-#   speed = Stylet::Vector.sincos(p0.angle_to(base.mouse_vector)) * speed.radius
+#   speed = Stylet::Vector.sincos(p0.angle_to(win.mouse_vector)) * speed.radius
 #
 # 円の速度制限をするには？(円が線から飛び出さないようにするときに使う)
 #
@@ -55,19 +55,19 @@
 # A B C D ボタンとカーソルで操作できるとき物体(pA)と速度(sA)をコントロールするときの定石は？
 #
 #   # AとBで速度ベクトルの反映
-#   @pA += @sA.scale(@base.button.btA.repeat_0or1) + @sA.scale(-@base.button.btB.repeat_0or1)
-#   # @pA += @sA.scale(@base.button.btA.repeat) + @sA.scale(-@base.button.btB.repeat) # 加速したいとき
+#   @pA += @sA.scale(@win.button.btA.repeat_0or1) + @sA.scale(-@win.button.btB.repeat_0or1)
+#   # @pA += @sA.scale(@win.button.btA.repeat) + @sA.scale(-@win.button.btB.repeat) # 加速したいとき
 #
 #   # Cボタンおしっぱなし + マウスで自機位置移動
-#   if @base.button.btC.press?
-#     @pA = @base.cursor.clone
+#   if @win.button.btC.press?
+#     @pA = @win.cursor.clone
 #   end
 #
 #   # Dボタンおしっぱなし + マウスで自機角度変更
-#   if @base.button.btD.press?
-#     if @base.cursor != @pA
-#       # @sA = Stylet::Vector.sincos(@pA.angle_to(@base.cursor)) * @sA.radius # ← よくある間違い
-#       @sA = (@base.cursor - @pA).normalize * @sA.radius
+#   if @win.button.btD.press?
+#     if @win.cursor != @pA
+#       # @sA = Stylet::Vector.sincos(@pA.angle_to(@win.cursor)) * @sA.radius # ← よくある間違い
+#       @sA = (@win.cursor - @pA).normalize * @sA.radius
 #     end
 #   end
 #
