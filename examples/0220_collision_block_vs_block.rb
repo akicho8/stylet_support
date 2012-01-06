@@ -10,7 +10,7 @@ class Scene
 
     # A
     @pA = @win.srect.half_pos.clone                           # 点
-    @rA = Stylet::Rect.new(-50, -30, 50*2, 30*2)              # 大きさ
+    @rA = Stylet::Rect.new(-20, -20, 20*2, 20*2)              # 大きさ
     @sA = Stylet::Vector.sincos(Stylet::Fee.degree(180 + 90)) # 速度
 
     # B

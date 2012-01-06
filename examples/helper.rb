@@ -60,9 +60,9 @@ module Helper
       # vputs @mouse_vector.to_a
       # vputs mouse_moved?
 
-      # unless @objects.empty?
-      #   vputs "objects=#{@objects.size}"
-      # end
+      unless @objects.empty?
+        vputs "objects=#{@objects.size}"
+      end
 
       @objects.each{|e|e.update}
       @objects.reject!{|e| e.respond_to?(:screen_out?) && e.screen_out?}

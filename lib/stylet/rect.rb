@@ -9,6 +9,10 @@ module Stylet
       new(*args)
     end
 
+    def self.circle_like(rx, ry = rx)
+      new(-rx, -ry, rx * 2, ry * 2)
+    end
+
     def initialize(x, y, w, h)
       super(x, y)
       @wh = Vector.new(w, h)
