@@ -6,15 +6,15 @@
 #
 # 速度ベクトルを45度傾けるには？
 #
-#   speed += Stylet::Vector.sincos(Stylet::Fee.r45) * speed.radius
+#   speed += Stylet::Vector.sincos(Stylet::Fee.r45) * speed.length
 #
 # p0の速度ベクトルをマウスの方向に設定するには？
 #
-#   speed = Stylet::Vector.sincos(p0.angle_to(win.mouse_vector)) * speed.radius
+#   speed = Stylet::Vector.sincos(p0.angle_to(win.mouse_vector)) * speed.length
 #
 # 円の速度制限をするには？(円が線から飛び出さないようにするときに使う)
 #
-#   if speed.radius > radius
+#   if speed.length > radius
 #     speed = speed.normalize.scale(radius)
 #   end
 #
@@ -52,11 +52,11 @@
 #
 #   v.normalize.length #=> 1.0
 #
-# A B C D ボタンとカーソルで操作できるとき物体(pA)と速度(sA)をコントロールするときの定石は？
+# A B C D ボタンとカーソルで操作できるとき物体(pA)と速度(speed)をコントロールするときの定石は？
 #
 #   # AとBで速度ベクトルの反映
-#   @pA += @sA.scale(@win.button.btA.repeat_0or1) + @sA.scale(-@win.button.btB.repeat_0or1)
-#   # @pA += @sA.scale(@win.button.btA.repeat) + @sA.scale(-@win.button.btB.repeat) # 加速したいとき
+#   @pA += @speed.scale(@win.button.btA.repeat_0or1) + @speed.scale(-@win.button.btB.repeat_0or1)
+#   # @pA += @speed.scale(@win.button.btA.repeat) + @speed.scale(-@win.button.btB.repeat) # 加速したいとき
 #
 #   # Cボタンおしっぱなし + マウスで自機位置移動
 #   if @win.button.btC.press?
@@ -66,8 +66,8 @@
 #   # Dボタンおしっぱなし + マウスで自機角度変更
 #   if @win.button.btD.press?
 #     if @win.cursor != @pA
-#       # @sA = Stylet::Vector.sincos(@pA.angle_to(@win.cursor)) * @sA.radius # ← よくある間違い
-#       @sA = (@win.cursor - @pA).normalize * @sA.radius
+#       # @speed = Stylet::Vector.sincos(@pA.angle_to(@win.cursor)) * @speed.radius # ← よくある間違い
+#       @speed = (@win.cursor - @pA).normalize * @speed.length # @speed.length の時点で桁溢れで削れるのが嫌なら length.round とする手もあり
 #     end
 #   end
 #
@@ -116,7 +116,7 @@ module Stylet
 
     ##
     def add(t)
-      Vector.new(x + t.x, y + t.y)
+      # Vector.new(x + t.x, y + t.y)
     end
 
     alias :+ add
@@ -170,6 +170,23 @@ module Stylet
       tap do
         s = div(s)
         self.x, self.y = s.x, s.y
+      end
+    end
+
+    ##--------------------------------------------------------------------------------
+    # 汎用
+    #
+    # obj.__send(:round)
+    # obj.__send!(:round)
+    #
+    def __send(method, *args)
+      Vector.new(*members.collect{|member|Float(send(member)).send(method, *args)})
+    end
+
+    def __send!(method, *args)
+      tap do
+        obj = __send(method, *args)                                # obj = foo(s)
+        members.each{|member|send("#{member}=", obj.send(member))} # self.x, self.y = obj.x, obj.y
       end
     end
 
