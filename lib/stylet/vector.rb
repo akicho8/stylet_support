@@ -72,12 +72,196 @@
 #   end
 #
 module Stylet
-  #
-  # 二次元座標
-  #
-  #   単に x y のメンバーがあればいいとき用
-  #
   Point = Struct.new(:x, :y)
+  Point3 = Struct.new(:x, :y, :z)
+
+  module BasicVector
+    def self.included(base)
+      base.extend(ClassMethods)
+      base.send(:include, InstanceMethods)
+      base.class_eval do
+        [
+          {:name => :add, :sym => :+},
+          {:name => :sub, :sym => :-},
+        ].each{|attr|
+          define_method(attr[:name]) do |o|
+            self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o.send(m))})
+          end
+          define_method("#{attr[:name]}!") do |*args|
+            instance_copy_from(send(attr[:name], *args))
+          end
+          alias_method attr[:sym], attr[:name]
+        }
+
+        [
+          {:name => :scale, :sym => :*},
+        ].each{|attr|
+          define_method(attr[:name]) do |o|
+            self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o)})
+          end
+          define_method("#{attr[:name]}!") do |*args|
+            instance_copy_from(send(attr[:name], *args))
+          end
+          alias_method attr[:sym], attr[:name]
+        }
+      end
+    end
+
+    module ClassMethods
+      def random(r = 1.0)
+        new(*members.collect{Etc.wide_random(r)})
+      end
+
+      def safe_new(*args)
+        new(*args).tap do |obj|
+          if obj.values.all?{|v|v.zero?}
+            p [self, caller]
+            raise "ベクトル0はNaNになるので入れんな"
+          end
+        end
+      end
+
+      # 内積
+      #
+      #   2つの単位ベクトルの平行の度合いを表わす
+      #   ・ベクトルは正規化しておくこと
+      #   ・引数の順序は関係なし
+      #
+      #   a が右向きのとき b のそれぞれの向きによって以下の値になる
+      #              0.0
+      #         -0.5  │   0.5
+      #               │
+      #      -1.0 ──＋── 1.0 (a)
+      #               │
+      #         -0.5  │   0.5
+      #              0.0
+      #
+      #   これからわかること
+      #   1. ←← or →→ 正 (0.0 < v)   お互いだいたい同じ方向を向いている
+      #   2. →←         負 (v   < 0.0) お互いだいたい逆の方向を向いている
+      #   3. →↓ →↑    零 (0.0)       お互いが直角の関係
+      #
+      #   計算式
+      #
+      #     a = a.normalize
+      #     b = b.normalize
+      #     a.x * b.x + a.y * b.y
+      #
+      def inner_product(a, b)
+        a = a.normalize
+        b = b.normalize
+        members.collect{|m|a.send(m) * b.send(m)}.inject(0, &:+) # a.x * b.x + a.y * b.y
+      end
+    end
+
+    module InstanceMethods
+      ##--------------------------------------------------------------------------------
+      # 汎用
+      #
+      # obj.__send(:round)
+      # obj.__send!(:round)
+      #
+      # def __send(method, *args)
+      #   self.class.new(*members.collect{|m|Float(send(m)).send(method, *args)})
+      # end
+      #
+      # def __send!(method, *args)
+      #   instance_copy_from(__send(method, *args))
+      # end
+
+      def instance_copy_from(other)
+        tap do
+          members.each{|m|send("#{m}=", other.send(m))} # self.x, self.y = obj.x, obj.y
+        end
+      end
+
+      #
+      # 正規化
+      #
+      #   p = Vector.new(2, 3)
+      #   (p - p).normalize
+      #   とするとベクトル 0 ができて n / 0.0 で NaN になるので注意
+      #
+      def normalize
+        c = length
+
+        # if c > 0                # これは ZeroDivisionError を出さないためのものなので 0, 0 のベクトルがなければ不要
+        #   c = 1.0 / c
+        # end
+
+        # これはダメ。ベクトルが消えてしまう
+        # if c.zero?
+        #   return Vector.new(0, 0)
+        # end
+
+        self.class.safe_new(*values.collect{|v|Float(v) / c})
+      end
+
+      def normalize!
+        instance_copy_from(normalize)
+      end
+
+      # 距離の取得
+      #
+      #   三平方の定理より
+      #
+      #             p2
+      #        c     b
+      #     p0   a  p1
+      #
+      #     c = sqrt(a * a + b * b)
+      #
+      #   x.abs ** 2 のように書いてたけど必要なかった
+      #   次のようにマイナスでも二回掛けると必ず正になるので
+      #     -2 * -2 = 4
+      #      2 *  2 = 4
+      #
+      #   当たり判定を次のように行なっている場合、
+      #     sx = mx - ax
+      #     sy = my - ay
+      #     if sqrt(sx * sx + sy * sy) < r
+      #     end
+      #
+      #   次のように sqrt を外すことができる
+      #     if (sx * sx + sy * sy) < (r ** 2)
+      #     end
+      #
+      def length
+        Math.sqrt(values.collect{|v|v ** 2}.inject(0, &:+)) # Math.sqrt(x ** 2 + y ** 2)
+      rescue Errno::EDOM => error
+        warn "(p - p).length と書いているコードがあるはず。それをやると sqrt(0) になるので if p != p を入れてくれ"
+        raise error
+      end
+
+      #
+      # 反対方向のベクトルを返す
+      #
+      def __negative
+        self.class.new(*values.collect{|v|-v})
+      end
+
+      #
+      def inner_product(other)
+        self.class.send(__method__, self, other)
+      end
+
+      #
+      # 相手との距離を取得
+      #
+      def distance_to(target)
+        (target - self).length
+      end
+
+      # FIXME: それぞれのクラスに書くべきだろうか
+      def to_2dv
+        Vector.new(*values.take(2))
+      end
+
+      def to_3dv
+        Vector3.new(*(values + [0]).take(3))
+      end
+    end
+  end
 
   #
   # ベクトル
@@ -93,174 +277,18 @@ module Stylet
   #   vec.scale(0.9)
   #
   class Vector < Point
-    def self.random(n = nil)
-      x = rand(n)
-      if rand(2).zero?
-        x = -x
-      end
-      y = rand(n)
-      if rand(2).zero?
-        y = -y
-      end
-      new(x, y)
-    end
+    include BasicVector
 
-    def self.safe_new(*args)
-      new(*args).tap{|e|
-        if e.x.zero? && e.y.zero?
-          p [self, caller]
-          warn "ベクトル0はNaNになるので入れんな"
-        end
-      }
-    end
-
-    ##
-    def add(t)
-      Vector.new(x + t.x, y + t.y)
-    end
-
-    alias :+ add
-
-    def add!(t)
-      tap do
-        t = add(t)
-        self.x, self.y = t.x, t.y
-      end
-    end
-
-    ##
-    def sub(t)
-      Vector.new(x - t.x, y - t.y)
-    end
-
-    alias :- sub
-
-    def sub!(t)
-      tap do
-        t = sub(t)
-        self.x, self.y = t.x, t.y
-      end
-    end
-
-    ##
-    def scale(s)
-      Vector.new(x * s, y * s)
-    end
-
-    alias :* scale
-
-    def scale!(s)
-      tap do
-        s = scale(s)
-        self.x, self.y = s.x, s.y
-      end
-    end
-
-    alias mul scale
-    alias mul! scale!
-
-    ##
-    def div(s)
-      Vector.new(Float(x) / s, Float(y) / s)
-    end
-
-    alias :/ div
-
-    def div!(s)
-      tap do
-        s = div(s)
-        self.x, self.y = s.x, s.y
-      end
-    end
-
-    ##--------------------------------------------------------------------------------
-    # 汎用
+    # 方向ベクトル
     #
-    # obj.__send(:round)
-    # obj.__send!(:round)
+    #   これを使うと次のように簡単に書ける
+    #   cursor.x += Stylet::Fee.cos(dir) * speed
+    #   cursor.y += Stylet::Fee.sin(dir) * speed
+    #     ↓
+    #   cursor += Stylet::Fee.sincos(dir) * speed
     #
-    def __send(method, *args)
-      Vector.new(*members.collect{|member|Float(send(member)).send(method, *args)})
-    end
-
-    def __send!(method, *args)
-      tap do
-        obj = __send(method, *args)                                # obj = foo(s)
-        members.each{|member|send("#{member}=", obj.send(member))} # self.x, self.y = obj.x, obj.y
-      end
-    end
-
-    # 自作の normalize
-    # これを使うと内積の計算の0から45度のあたりがおかしくなる
-    # def normalize
-    #   max = [x.abs, y.abs].max.to_f
-    #   # if max.zero?
-    #   #   # FIXME: 一般的にはどうなる？
-    #   #   return Vector.new(0, 0)
-    #   # end
-    #   Vector.new(x / max, y / max)
-    # end
-
-    def normalize!
-      tap do
-        v = normalize
-        self.x, self.y = v.x, v.y
-      end
-    end
-
-    #
-    # 正規化
-    #
-    #   p = Vector.new(2, 3)
-    #   (p - p).normalize
-    #   とするとベクトル 0 ができてしまい
-    #
-    # hakuhin.jp/as/collision.html#COLLISION_00 の方法だと x * (1.0 / c) としているけど x.to_f / c でよくないか？
-    def normalize
-      c = length                # x y のどちらかを最大と考えるのではなく斜線を 1.0 とする
-
-      # if c > 0                # これは ZeroDivisionError を出さないためのものなので 0, 0 のベクトルがなければ不要
-      #   c = 1.0 / c
-      # end
-
-      # これはダメ。ベクトルが消えてしまう
-      # if c.zero?
-      #   return Vector.new(0, 0)
-      # end
-
-      Vector.safe_new(Float(x) / c, Float(y) / c)
-    end
-
-    # 距離の取得
-    #
-    #   x.abs ** 2 のように書いてたけど必要なかった
-    #   次のようにマイナスでも二回掛けると必ず正になるので
-    #     -2 * -2 = 4
-    #      2 *  2 = 4
-    #
-    #   当たり判定を次のように行なっている場合、
-    #     sx = mx - ax
-    #     sy = my - ay
-    #     if sqrt(sx * sx + sy * sy) < r
-    #     end
-    #
-    #   次のように sqrt を外すことができる
-    #     if (sx * sx + sy * sy) < (r ** 2)
-    #     end
-    #
-    def length
-      Math.sqrt(x ** 2 + y ** 2)
-      # rescue Errno::EDOM
-      #   0
-    end
-
-    alias radius length
-
-    #
-    # 反対方向のベクトルを返す
-    #
-    def __negative
-      Vector.new(-x, -y)
+    def self.sincos(a, b = a)
+      new(Stylet::Fee.cos(a), Stylet::Fee.sin(b))
     end
 
     # 反射ベクトルの取得
@@ -317,36 +345,6 @@ module Stylet
       -(n.x * p.x + n.y * p.y + d) / (n.x * s.x + n.y * s.y)
     end
 
-    # 内積
-    #
-    #   2つの単位ベクトルの平行の度合いを表わす
-    #   ・ベクトルは正規化しておくこと
-    #   ・引数の順序は関係なし
-    #
-    #   a が右向きのとき b のそれぞれの向きによって以下の値になる
-    #              0.0
-    #         -0.5  │   0.5
-    #               │
-    #      -1.0 ──＋── 1.0 (a)
-    #               │
-    #         -0.5  │   0.5
-    #              0.0
-    #
-    #   これからわかること
-    #   1. ←← or →→ 正 (0.0 < v)   お互いだいたい同じ方向を向いている
-    #   2. →←         負 (v   < 0.0) お互いだいたい逆の方向を向いている
-    #   3. →↓ →↑    零 (0.0)       お互いが直角の関係
-    #
-    def self.inner_product(a, b)
-      a = a.normalize
-      b = b.normalize
-      a.x * b.x + a.y * b.y
-    end
-
-    def inner_product(t)
-      Vector.send(__method__, self, t)
-    end
-
     # 法線ベクトルの取得(方法1)
     # どう見ても遅い
     def slowly_normal(t)
@@ -359,44 +357,6 @@ module Stylet
       dx = t.x - x
       dy = t.y - y
       Vector.new(-dy, dx)
-    end
-
-    # 方向ベクトル
-    #
-    #   これを使うと次のように簡単に書ける
-    #   cursor.x += Stylet::Fee.cos(dir) * speed
-    #   cursor.y += Stylet::Fee.sin(dir) * speed
-    #     ↓
-    #   cursor += Stylet::Fee.sincos(dir) * speed
-    #
-    def self.sincos(a)
-      new(Stylet::Fee.cos(a), Stylet::Fee.sin(a))
-    end
-
-    # def sincos(t)
-    #   a = angel(t)
-    #   Vector.new(Stylet::Fee.cos(a), Stylet::Fee.sin(a))
-    # end
-
-    #
-    # 相手との距離を取得
-    #
-    #   三平方の定理
-    #
-    #             p2
-    #        c     b
-    #     p0   a  p1
-    #
-    #     c = sqrt(a * a + b * b)
-    #
-    def distance_to(target)
-    #   dx = x - target.x
-    #   dy = y - target.y
-    #   Math.sqrt(dx ** 2 + dy ** 2)
-    # rescue Errno::EDOM => error
-    #   p [self, target]
-    #   raise error
-      (target - self).length
     end
 
     #
@@ -420,22 +380,35 @@ module Stylet
     # 線分 A B の距離 1.0 をしたとき途中の位置ベクトルを取得
     #
     def self.pos_vector_rate(a, b, rate)
-      a + Stylet::Vector.sincos(a.angle_to(b)) * (a.distance_to(b) * rate)
+      a + Stylet::Vector.sincos(a.angle_to(b)) * (a.distance_to(b) * rate) # FIXME: ダメなコード
     end
+  end
+
+  class Vector3 < Point3
+    include BasicVector
   end
 end
 
 if $0 == __FILE__
   p0 = Stylet::Vector.new(1, 1)
   p1 = Stylet::Vector.new(1, 1)
-  p(p0 == p1)
-  p p0
-  p p0 + p1
-  p p0.add(p1)
-  p p0
-  p p0.add!(p1)
-  p p0
+  p(p0 + p1)
+  p(p0.add(p1))
+  p(p0.add!(p1))
+  p(p0)
+  p(Stylet::Vector.new(3, 4).length)
+  p(Stylet::Vector.new(3, 4).normalize.scale(5))
 
-  p0 = Stylet::Vector.new(0, 0)
-  p p0.normalize
+  # p0 = Stylet::Vector.new(1, 1)
+  # p1 = Stylet::Vector.new(1, 1)
+  # p(p0 == p1)
+  # p p0
+  # p p0 + p1
+  # p p0.add(p1)
+  # p p0
+  # p p0.add!(p1)
+  # p p0
+  #
+  # p0 = Stylet::Vector.new(0, 0)
+  # p p0.normalize
 end
