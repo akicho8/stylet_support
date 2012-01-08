@@ -1,135 +1,160 @@
 # -*- coding: utf-8 -*-
-require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
 
-class Bezier < Stylet::Base
-  include Stylet::Input::Base
-  include Stylet::Input::StandardKeybord
-  include Stylet::Input::MouseButtonAsCounter
+require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
-  attr_accessor :dragging_current
+class MovablePoint
+  attr_reader :pos
 
-  class MovablePoint < Stylet::Vector
-    def initialize(win, *args)
-      super(*args)
-      @win = win
-      @dragging = false # ドラッグ中か？
-      @radius = 16      # 当り判定の大きさ
-    end
+  def initialize(unit, pos)
+    @unit = unit
+    @pos = pos.clone
 
-    def update
+    @win = @unit.win
+    @dragging = false # ドラッグ中か？
+    @radius = 16      # 当り判定の大きさ
+  end
+
+  def update
+    # ここはモジュール化できる
+    begin
       unless @dragging
         if @win.button.btA.trigger?
-          if Stylet::CollisionSupport.squire_collision?(self, @win.mouse_vector)
+          if Stylet::CollisionSupport.squire_collision?(@pos, @win.mouse_vector, :radius => 8)
             # 他の奴がアクティブじゃなかったときだけ自分を有効にできる
             # これを入れないと同時に複数のポイントをドラッグできてしまう
-            unless @win.dragging_current
+            unless @unit.dragging_current
               @dragging = true
-              @win.dragging_current = self
+              @unit.dragging_current = self
             end
           end
         end
       else
         unless @win.button.btA.press?
           @dragging = false
-          @win.dragging_current = nil
+          @unit.dragging_current = nil
         end
       end
 
-      if self == @win.dragging_current
-        self.x = @win.mouse_vector.x
-        self.y = @win.mouse_vector.y
-        @win.draw_circle(self, :radius => @radius, :vertex => 32)
-      else
-        @win.draw_circle(self, :radius => 2)
+      if self == @unit.dragging_current
+        @pos = @win.mouse_vector.clone
       end
     end
+
+    if self == @unit.dragging_current
+      @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
+    else
+      @win.draw_circle(@pos, :radius => 2)
+    end
+  end
+end
+
+module BezierUnitBase
+  attr_accessor :dragging_current
+  attr_accessor :win
+
+  def initialize(win)
+    @win = win
+
+    @mpoints = []           # ポイント配列
+    @dragging_current = nil # 現在どのポイントをドラッグしているか？
+    @line_count = 160       # 軌跡確認用弧線の構成ライン数初期値(確認用)
+
+    setup
+    update_title
   end
 
-  def before_main_loop
-    super if defined? super
-
-    @points = []            # ポイント配列
-    @dragging_current = nil # 現在どのポイントをドラッグしているか？
-    @line_count = 256       # 軌跡確認用弧線の構成ライン数初期値(確認用)
+  def setup
+    raise NotImplementedError, "#{__method__} is not implemented"
   end
 
   def update
-    super if defined? super
-    key_counter_update_all
-
     # ポイント位置のドラッグと描画
-    @points.each{|e|e.update}
+    @mpoints.each{|e|e.update}
 
     if false
       # 構成ライン数の減算
-      @line_count += @button.btC.repeat
-      @line_count -= @button.btD.repeat
+      @line_count += @win.button.btC.repeat
+      @line_count -= @win.button.btD.repeat
       @line_count = [2, @line_count].max
-      vputs "@line_count = #{@line_count}"
+      @win.vputs "@line_count = #{@line_count}"
     end
 
     # ドラッグ中またはAボタンを押したときは詳細表示
-    if @dragging_current || @button.btA.press?
-      # ポイントの番号の表示
-      @points.each_with_index{|e, i|vputs(i, :vector => e)}
-
+    if @dragging_current || @win.button.btA.press?
       # 弧線の描画
-      xys = points_all
+      xys = mpoints_all
       @line_count.times{|i|
         p0 = xys[i]
         p1 = xys[i.next]
-        draw_line(p0.x, p0.y, p1.x, p1.y)
+        @win.draw_line2(p0, p1)
       }
     end
 
-    unless @points.empty?
+    # ポイントの番号の表示
+    @mpoints.each_with_index{|e, i|@win.vputs(i, :vector => e.pos)}
+
+    unless @mpoints.empty?
       # 物体をいったりきたりさせる
-      if false
+      if true
         # ○の表示
-        pos = 0.5 + (Stylet::Fee.sin(1.0 / 128 * @count) * 0.5)
-        xy = bezier_point(@points, pos)
-        draw_circle(xy, :radius => 16, :vertex => 32)
-        vputs(pos)
+        pos = 0.5 + (Stylet::Fee.sin(@win.count / 256.0) * 0.5)
+        xy = __bezier_point(pos)
+        @win.draw_circle(xy, :radius => 64, :vertex => 32)
+        @win.vputs(pos)
       else
         # △の表示で進んでいる方向を頂点にする
-        pos0 = 0.5 + (Stylet::Fee.sin(1.0 / 128 * @count) * 0.5)      # 現在の位置(0.0〜1.0)
-        pos1 = 0.5 + (Stylet::Fee.sin(1.0 / 128 * @count.next) * 0.5) # 未来の位置(0.0〜1.0)
-        p0 = bezier_point(@points, pos0)                                 # 現在の座標
-        p1 = bezier_point(@points, pos1)                                 # 未来の座標
-        dir = Stylet::Fee.angle(p0.x, p0.y, p1.x, p1.y)                 # 現在から未来への向きを取得 FIXME: ruby 1.9 だと綺麗にかける
-        draw_triangle(p0, :angle => dir, :radius => 64)     # 三角の頂点を未来への向きに設定して三角描画
-        vputs(pos0)
-        vputs(dir)
+        pos0 = 0.5 + (Stylet::Fee.sin(1.0 / 256 * @win.count) * 0.5)      # 現在の位置(0.0〜1.0)
+        pos1 = 0.5 + (Stylet::Fee.sin(1.0 / 256 * @win.count.next) * 0.5) # 未来の位置(0.0〜1.0)
+        p0 = __bezier_point(pos0)                                         # 現在の座標
+        p1 = __bezier_point(pos1)                                         # 未来の座標
+        @win.draw_triangle(p0, :angle => p0.angle_to(p1), :radius => 64)  # 三角の頂点を未来への向きに設定して三角描画
       end
 
-      if @button.btB.trigger?
+      if @win.button.btB.trigger?
         # 最後に制御点の追加
-        @points = [@points.first(@points.size - 1), MovablePoint.new(self, rand(width), rand(height)), @points.last].flatten
+        @mpoints = [
+          @mpoints.first(@mpoints.size - 1),
+          MovablePoint.new(self, @mpoints.last.pos + Stylet::Vector.new(-30, 0)),
+          @mpoints.last,
+        ].flatten
         update_title
       end
-      if @button.btC.trigger?
+      if @win.button.btC.trigger?
         # 最後の制御点を削除
-        if @points.size >= 2
-          @points[-2] = nil
-          @points.compact!
+        if @mpoints.size >= 2
+          @mpoints[-2] = nil
+          @mpoints.compact!
           update_title
         end
       end
-      vputs "#{@points.size} (B+ C-)"
+      @win.vputs "#{@mpoints.size} (B+ C-)"
     end
   end
 
   def update_title
-    self.title = "#{@points.size - 1}次ベジェ曲線"
+    @win.title = "#{@mpoints.size - 1}次ベジェ曲線"
   end
 
-  def points_all
+  def mpoints_all
     (0...@line_count.next).collect{|i|
-      bezier_point(@points, 1.0 / @line_count * i)
+      __bezier_point(1.0 / @line_count * i)
     }
+  end
+
+  def __bezier_point(*args)
+    bezier_point(@mpoints.collect{|e|e.pos}, *args)
+  end
+
+  def bezier_point(*args)
+    raise NotImplementedError, "#{__method__} is not implemented"
   end
 end
 
-if $0 == __FILE__
-  Bezier.main_loop
+class App < Stylet::Base
+  include Helper::TriangleCursor
+
+  def before_main_loop
+    super if defined? super
+    @objects << BezierUnit.new(self)
+  end
 end

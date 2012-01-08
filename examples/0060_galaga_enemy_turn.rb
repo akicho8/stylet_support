@@ -24,7 +24,7 @@ class Ball
     pos = Stylet::Vector.new
     pos.x = Stylet::Fee.cos(1.0 / 512 * (count * 3 + @index * 24)) * @win.half_x
     pos.y = Stylet::Fee.sin(1.0 / 512 * (count * 4 + @index * 24)) * @win.half_y
-    @win.srect.half_pos + pos
+    @win.srect.center + pos
   end
 end
 

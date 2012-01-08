@@ -19,6 +19,14 @@ module Stylet
     def abs_limited(v, r = 1.0)
       range_limited(v, (-r..r))
     end
+
+    def range_random(a, b)
+      a + rand * (b - a)
+    end
+
+    def wide_random(r)
+      rand * (r * 2) - r
+    end
   end
 end
 

@@ -116,7 +116,7 @@ module Stylet
 
     ##
     def add(t)
-      # Vector.new(x + t.x, y + t.y)
+      Vector.new(x + t.x, y + t.y)
     end
 
     alias :+ add

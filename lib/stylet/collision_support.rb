@@ -4,18 +4,31 @@ module Stylet
   module CollisionSupport
     extend self
 
+    #
+    #  +--- -r ---+
+    #  |     |    |
+    # -r -- p0 -- r のなかに p1 の点が含まれているか？
+    #  |     |    |
+    #  +---- r ---+
+    #
     def squire_collision?(p0, p1, options = {})
       options = {
-        :r => 8,
       }.merge(options)
-      ((p0.x - options[:r])..(p0.x + options[:r])).include?(p1.x) && ((p0.y - options[:r])..(p0.y + options[:r])).include?(p1.y)
+      raise "options[:radius] required" unless options[:radius]
+      true &&
+        ((p0.x - options[:radius])..(p0.x + options[:radius])).include?(p1.x) &&
+        ((p0.y - options[:radius])..(p0.y + options[:radius])).include?(p1.y) &&
+        true
     end
 
     #
     # どこかが接触したか？
     #
     def rect_collision?(rect, p, options = {})
-      (rect.min_x <= p.x && p.x <= rect.max_x) && (rect.min_y <= p.y && p.y <= rect.max_y)
+      true &&
+        (rect.min_x <= p.x && p.x <= rect.max_x) &&
+        (rect.min_y <= p.y && p.y <= rect.max_y) &&
+        true
     end
 
     # 長方形aと長方形bの一部が接触しているか？

@@ -8,7 +8,7 @@ class Scene
   def initialize(win)
     @win = win
 
-    @pA = @win.srect.half_pos.clone
+    @pA = @win.srect.center.clone
     @sA = Stylet::Vector.sincos(Stylet::Fee.clock(8))
 
     @radius = 50

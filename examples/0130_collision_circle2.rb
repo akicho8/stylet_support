@@ -41,7 +41,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << Ball.new(self, srect.half_pos.clone)
+    @objects << Ball.new(self, srect.center.clone)
     @cursor_radius = 64
     @cursor_vertex = 32
   end

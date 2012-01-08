@@ -137,7 +137,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << Swing.new(self, srect.half_pos.clone)
+    @objects << Swing.new(self, srect.center.clone)
 
     @debug_mode = true   # デバッグモード
     @gravity = Stylet::Vector.new(0, 100)   # 重力加速度(整数で指定すること)

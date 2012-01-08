@@ -9,7 +9,7 @@ module Stylet
     #
     def draw_vector(vec, options = {})
       options = {
-        :origin => srect.half_pos, # 原点を画面の真中にしておく
+        :origin => srect.center, # 原点を画面の真中にしておく
       }.merge(options)
 
       draw_arrow(options[:origin], options[:origin] + vec, options)
@@ -46,7 +46,7 @@ end
 if $0 == __FILE__
   require File.expand_path(File.join(File.dirname(__FILE__), "../../stylet"))
   Stylet::Base.main_loop do |win|
-    win.draw_arrow(win.srect.half_pos, win.srect.half_pos + Stylet::Vector.new(50, 50))
-    win.draw_vector(Stylet::Vector.new(100, -100), :origin => win.srect.half_pos)
+    win.draw_arrow(win.srect.center, win.srect.center + Stylet::Vector.new(50, 50))
+    win.draw_vector(Stylet::Vector.new(100, -100), :origin => win.srect.center)
   end
 end

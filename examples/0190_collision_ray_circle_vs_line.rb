@@ -14,8 +14,8 @@ class Ray
     @vS = Stylet::Vector.new(0.84, -0.52).normalize  # 速度ベクトル
 
     # 線分AB
-    @pA = @win.srect.half_pos + Stylet::Vector.new(@win.half_x * 0.3, -@win.half_y * 0.5)
-    @pB = @win.srect.half_pos + Stylet::Vector.new(@win.half_x * 0.1, +@win.half_y * 0.5)
+    @pA = @win.srect.center + Stylet::Vector.new(@win.half_x * 0.3, -@win.half_y * 0.5)
+    @pB = @win.srect.center + Stylet::Vector.new(@win.half_x * 0.1, +@win.half_y * 0.5)
 
     mdoe_init
   end
@@ -241,7 +241,7 @@ class App < Stylet::Base
     @ray_mode = true           # true:ドット false:円
     @reflect_mode = true       # true:反射する
 
-    @objects << Ray.new(self, srect.half_pos.clone)
+    @objects << Ray.new(self, srect.center.clone)
     @cursor_vertex = 3
   end
 

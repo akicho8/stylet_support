@@ -34,7 +34,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << Circle.new(self, srect.half_pos.clone)
+    @objects << Circle.new(self, srect.center.clone)
     @cursor_radius = 1
   end
 

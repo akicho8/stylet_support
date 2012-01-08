@@ -1,7 +1,7 @@
 module Stylet
   module DrawSupport
     #
-    # draw_polygon(srect.half_pos)
+    # draw_polygon(srect.center)
     #
     def draw_polygon(points, options = {})
       options = {

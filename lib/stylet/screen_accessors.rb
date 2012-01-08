@@ -34,7 +34,7 @@ module Stylet
     #   @screen.h / 2
     # end
     # 
-    # def srect.half_pos
+    # def srect.center
     #   Vector.new(half_x, half_y)
     # end
   end

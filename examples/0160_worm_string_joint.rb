@@ -67,7 +67,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects = Array.new(42){|i|Joint.new(self, i, srect.half_pos.clone)}
+    @objects = Array.new(42){|i|Joint.new(self, i, srect.center.clone)}
     @cursor_display = false     # 三角カーソル非表示
 
     @body_display = true # 胴体描画モード

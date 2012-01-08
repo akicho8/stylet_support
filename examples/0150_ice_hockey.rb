@@ -93,7 +93,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << IccHockeyBall.new(self, srect.half_pos.clone)
+    @objects << IccHockeyBall.new(self, srect.center.clone)
     @cursor_display = false
   end
 end

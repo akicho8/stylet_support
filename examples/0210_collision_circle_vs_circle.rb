@@ -21,12 +21,12 @@ class Scene
   def initialize(win)
     @win = win
 
-    @pA = @win.srect.half_pos.clone + Stylet::Vector.new(80, -70)
+    @pA = @win.srect.center.clone + Stylet::Vector.new(80, -70)
     @sA = Stylet::Vector.sincos(Stylet::Fee.clock(6, 15)).scale(1.0)
     @am = 100
     @a_radius = 100
 
-    @pB = @win.srect.half_pos.clone + Stylet::Vector.new(-120, -80)
+    @pB = @win.srect.center.clone + Stylet::Vector.new(-120, -80)
     @sB = Stylet::Vector.sincos(Stylet::Fee.clock(4)).scale(1.0)
     @bm = 100                   # 質量
     @b_radius = 30

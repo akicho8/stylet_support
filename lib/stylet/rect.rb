@@ -73,7 +73,7 @@ module Stylet
     alias width w
     alias height h
 
-    def half_pos
+    def center
       Vector.new(half_x, half_y)
     end
 

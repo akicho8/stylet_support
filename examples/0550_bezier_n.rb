@@ -1,31 +1,27 @@
 # -*- coding: utf-8 -*-
 require File.expand_path(File.join(File.dirname(__FILE__), "bezier"))
 
-class App < Bezier
-  def before_main_loop
-    super if defined? super
+class BezierUnit
+  include BezierUnitBase
 
+  def setup
     case true
     when true
       # 横に配置
       n = 2
-      @points = Array.new(n + 1){|i|
-        x = (width * 0.1) + ((width * 0.8) / n * i)
-        y = half_y
-        MovablePoint.new(self, x, y)
+      @mpoints += Array.new(n + 1){|i|
+        x = (@win.srect.width * 0.1) + ((@win.srect.width * 0.8) / n * i)
+        y = @win.srect.half_y
+        MovablePoint.new(self, Stylet::Vector.new(x, y))
       }
     when true
       # 円状に配置
       n = 5
       r = half_y * 0.9
-      @points = Array.new(n){|i|
-        x = half_x + Stylet::Fee.cos(1.0 / n * i) * r
-        y = half_y + Stylet::Fee.sin(1.0 / n * i) * r
-        MovablePoint.new(self, x, y)
+      @mpoints += Array.new(n){|i|
+        MovablePoint.new(self, @win.srect.center + Stylet::Vector.sincos(1.0 / n * i).scale(r))
       }
     end
-
-    update_title
   end
 
   # N次ベジェ曲線
@@ -65,8 +61,7 @@ class App < Bezier
         end
       end
       v *= (d ** i) * ((1 - d) ** ((points.size - 1) - i))
-      o.x += v * p.x
-      o.y += v * p.y
+      o += p.scale(v)
     }
     o
   end
