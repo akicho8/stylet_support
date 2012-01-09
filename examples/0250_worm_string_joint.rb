@@ -27,13 +27,11 @@ class Joint
         # 0.1 ならゆっくりと自分に近付いてくる
         len = gap * @win.hard_level
         dir = @target.p0.angle_to(@p0)
-        @target.p0.x += Stylet::Fee.cos(dir) * len
-        @target.p0.y += Stylet::Fee.sin(dir) * len
+        @target.p0 += Stylet::Vector.sincos(dir) * len
 
         # 固さ 1.0 のときは次のように p0 の方から相手をひっぱる方法でもよいが前者の方が、ゆっくり移動させるなど応用が効く
         # dir = @p0.angle_to(@target.p0)
-        # @target.p0.x = @p0.x + Stylet::Fee.cos(dir) * @win.length
-        # @target.p0.y = @p0.y + Stylet::Fee.sin(dir) * @win.length
+        # @target.p0 += Stylet::Vector.sincos(dir) * @win.length
       end
     end
 
@@ -44,17 +42,13 @@ class Joint
 
     # 次の間接まで線を引く
     if @target
-      @win.draw_line2(@p0, @target.p0)
+      @win.draw_line(@p0, @target.p0)
     end
 
     # 胴体の表示
     if @win.body_display
       @win.draw_circle(@p0, :radius => @win.length / 2, :vertex => 16)
     end
-  end
-
-  def screen_out?
-    false
   end
 end
 
@@ -67,7 +61,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects = Array.new(42){|i|Joint.new(self, i, srect.center.clone)}
+    @objects = Array.new(42){|i|Joint.new(self, i, rect.center.clone)}
     @cursor_display = false     # 三角カーソル非表示
 
     @body_display = true # 胴体描画モード

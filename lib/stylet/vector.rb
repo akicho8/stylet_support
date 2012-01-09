@@ -71,6 +71,22 @@
 #     end
 #   end
 #
+# 円が完全に重なっている場合、ランダムに引き離す定石
+#
+#   diff = a - b
+#   if diff.length.zero?
+#     arrow = Stylet::Vector.nonzero_random_new
+#     a -= arrow * ar
+#     b += arrow * br
+#   end
+#
+#
+# 参考URL
+# ・基礎の基礎編その１　内積と外積の使い方 http://marupeke296.com/COL_Basic_No1_InnerAndOuterProduct.html
+# ・内積が角度になる証明 http://marupeke296.com/COL_Basic_No1_DotProof.html
+# ・衝突判定編 http://marupeke296.com/COL_main.html
+# ・その５　反射ベクトルと壁ずりベクトル http://marupeke296.com/COL_Basic_No5_WallVector.html
+#
 module Stylet
   Point = Struct.new(:x, :y)
   Point3 = Struct.new(:x, :y, :z)
@@ -104,21 +120,37 @@ module Stylet
           end
           alias_method attr[:sym], attr[:name]
         }
+
+        [
+          {:name => :round},
+        ].each{|attr|
+          define_method(attr[:name]) do
+            self.class.new(*members.collect{|m|Float(send(m)).send(attr[:name])})
+          end
+          define_method("#{attr[:name]}!") do |*args|
+            instance_copy_from(send(attr[:name], *args))
+          end
+        }
       end
     end
 
     module ClassMethods
       def random(r = 1.0)
-        new(*members.collect{Etc.wide_random(r)})
+        new(*members.collect{Etc.wide_rand(r)})
       end
 
       def safe_new(*args)
         new(*args).tap do |obj|
-          if obj.values.all?{|v|v.zero?}
+          if obj.zero?
             p [self, caller]
             raise "ベクトル0はNaNになるので入れんな"
           end
         end
+      end
+
+      # 1.0 と -1.0 で構成したランダム値
+      def nonzero_random_new
+        new(*members.collect{Etc.nonzero_random})
       end
 
       # 内積
@@ -158,9 +190,6 @@ module Stylet
       ##--------------------------------------------------------------------------------
       # 汎用
       #
-      # obj.__send(:round)
-      # obj.__send!(:round)
-      #
       # def __send(method, *args)
       #   self.class.new(*members.collect{|m|Float(send(m)).send(method, *args)})
       # end
@@ -193,6 +222,11 @@ module Stylet
         # if c.zero?
         #   return Vector.new(0, 0)
         # end
+
+        if c.zero?
+          warn [x, y].inspect
+          raise ZeroDivisionError
+        end
 
         self.class.safe_new(*values.collect{|v|Float(v) / c})
       end
@@ -229,6 +263,7 @@ module Stylet
       def length
         Math.sqrt(values.collect{|v|v ** 2}.inject(0, &:+)) # Math.sqrt(x ** 2 + y ** 2)
       rescue Errno::EDOM => error
+        warn values.inspect
         warn "(p - p).length と書いているコードがあるはず。それをやると sqrt(0) になるので if p != p を入れてくれ"
         raise error
       end
@@ -236,11 +271,11 @@ module Stylet
       #
       # 反対方向のベクトルを返す
       #
-      def __negative
+      def reverse
         self.class.new(*values.collect{|v|-v})
       end
 
-      #
+      # 内積
       def inner_product(other)
         self.class.send(__method__, self, other)
       end
@@ -259,6 +294,15 @@ module Stylet
 
       def to_3dv
         Vector3.new(*(values + [0]).take(3))
+      end
+
+      # ゼロベクトルか？
+      def zero?
+        values.all?{|v|v.zero?}
+      end
+
+      def nonzero?
+        !zero?
       end
     end
   end
@@ -287,8 +331,8 @@ module Stylet
     #     ↓
     #   cursor += Stylet::Fee.sincos(dir) * speed
     #
-    def self.sincos(a, b = a)
-      new(Stylet::Fee.cos(a), Stylet::Fee.sin(b))
+    def self.sincos(x, y = x)
+      new(Stylet::Fee.cos(x), Stylet::Fee.sin(y))
     end
 
     # 反射ベクトルの取得
@@ -312,26 +356,22 @@ module Stylet
     #   hakuhin.jp/as/collide.html#COLLIDE_02 の方法だと x + t * n.x * 2.0 * 0.8 と一気に書いていたけど
     #   メソッド化するときには分解した方がわかりやすそうなのでこうした。
     #
+    #   その５ 反射ベクトルと壁ずりベクトル
+    #   http://marupeke296.com/COL_Basic_No5_WallVector.html
+    #
     def reflect(n)
-      t = -(n.x * x + n.y * y) / (n.x ** 2 + n.y ** 2)
-      Vector.new(
-        # x + t * n.x * 2.0,
-        # y + t * n.y * 2.0
-        # x + t * n.x * 2.0 * rate,
-        # y + t * n.y * 2.0 * rate
-        t * n.x * 2.0,
-        t * n.y * 2.0
-        )
+      slide(n) * 2.0
     end
 
-    # function Vec3dSlide(spd,nor){
-    #     var t = -(nor.x * spd.x + nor.y * spd.y)/
-    # (nor.x * nor.x + nor.y * nor.y);
-    #     return {
-    #         x : spd.x + t * nor.x,
-    #         y : spd.y + t * nor.y
-    #     };
-    # }
+    # スライドベクトル
+    #
+    # self: スピードベクトル
+    #    n: 法線ベクトル
+    #
+    def slide(n)
+      t = -(n.x * x + n.y * y) / (n.x ** 2 + n.y ** 2)
+      n * t
+    end
 
     #
     #    p: 現在地点
@@ -362,15 +402,14 @@ module Stylet
     #
     # 相手の方向を取得
     #
-    #   Math.atan2(y, x) * 180 / Math.PI
-    #
     def angle_to(target)
-      # Stylet::Fee.angle(x, y, target.x, target.y)
       (target - self).angle
     end
 
     #
     # ベクトルから角度に変換
+    #
+    #   Math.atan2(y, x) * 180 / Math.PI
     #
     def angle
       Stylet::Fee.angle(0, 0, x, y)
@@ -381,6 +420,14 @@ module Stylet
     #
     def self.pos_vector_rate(a, b, rate)
       a + Stylet::Vector.sincos(a.angle_to(b)) * (a.distance_to(b) * rate) # FIXME: ダメなコード
+    end
+
+    def rotate(a)
+      Stylet::Vector.sincos(angle + a) * length
+    end
+
+    def rotate!(*args)
+      instance_copy_from(rotate(*args))
     end
   end
 

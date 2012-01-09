@@ -5,6 +5,7 @@ describe Stylet::Vector do
   before do
     @p0 = Stylet::Vector.new(10, 20)
     @p1 = Stylet::Vector.new(100, 200)
+    @obj = Stylet::Vector.new(3, 4)
   end
 
   it "ランダム" do
@@ -12,21 +13,18 @@ describe Stylet::Vector do
   end
 
   it "加減演算" do
-    (@p0 + @p1).should == Stylet::Vector.new(110, 220)
-    (@p0 - @p1).should == Stylet::Vector.new(-90, -180)
+    (@obj + @obj).should == Stylet::Vector.new(6, 8)
+    (@obj - @obj).should == Stylet::Vector.new(0, 0)
   end
 
   it "スケーリング" do
-    @p0.scale(2.0).should == Stylet::Vector.new(20, 40)
+    @obj.scale(2).should == Stylet::Vector.new(6, 8)
+    (@obj * 2).should == Stylet::Vector.new(6, 8)
+    (@obj * 0.5).should == Stylet::Vector.new(1.5, 2.0)
   end
 
   it "正規化" do
-    Stylet::Vector.new(10, 20).normalize
-    Stylet::Vector.new(10, -20).normalize
-
-    # Stylet::Vector.new(10, 20).normalize.should == Stylet::Vector.new(0.5, 1.0)
-    # Stylet::Vector.new(10, -20).normalize.should == Stylet::Vector.new(0.5, -1.0)
-    # Stylet::Vector.new(0, 0).normalize.should == Stylet::Vector.new(NaN, NaN)
+    Stylet::Vector.new(3, 4).normalize.should == Stylet::Vector.new(0.6, 0.8)
   end
 
   describe "破壊的メソッド" do
@@ -37,7 +35,7 @@ describe Stylet::Vector do
   end
 
   it "長さ" do
-    @p0.length.to_s.should == "22.3606797749979"
+    Stylet::Vector.new(3, 4).length.should == 5
   end
 
   it "距離" do

@@ -11,11 +11,11 @@ class Ray
     @p0 = p0                               # 自機の位置ベクトル
     @dot_radius = 3                        # 点の大きさ
     @vertex = 32
-    @vS = Stylet::Vector.new(0.84, -0.52).normalize  # 速度ベクトル
+    @vS = Stylet::Vector.new(0.84, -0.10).normalize  # 速度ベクトル
 
     # 線分AB
-    @pA = @win.srect.center + Stylet::Vector.new(@win.half_x * 0.3, -@win.half_y * 0.5)
-    @pB = @win.srect.center + Stylet::Vector.new(@win.half_x * 0.1, +@win.half_y * 0.5)
+    @pA = @win.rect.center + Stylet::Vector.new(@win.rect.w * 0.3, -@win.rect.h * 0.30)
+    @pB = @win.rect.center + Stylet::Vector.new(@win.rect.w * 0.0, +@win.rect.h * 0.30)
 
     mdoe_init
   end
@@ -41,7 +41,7 @@ class Ray
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
         if @win.cursor != @p0
-          @vS = (@win.cursor - @p0).normalize * @vS.radius
+          @vS = (@win.cursor - @p0).normalize * @vS.length
         end
       end
     end
@@ -81,22 +81,19 @@ class Ray
       # 内積の取得
       @ac1 = @pC1 - @pA
       @bc1 = @pC1 - @pB
-      @ip1 = Stylet::Vector.inner_product(@ac1, @bc1)
-      @win.vputs "C1 inner_product(AC1, BC1): #{@ip} (#{inner_product_state(@ip1)})"
+      if @ac1.nonzero? && @bc1.nonzero?
+        @ip1 = Stylet::Vector.inner_product(@ac1, @bc1)
+        @win.vputs "C1 inner_product(AC1, BC1): #{@ip} (#{inner_product_state(@ip1)})"
 
-      # 二つのベクトルがどちらを向いているか視覚化(お互いが衝突していたら線の中にいることがわかる)
-      if @ac1.normalize.scale(20).x.nan?
-        raise "Nan"
+        @win.draw_vector(@ac1.normalize.scale(20), :origin => @pA + @normal.scale(-20*1), :arrow_size => 8)
+        @win.draw_vector(@bc1.normalize.scale(20), :origin => @pB + @normal.scale(-20*1), :arrow_size => 8)
       end
-
-      @win.draw_vector(@ac1.normalize.scale(20), :origin => @pA + @normal.scale(-20*1), :arrow_size => 8)
-      @win.draw_vector(@bc1.normalize.scale(20), :origin => @pB + @normal.scale(-20*1), :arrow_size => 8)
     end
 
     # t2 と C2 の取得
     begin
       # 自機から面と垂直な線を出して面と交差するか調べる(ここが点の場合と違う)
-      @vP = Stylet::Vector.sincos(@normal.__negative.angle).scale(@radius)
+      @vP = Stylet::Vector.sincos(@normal.reverse.angle).scale(@radius)
       @win.draw_vector(@vP, :origin => @p0)
       @win.vputs "vP", :vector => @vP + @p0
 
@@ -114,12 +111,14 @@ class Ray
       # 内積の取得
       @ac2 = @pC2 - @pA
       @bc2 = @pC2 - @pB
-      @ip2 = Stylet::Vector.inner_product(@ac2, @bc2)
-      @win.vputs "C2 inner_product(AC2, BC2): #{@ip2} (#{inner_product_state(@ip2)})"
+      if @ac2.nonzero? && @bc2.nonzero?
+        @ip2 = Stylet::Vector.inner_product(@ac2, @bc2)
+        @win.vputs "C2 inner_product(AC2, BC2): #{@ip2} (#{inner_product_state(@ip2)})"
 
-      # 二つのベクトルがどちらを向いているか視覚化(お互いが衝突していたら線の中にいることがわかる)
-      @win.draw_vector(@ac2.normalize.scale(20), :origin => @pA + @normal.scale(-20*2), :arrow_size => 8)
-      @win.draw_vector(@bc2.normalize.scale(20), :origin => @pB + @normal.scale(-20*2), :arrow_size => 8)
+        # 二つのベクトルがどちらを向いているか視覚化(お互いが衝突していたら線の中にいることがわかる)
+        @win.draw_vector(@ac2.normalize.scale(20), :origin => @pA + @normal.scale(-20*2), :arrow_size => 8)
+        @win.draw_vector(@bc2.normalize.scale(20), :origin => @pB + @normal.scale(-20*2), :arrow_size => 8)
+      end
     end
 
     # 線の表裏どちらにいるか。また衝突しているか？ (この時点では無限線)
@@ -166,15 +165,17 @@ class Ray
         end
 
         # 速度制限(円が線から飛び出さないようにする)
-        if @vS.radius > @radius
+        if @vS.length > @radius
           @vS = @vS.normalize.scale(@radius)
         end
 
         # 点Aと点Bに円がめり込んでいたら押す
         [@pA, @pB].each do |pX|
           diff = @p0 - pX
-          if diff.length < @radius
-            @p0 = pX + diff.normalize.scale(@radius)
+          if diff.length > 0
+            if diff.length < @radius
+              @p0 = pX + diff.normalize.scale(@radius)
+            end
           end
         end
       end
@@ -197,14 +198,15 @@ class Ray
       @win.vputs "Speed Vector: #{@vS.to_a.inspect}"
 
       # 線分ABの視覚化
-      @win.draw_line2(@pA, @pB)
+      @win.draw_line(@pA, @pB)
       @win.vputs "A", :vector => @pA
       @win.vputs "B", :vector => @pB
-    end
-  end
 
-  def screen_out?
-    false
+      if @win.button.btC.press? || @win.button.btD.press?
+        @win.draw_line(@p0, @pC1)
+        @win.draw_line(@p0, @pC2)
+      end
+    end
   end
 
   def ps_state(t)
@@ -238,10 +240,10 @@ class App < Stylet::Base
   def before_main_loop
     super if defined? super
 
-    @ray_mode = true           # true:ドット false:円
+    @ray_mode = false          # true:ドット false:円
     @reflect_mode = true       # true:反射する
 
-    @objects << Ray.new(self, srect.center.clone)
+    @objects << Ray.new(self, rect.center.clone)
     @cursor_vertex = 3
   end
 

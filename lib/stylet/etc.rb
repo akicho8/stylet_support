@@ -20,12 +20,18 @@ module Stylet
       range_limited(v, (-r..r))
     end
 
-    def range_random(a, b)
+    def range_rand(a, b)
       a + rand * (b - a)
     end
 
-    def wide_random(r)
+    def wide_rand(r)
       rand * (r * 2) - r
+    end
+
+    # -1.0 と +1.0 だけでランダム
+    # 円が完全に衝突したとき用
+    def nonzero_random
+      rand(2).zero? ? 1.0 : -1.0
     end
   end
 end

@@ -9,13 +9,13 @@ class Scene
     @win = win
 
     # A
-    @pA = @win.srect.center.clone                           # 点
-    @rA = Stylet::Rect.new(-20, -20, 20*2, 20*2)              # 大きさ
+    @pA = @win.rect.center.clone                              # 点
+    @rA = Stylet::Rect.centered_create(40, 40)                # 大きさ
     @sA = Stylet::Vector.sincos(Stylet::Fee.degree(180 + 90)) # 速度
 
     # B
-    @pB = @win.srect.center.clone                     # 点
-    @rB = Stylet::Rect.new(-30, -50, 30*2, 50*2)        # 大きさ
+    @pB = @win.rect.center.clone                        # 点
+    @rB = Stylet::Rect.centered_create(100, 60)         # 大きさ
     @sB = Stylet::Vector.sincos(Stylet::Fee.degree(45)) # 速度
 
     @speed = 100    # 速度ベクトル 1.0 を画面上では何ドットで表わすか？
@@ -37,7 +37,7 @@ class Scene
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
         if @win.cursor != @pA
-          @sA = (@win.cursor - @pA).normalize * @sA.radius
+          @sA = (@win.cursor - @pA).normalize * @sA.length
         end
       end
     end
@@ -94,20 +94,20 @@ class Scene
     end
 
     # @win.screen.fill_rect(10, 10, 0, 0, [255, 255, 255])
-    # @win.draw_rect2(@tA, :fill => @collision)
+    # @win.draw_rect(@tA, :fill => @collision)
 
-    @win.draw_rect2(@tA, :fill => @collision)
+    @win.draw_rect(@tA, :fill => @collision)
 
     if @win.button.btC.press? && @collision
       # ゴーストの表示
-      @win.draw_rect2(@rA.add_vector(@win.cursor))
+      @win.draw_rect(@rA.add_vector(@win.cursor))
     end
 
     @win.vputs "A", :vector => @pA
     @win.vputs "A: #{@tA.to_a.inspect}"
     @win.draw_vector(@sA.scale(@speed), :origin => @pA, :label => @sA.length)
 
-    @win.draw_rect2(@rB.add_vector(@pB))
+    @win.draw_rect(@rB.add_vector(@pB))
     @win.vputs "B", :vector => @pB
     @win.vputs "B: #{@rB.to_a.inspect}"
     @win.draw_vector(@sB.scale(@speed), :origin => @pB, :label => @sB.length)

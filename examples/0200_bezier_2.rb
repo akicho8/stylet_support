@@ -5,9 +5,9 @@ class BezierUnit
   include BezierUnitBase
 
   def setup
-    @mpoints << MovablePoint.new(self, @win.srect.center + Stylet::Vector.new(-@win.srect.w / 4, @win.srect.h / 4))
-    @mpoints << MovablePoint.new(self, @win.srect.center + Stylet::Vector.new(0, -@win.srect.h / 4))
-    @mpoints << MovablePoint.new(self, @win.srect.center + Stylet::Vector.new(@win.srect.w / 4, @win.srect.h / 4))
+    @mpoints << MovablePoint.new(self, @win.rect.center + Stylet::Vector.new(-@win.rect.w / 4, @win.rect.h / 4))
+    @mpoints << MovablePoint.new(self, @win.rect.center + Stylet::Vector.new(0, -@win.rect.h / 4))
+    @mpoints << MovablePoint.new(self, @win.rect.center + Stylet::Vector.new(@win.rect.w / 4, @win.rect.h / 4))
   end
 
   # 二次ベジェ曲線

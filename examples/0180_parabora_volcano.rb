@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# 放物線デモ
+# 放物線デモ(火山)
 #
 # ・Zでスピード反転
 # ・Xでスピード二倍
@@ -16,9 +16,10 @@ class Ball
     @vertex = 3 + rand(3)           # 物体は何角形か
     @radius = 2 + rand(24)          # 物体の大きさ
     @arrow = rand(2).zero? ? 1 : -1 # どっち向きに回転するか
+    @reflect = 0
 
-    @pos = Stylet::Vector.new(@win.srect.center.x, @win.srect.max_y + @radius * 2)             # 物体初期位置
-    @speed = Stylet::Vector.new(Stylet::Etc.wide_random(3.0), Stylet::Etc.range_random(-8, -16)) # 速度ベクトル
+    @pos = Stylet::Vector.new(@win.rect.center.x, @win.rect.max_y + @radius * 2)             # 物体初期位置
+    @speed = Stylet::Vector.new(Stylet::Etc.wide_rand(2.0), Stylet::Etc.range_rand(-12, -15)) # 速度ベクトル
     @gravity = Stylet::Vector.new(0, 0.2)                                                        # 重力
   end
 
@@ -52,9 +53,21 @@ class Ball
     @speed += @gravity # 加速
     @pos += @speed     # 進む
 
-    # 落ちてしまったら死ぬ
-    @max = @win.srect.max_y + @radius * 2
-    if @pos.y > @max && @speed.y >= 1
+    # 画面下で弾ける
+    if @reflect == 0
+      max = (@win.rect.max_y - @radius)
+      if @pos.y > max && @speed.y >= 1
+        @speed.y = -@speed.y
+        @speed = @speed.scale(0.5)
+        if @speed.length < 1.0
+          @reflect += 1
+        end
+      end
+    end
+
+    # 完全に落ちてしまったら死ぬ
+    max = @win.rect.max_y + @radius * 2
+    if @pos.y > max && @speed.y >= 1
       @win.objects.delete(self)
     end
 

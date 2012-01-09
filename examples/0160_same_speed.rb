@@ -8,9 +8,9 @@ class Scene
   def initialize(win)
     @win = win
 
-    @pA = @win.srect.center.clone
+    @pA = @win.rect.center.clone
     @sA = Stylet::Vector.sincos(Stylet::Fee.clock(8))
-    @rect = Stylet::Rect.circle_like(50)
+    @rect = Stylet::Rect.centered_create(50)
 
     @radius = 50
     @vertex = 32
@@ -25,8 +25,8 @@ class Scene
 
       # 外に出てしまったらスピード反転
 
-      # @win.vputs Stylet::CollisionSupport.rect_include?(@win.srect, @rect.add_vector(@pA)).inspect
-      unless Stylet::CollisionSupport.rect_include?(@win.srect, @rect.add_vector(@pA))
+      # @win.vputs Stylet::CollisionSupport.rect_include?(@win.rect, @rect.add_vector(@pA)).inspect
+      unless Stylet::CollisionSupport.rect_include?(@win.rect, @rect.add_vector(@pA))
         @sA = @sA * -1
       end
 
@@ -37,7 +37,7 @@ class Scene
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
         if @win.cursor != @pA
-          @sA = (@win.cursor - @pA).normalize * @sA.radius
+          @sA = (@win.cursor - @pA).normalize * @sA.length
         end
       end
     end
@@ -45,8 +45,8 @@ class Scene
     if @mode == "mode1"
     end
 
-    @win.draw_rect2(@win.srect)
-    @win.draw_rect2(@rect.add_vector(@pA))
+    @win.draw_rect(@win.rect)
+    @win.draw_rect(@rect.add_vector(@pA))
     @win.draw_vector(@sA.scale(@radius / 2), :origin => @pA)
   end
 end

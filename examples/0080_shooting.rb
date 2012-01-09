@@ -45,10 +45,10 @@ class Bullet
   end
 
   def screen_out?
-    unless (@win.srect.min_x - @size .. (@win.srect.max_x + @size)).include?(@pos.x)
+    unless (@win.rect.min_x - @size .. (@win.rect.max_x + @size)).include?(@pos.x)
       return true
     end
-    unless (@win.srect.min_y - @size .. (@win.srect.max_y + @size)).include?(@pos.y)
+    unless (@win.rect.min_y - @size .. (@win.rect.max_y + @size)).include?(@pos.y)
       return true
     end
     if @radius < 0
@@ -61,7 +61,7 @@ class Bullet
     @radius += @speed
     x = @pos.x + Stylet::Fee.cos(@dir) * @radius
     y = @pos.y + Stylet::Fee.sin(@dir) * @radius
-    @win.draw_rect2(Stylet::Rect.new(x - @size, y - @size, @size * 2, @size * 2), :fill => true)
+    @win.draw_rect(Stylet::Rect.new(x - @size, y - @size, @size * 2, @size * 2), :fill => true)
   end
 end
 
@@ -71,8 +71,8 @@ class App < Stylet::Base
   def before_main_loop
     super
     @objects = []
-    ship1 = GunShip1.new(self, Stylet::Vector.new(srect.half_x, srect.half_y - srect.half_y * 0.8))
-    ship2 = GunShip2.new(self, Stylet::Vector.new(srect.half_x, srect.half_y + srect.half_y * 0.8))
+    ship1 = GunShip1.new(self, Stylet::Vector.new(rect.hx, rect.hy - rect.hy * 0.8))
+    ship2 = GunShip2.new(self, Stylet::Vector.new(rect.hx, rect.hy + rect.hy * 0.8))
     ship1.target = ship2
     ship2.target = ship1
     @objects << ship1

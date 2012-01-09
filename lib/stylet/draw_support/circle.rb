@@ -2,7 +2,7 @@
 module Stylet
   module DrawSupport
     #
-    # draw_circle(srect.center)
+    # draw_circle(rect.center)
     #
     def draw_circle(p0, options = {})
       options = {
@@ -47,6 +47,6 @@ end
 if $0 == __FILE__
   require File.expand_path(File.join(File.dirname(__FILE__), "../../stylet"))
   Stylet::Base.main_loop do |win|
-    win.draw_circle(win.srect.center)
+    win.draw_circle(win.rect.center)
   end
 end

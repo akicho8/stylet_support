@@ -86,7 +86,7 @@ module BezierUnitBase
       @line_count.times{|i|
         p0 = xys[i]
         p1 = xys[i.next]
-        @win.draw_line2(p0, p1)
+        @win.draw_line(p0, p1)
       }
     end
 

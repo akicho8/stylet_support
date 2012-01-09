@@ -21,11 +21,9 @@ class Circle
       # カーソルから円を押し出す
       @p0 = @win.cursor + Stylet::Vector.sincos(@win.cursor.angle_to(@p0)) * @radius
     end
-    @win.draw_circle(@p0, :radius => @radius, :vertex => 32)
-  end
 
-  def screen_out?
-    false
+    @win.draw_circle(@p0, :radius => @radius, :vertex => 32)
+    @win.vputs "Z:x++ X:x--"
   end
 end
 
@@ -34,13 +32,8 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << Circle.new(self, srect.center.clone)
+    @objects << Circle.new(self, rect.center.clone)
     @cursor_radius = 1
-  end
-
-  def update
-    super if defined? super
-    vputs "Z:x++ X:x--"
   end
 end
 

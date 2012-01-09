@@ -8,7 +8,7 @@ class Scene
   def initialize(win)
     @win = win
 
-    @pA = @win.srect.center.clone
+    @pA = @win.rect.center.clone
     @sA = Stylet::Vector.sincos(Stylet::Fee.clock(8))
 
     @radius = 50
@@ -27,7 +27,7 @@ class Scene
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
         if @win.cursor != @pA
-          @sA = (@win.cursor - @pA).normalize * @sA.radius
+          @sA = (@win.cursor - @pA).normalize * @sA.length
         end
       end
     end

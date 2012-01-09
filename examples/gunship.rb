@@ -28,14 +28,14 @@ class GunShip
     if dir = axis_angle
       x = @pos.x + Stylet::Fee.cos(dir) * @speed
       y = @pos.y + Stylet::Fee.sin(dir) * @speed
-      if (@win.srect.min_x..@win.srect.max_x).include?(x)
+      if (@win.rect.min_x..@win.rect.max_x).include?(x)
         @pos.x = x
       end
-      if (@win.srect.min_y..@win.srect.max_y).include?(y)
+      if (@win.rect.min_y..@win.rect.max_y).include?(y)
         @pos.y = y
       end
     end
 
-    @win.draw_rect2(Stylet::Rect.new(@pos.x - @size, @pos.y - @size, @size * 2, @size * 2))
+    @win.draw_rect(Stylet::Rect.new(@pos.x - @size, @pos.y - @size, @size * 2, @size * 2))
   end
 end

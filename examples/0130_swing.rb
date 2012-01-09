@@ -25,7 +25,7 @@ class Swing
     @dir1 = Stylet::Fee.clock(1) # 角度
     @speed = 0                   # 角速度
     @friction = 0.0              # 摩擦(0.0:なし 1.0:最大)
-    @radius = @win.half_y * 0.8 # 糸の長さ
+    @radius = @win.rect.hy * 0.8 # 糸の長さ
     @ball_radius = 32            # 鉄球自体の半径
     @dir2 = nil                  # 振り子の中心(p0)からの重力反映座標(pB)の角度
   end
@@ -47,7 +47,7 @@ class Swing
 
     # 振り子の中心(p0)から重力反映座標(pB)への線を表示確認
     if @win.debug_mode
-      @win.draw_line2(@p0, @pB)
+      @win.draw_line(@p0, @pB)
     end
 
     # 鉄球の角度が     dir1=0.9 (時計の14分の角度)
@@ -84,7 +84,7 @@ class Swing
     end
 
     # 中心と鉄球の線
-    @win.draw_line2(@p0, @pA)
+    @win.draw_line(@p0, @pA)
 
     # 鉄球
     @win.draw_circle(@pA, :radius => @ball_radius, :vertex => 16)
@@ -92,10 +92,10 @@ class Swing
     # デバッグモード
     if @win.debug_mode
       # 仮想鉄球への紐
-      @win.draw_line2(@p0, @pA)
+      @win.draw_line(@p0, @pA)
 
       # 実鉄球から仮想鉄球への線
-      @win.draw_line2(@pA, @pB)
+      @win.draw_line(@pA, @pB)
       @win.vputs "A", :vector => @pA
       @win.vputs "B", :vector => @pB
 
@@ -125,7 +125,7 @@ class Swing
     _r = 128
     p2 = @pA + Stylet::Vector.sincos(@dir1 - Stylet::Fee.r90) * _r
     p3 = @pA + Stylet::Vector.sincos(@dir1 + Stylet::Fee.r90) * _r
-    @win.draw_line2(p2, p3)
+    @win.draw_line(p2, p3)
   end
 end
 
@@ -137,7 +137,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << Swing.new(self, srect.center.clone)
+    @objects << Swing.new(self, rect.center.clone)
 
     @debug_mode = true   # デバッグモード
     @gravity = Stylet::Vector.new(0, 100)   # 重力加速度(整数で指定すること)

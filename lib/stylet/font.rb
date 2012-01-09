@@ -48,7 +48,10 @@ module Stylet
       return if str.empty?
 
       if options[:vector]
-        @font.drawBlendedUTF8(@screen, str, options[:vector].x, options[:vector].y, *Palette["font"])
+        begin
+          @font.drawBlendedUTF8(@screen, str, options[:vector].x, options[:vector].y, *Palette["font"])
+        rescue RangeError
+        end
       else
         vputs(str, :vector => Vector.new(0, @__vputs_lines * (@font.line_skip + Config[:font_margin])))
         @__vputs_lines += 1

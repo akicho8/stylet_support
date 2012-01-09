@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 
-require File.expand_path(File.join(File.dirname(__FILE__), "screen_accessors"))
-
 module Stylet
   module Draw
-    include ScreenAccessors
-
-    attr_reader :count, :check_fps, :sdl_event, :srect, :screen
+    attr_reader :count, :check_fps, :sdl_event, :rect, :screen
 
     def initialize
       super
@@ -25,7 +21,7 @@ module Stylet
       end
       w, h = Config[:screen_size]
       @screen ||= SDL::Screen.open(w, h, Config[:color_depth], options)
-      @srect = Rect.new(0, 0, @screen.w, @screen.h)
+      @rect = Rect.new(0, 0, @screen.w, @screen.h)
 
       if Config[:background] && Config[:background_image]
         unless @backgroud_image
@@ -93,14 +89,14 @@ module Stylet
       end
     end
 
-    def draw_line(x0, y0, x1, y1, color)
+    def __draw_line(x0, y0, x1, y1, color)
       @screen.draw_line(x0, y0, x1, y1, Palette[color])
     end
 
     #
     # draw_rect の場合、デフォルトだと幅+1ドット描画されるため -1 してある
     #
-    def draw_rect(x, y, w, h, options = {})
+    def __draw_rect(x, y, w, h, options = {})
       options = {
         :color => "white",
       }.merge(options)
@@ -123,17 +119,18 @@ module Stylet
     #   @screen.fill_rect(x, y, w.abs - 1, h.abs - 1, Palette[color])
     # end
 
-    def draw_line2(p0, p1, options = {})
+    def draw_line(p0, p1, options = {})
       options = {
         :color => "white",
       }.merge(options)
       @screen.draw_line(p0.x, p0.y, p1.x, p1.y, Palette[options[:color]])
     rescue RangeError => error
-      p [error, p0, p1]
+      # warn [p0, p1].inspect
+      # raise error
     end
 
-    def draw_rect2(rect, options = {})
-      draw_rect(rect.x, rect.y, rect.w, rect.h, options)
+    def draw_rect(rect, options = {})
+      __draw_rect(rect.x, rect.y, rect.w, rect.h, options)
     end
 
     # def __fill_rect2(rect)
@@ -157,9 +154,9 @@ module Stylet
 
     def background_clear
       if @backgroud_image
-        SDL::Surface.blit(@backgroud_image, @srect.x, @srect.y, @srect.w, @srect.h, @screen, 0, 0)
+        SDL::Surface.blit(@backgroud_image, @rect.x, @rect.y, @rect.w, @rect.h, @screen, 0, 0)
       else
-        draw_rect2(@srect, :color => "background", :fill => true)
+        draw_rect(@rect, :color => "background", :fill => true)
       end
     end
   end

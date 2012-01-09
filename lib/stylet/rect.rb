@@ -9,7 +9,7 @@ module Stylet
       new(*args)
     end
 
-    def self.circle_like(rx, ry = rx)
+    def self.centered_create(rx, ry = rx)
       new(-rx, -ry, rx * 2, ry * 2)
     end
 
@@ -62,11 +62,11 @@ module Stylet
     end
 
     #--------------------------------------------------------------------------------
-    def half_x
+    def hx
       x + w / 2
     end
 
-    def half_y
+    def hy
       y + h / 2
     end
 
@@ -74,7 +74,7 @@ module Stylet
     alias height h
 
     def center
-      Vector.new(half_x, half_y)
+      Vector.new(hx, hy)
     end
 
     def add_vector(vec)

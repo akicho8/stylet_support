@@ -10,16 +10,16 @@ class BezierUnit
       # 横に配置
       n = 2
       @mpoints += Array.new(n + 1){|i|
-        x = (@win.srect.width * 0.1) + ((@win.srect.width * 0.8) / n * i)
-        y = @win.srect.half_y
+        x = (@win.rect.width * 0.1) + ((@win.rect.width * 0.8) / n * i)
+        y = @win.rect.hy
         MovablePoint.new(self, Stylet::Vector.new(x, y))
       }
     when true
       # 円状に配置
       n = 5
-      r = half_y * 0.9
+      r = hy * 0.9
       @mpoints += Array.new(n){|i|
-        MovablePoint.new(self, @win.srect.center + Stylet::Vector.sincos(1.0 / n * i).scale(r))
+        MovablePoint.new(self, @win.rect.center + Stylet::Vector.sincos(1.0 / n * i).scale(r))
       }
     end
   end

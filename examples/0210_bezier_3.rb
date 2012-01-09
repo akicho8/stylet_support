@@ -5,10 +5,10 @@ class BezierUnit
   include BezierUnitBase
 
   def setup
-    @mpoints << MovablePoint.new(self, Stylet::Vector.new(@win.srect.min_x + @win.srect.w / 8, @win.srect.half_y))                    # 開始
-    @mpoints << MovablePoint.new(self, Stylet::Vector.new(@win.srect.min_x + @win.srect.w / 4, @win.srect.half_y - @win.srect.h / 4)) # 制御(右)
-    @mpoints << MovablePoint.new(self, Stylet::Vector.new(@win.srect.max_x - @win.srect.w / 4, @win.srect.half_y - @win.srect.h / 4)) # 制御(左)
-    @mpoints << MovablePoint.new(self, Stylet::Vector.new(@win.srect.max_x - @win.srect.w / 8, @win.srect.half_y))                    # 終了
+    @mpoints << MovablePoint.new(self, Stylet::Vector.new(@win.rect.min_x + @win.rect.w / 8, @win.rect.hy))                    # 開始
+    @mpoints << MovablePoint.new(self, Stylet::Vector.new(@win.rect.min_x + @win.rect.w / 4, @win.rect.hy - @win.rect.h / 4)) # 制御(右)
+    @mpoints << MovablePoint.new(self, Stylet::Vector.new(@win.rect.max_x - @win.rect.w / 4, @win.rect.hy - @win.rect.h / 4)) # 制御(左)
+    @mpoints << MovablePoint.new(self, Stylet::Vector.new(@win.rect.max_x - @win.rect.w / 8, @win.rect.hy))                    # 終了
   end
 
   # 三次ベジェ曲線

@@ -21,12 +21,12 @@ class Scene
   def initialize(win)
     @win = win
 
-    @pA = @win.srect.center.clone + Stylet::Vector.new(80, -70)
+    @pA = @win.rect.center.clone + Stylet::Vector.new(80, -70)
     @sA = Stylet::Vector.sincos(Stylet::Fee.clock(6, 15)).scale(1.0)
     @am = 100
     @a_radius = 100
 
-    @pB = @win.srect.center.clone + Stylet::Vector.new(-120, -80)
+    @pB = @win.rect.center.clone + Stylet::Vector.new(-120, -80)
     @sB = Stylet::Vector.sincos(Stylet::Fee.clock(4)).scale(1.0)
     @bm = 100                   # 質量
     @b_radius = 30
@@ -49,7 +49,7 @@ class Scene
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
         if @win.cursor != @pA
-          @sA = (@win.cursor - @pA).normalize * @sA.radius
+          @sA = (@win.cursor - @pA).normalize * @sA.length
         end
       end
     end
@@ -75,8 +75,8 @@ class Scene
       if @rdiff > 0
         begin
           # 反射するモードでもいったんお互いを引き離さないと絡まってしまう
-          @pA -= @diff.normalize * @rdiff / 2
-          @pB += @diff.normalize * @rdiff / 2
+          @pA -= @diff.normalize * @rdiff * 0.5
+          @pB += @diff.normalize * @rdiff * 0.5
 
           # (am.x,am.y) 円Ａから円Ｂへ移動運動を発生させるベクトル
           # (ar.x,ar.y) 円Ａから円Ｂへ回転運動を発生させるベクトル

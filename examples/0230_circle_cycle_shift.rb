@@ -2,7 +2,7 @@
 #
 # ギャラガの敵の動き
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
+require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Ball
   def initialize(win, index)
@@ -22,21 +22,30 @@ class Ball
   #
   def pos_new(count)
     pos = Stylet::Vector.new
-    pos.x = Stylet::Fee.cos(1.0 / 512 * (count * 3 + @index * 24)) * @win.half_x
-    pos.y = Stylet::Fee.sin(1.0 / 512 * (count * 4 + @index * 24)) * @win.half_y
-    @win.srect.center + pos
+    pos.x = Stylet::Fee.cos(1.0 / 512 * (count * @win.xc + @index * 24)) * @win.rect.w * 0.4
+    pos.y = Stylet::Fee.sin(1.0 / 512 * (count * @win.yc + @index * 24)) * @win.rect.h * 0.4
+    @win.rect.center + pos
   end
 end
 
 class App < Stylet::Base
+  include Helper::TriangleCursor
+
+  attr_reader :xc, :yc
+
   def before_main_loop
     super if defined? super
-    @objects = Array.new(8){|i|Ball.new(self, i)}
+    @cursor_display = false
+    @objects += Array.new(16){|i|Ball.new(self, i)}
+    @xc = 3.0
+    @yc = 3.0
   end
 
   def update
     super if defined? super
-    @objects.each{|e|e.update}
+    @xc += 0.5 * (@button.btA.repeat + -@button.btB.repeat)
+    @yc += 0.5 * (@button.btC.repeat + -@button.btD.repeat)
+    vputs [@xc, @yc].inspect
   end
 end
 
