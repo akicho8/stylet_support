@@ -19,7 +19,12 @@ class Ball
     @pos = @win.rect.center.clone                                                           # 中心点
     @speed = Stylet::Vector.new(Stylet::Etc.wide_rand(2.0), Stylet::Etc.range_rand(-6, -8)) # 速度ベクトル
     @gravity = Stylet::Vector.new(0, 0.3)                                                   # 重力
-    @radius = Stylet::Etc.range_rand(8, 20)                                                 # 半径
+    if index < 4
+      @radius = 8 + ((index + 2) ** 2)                                                      # 半径
+    else
+      @radius = Stylet::Etc.range_rand(8, 20)                                               # 半径
+    end
+    Stylet::Etc.upper_limited(1.5)
     @mass = @radius ** 2                                                                    # 質量は面積と比例することにする(PI*r二乗)
     @vertex = Stylet::Etc.range_rand(16, 16).to_i                                           # 何角形か？
   end
@@ -43,10 +48,10 @@ class Ball
       @pC = @pos + @vP.scale(@t)
 
       # 内積の取得
-      ac2 = @pC - pA
-      bc2 = @pC - pB
-      if ac2.nonzero? && bc2.nonzero?
-        @ip2 = Stylet::Vector.inner_product(ac2, bc2)
+      ac = @pC - pA
+      bc = @pC - pB
+      if ac.nonzero? && bc.nonzero?
+        @ip2 = Stylet::Vector.inner_product(ac, bc)
       end
     end
 
@@ -220,15 +225,24 @@ class Scene
     @win = win
     @balls = Array.new(4){|i|Ball.new(@win, self, i)}
     @count = 0
+    @center = @win.rect.center
   end
 
   def update
+    # Aボタンおしっぱなし + マウスで自機角度変更
+    if @win.button.btA.press?
+      @center = @win.cursor.clone
+      # if @win.cursor != @center
+      #   @speed = (@win.cursor - @pos).normalize * @speed.length
+      # end
+    end
+
     # @count += @win.button.btA.repeat_0or1 - @win.button.btB.repeat_0or1
 
     @lines = []
     n = 5
     n.times{|i|
-      @lines << @win.rect.center + Stylet::Vector.sincos((1.0 / 128 * @count) + 1.0 / n * i) * @win.rect.h * 0.4
+      @lines << @center + Stylet::Vector.sincos((1.0 / 128 * @count) + 1.0 / n * i) * @win.rect.h * 0.4
     }
 
     @balls.each{|ball1|
@@ -272,7 +286,7 @@ class App < Stylet::Base
     #    Stylet::Base.instance.vputs "foo"
 
     # 操作説明
-    vputs "Z:ray++ X:ray-- C:drag V:angle"
+    # vputs "Z:ray++ X:ray-- C:drag V:angle"
   end
 end
 

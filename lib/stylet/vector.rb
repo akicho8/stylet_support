@@ -111,6 +111,7 @@ module Stylet
 
         [
           {:name => :scale, :sym => :*},
+          {:name => :div,   :sym => :/},
         ].each{|attr|
           define_method(attr[:name]) do |o|
             self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o)})
@@ -121,12 +122,15 @@ module Stylet
           alias_method attr[:sym], attr[:name]
         }
 
+        alias mul scale
+        alias mul! scale!
+
         [
           {:name => :round},
         ].each{|attr|
           define_method(attr[:name]) do
             self.class.new(*members.collect{|m|Float(send(m)).send(attr[:name])})
-          end
+         end
           define_method("#{attr[:name]}!") do |*args|
             instance_copy_from(send(attr[:name], *args))
           end
@@ -179,6 +183,11 @@ module Stylet
       #     b = b.normalize
       #     a.x * b.x + a.y * b.y
       #
+      #   名前はライブラリによって異なる
+      #     dot
+      #     inner_product
+      #     product
+      #
       def inner_product(a, b)
         a = a.normalize
         b = b.normalize
@@ -224,8 +233,10 @@ module Stylet
         # end
 
         if c.zero?
-          warn [x, y].inspect
-          raise ZeroDivisionError
+          if Config[:cry]
+            raise ZeroDivisionError, "#{[x, y].inspect}"
+          end
+          return clone
         end
 
         self.class.safe_new(*values.collect{|v|Float(v) / c})
@@ -274,6 +285,8 @@ module Stylet
       def reverse
         self.class.new(*values.collect{|v|-v})
       end
+
+      alias -@ reverse
 
       # 内積
       def inner_product(other)
@@ -332,7 +345,7 @@ module Stylet
     #   cursor += Stylet::Fee.sincos(dir) * speed
     #
     def self.sincos(x, y = x)
-      new(Stylet::Fee.cos(x), Stylet::Fee.sin(y))
+      new(Fee.cos(x), Fee.sin(y))
     end
 
     # 反射ベクトルの取得
@@ -380,6 +393,9 @@ module Stylet
     #    n: 法線ベクトル
     #
     # としたら何倍したら線にぶつかるか
+    #
+    # 式の意味がまだ理解できてない
+    #
     def self.collision_power_scale(p, s, a, n)
       d = -(a.x * n.x + a.y * n.y)
       -(n.x * p.x + n.y * p.y + d) / (n.x * s.x + n.y * s.y)
@@ -388,8 +404,8 @@ module Stylet
     # 法線ベクトルの取得(方法1)
     # どう見ても遅い
     def slowly_normal(t)
-      a = angle(t) + Stylet::Fee.r90
-      Vector.new(Stylet::Fee.cos(a), Stylet::Fee.sin(a))
+      a = angle(t) + Fee.r90
+      Vector.new(Fee.cos(a), Fee.sin(a))
     end
 
     # 法線ベクトルの取得(方法2)
@@ -412,22 +428,45 @@ module Stylet
     #   Math.atan2(y, x) * 180 / Math.PI
     #
     def angle
-      Stylet::Fee.angle(0, 0, x, y)
+      Fee.angle(0, 0, x, y)
     end
 
     #
     # 線分 A B の距離 1.0 をしたとき途中の位置ベクトルを取得
     #
+    #   a と b の位置が同じ場合いろいろおかしくなる
+    #
     def self.pos_vector_rate(a, b, rate)
-      a + Stylet::Vector.sincos(a.angle_to(b)) * (a.distance_to(b) * rate) # FIXME: ダメなコード
+      a + sincos(a.angle_to(b)) * (a.distance_to(b) * rate) # FIXME: ダメなコード
     end
 
+    #
+    # 指定の角度だけ回転する
+    #
+    #   自分が最初に考えた方法
+    #
     def rotate(a)
-      Stylet::Vector.sincos(angle + a) * length
+      self.class.sincos(angle + a) * length
     end
 
     def rotate!(*args)
       instance_copy_from(rotate(*args))
+    end
+
+    #
+    # 指定の角度だけ回転する(方法2)
+    #
+    #   他のいくつかのライブラリで使われている方法。
+    #   こっちの方が速そうだけど意味がよくわからない。
+    #
+    def rotate2(a)
+      tx = (x * Fee.cos(a)) - (y * Fee.sin(a))
+      ty = (x * Fee.sin(a)) + (y * Fee.cos(a))
+      self.class.new(tx, ty)
+    end
+
+    def rotate2!(*args)
+      instance_copy_from(rotate2(*args))
     end
   end
 
@@ -445,6 +484,7 @@ if $0 == __FILE__
   p(p0)
   p(Stylet::Vector.new(3, 4).length)
   p(Stylet::Vector.new(3, 4).normalize.scale(5))
+  p -Stylet::Vector.new(3, 4)
 
   # p0 = Stylet::Vector.new(1, 1)
   # p1 = Stylet::Vector.new(1, 1)

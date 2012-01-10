@@ -90,7 +90,7 @@ class App < Stylet::Base
 
     # 操作説明
     vputs "A:body_display"
-    vputs "Z:len++ X:leh-- C:hard_level++ V:hard_level--"
+    vputs "Z:len++ X:len-- C:hard_level++ V:hard_level--"
     vputs "length=#{@length}"
     vputs "hard_level=#{@hard_level}"
 

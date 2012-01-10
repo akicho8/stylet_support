@@ -20,7 +20,7 @@ class Ball
 
     @pos = Stylet::Vector.new(@win.rect.center.x, @win.rect.max_y + @radius * 2)             # 物体初期位置
     @speed = Stylet::Vector.new(Stylet::Etc.wide_rand(2.0), Stylet::Etc.range_rand(-12, -15)) # 速度ベクトル
-    @gravity = Stylet::Vector.new(0, 0.2)                                                        # 重力
+    @gravity = Stylet::Vector.new(0, 0.220)                                                        # 重力
   end
 
   def update
