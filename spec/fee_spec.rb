@@ -2,18 +2,46 @@
 require "spec_helper"
 
 describe Stylet::Fee do
-  it "角度を整数で渡す系" do
-    Stylet::Fee.isin(0).should == 0.0
-    Stylet::Fee.icos(0).should == 1.0
+  describe "整数系" do
+    it "sin/cos" do
+      Stylet::Fee.isin(0).should == 0
+      Stylet::Fee.icos(0).should == Stylet::Fee.one
+    end
+
+    it "sinとcosとatan2の整合性確認" do
+      n = 64
+      (0..n).collect{|i|
+        r = (Stylet::Fee.one_round * i / n) % Stylet::Fee.one_round
+        x = Stylet::Fee.icos(r)
+        y = Stylet::Fee.isin(r)
+        dir = Stylet::Fee.iangle(0, 0, x, y)
+        # p [x, y, r, dir, (r == dir)]
+        r == dir
+      }.should be_all
+    end
+
+    it "二点間の角度を求める" do
+      Stylet::Fee.iangle(0, 0, 0, 1).should == Stylet::Fee.one_round / 4
+    end
   end
 
-  it "一周を1.0として渡せる系" do
-    Stylet::Fee.sin(0).should == 0.0
-    Stylet::Fee.cos(0).should == 1.0
-  end
+  describe "一周も角度も小数で表す系" do
+    it "sin/cos" do
+      Stylet::Fee.sin(0).should == 0.0
+      Stylet::Fee.cos(0).should == 1.0
+    end
 
-  it "二点間の角度を求める" do
-    Stylet::Fee.iangle(0, 0, 0, 1).should == Stylet::Fee.one / 4
+    it "sinとcosとatan2の整合性確認" do
+      n = 32
+      (0..n).collect{|i|
+        r = 1.0 * i / n % 1.0
+        x = Stylet::Fee.cos(r)
+        y = Stylet::Fee.sin(r)
+        dir = Stylet::Fee.angle(0, 0, x, y)
+        # p [i, r, dir]
+        r == dir
+      }.should be_all
+    end
   end
 
   it "時計の時で方向指定" do
