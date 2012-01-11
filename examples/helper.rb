@@ -4,7 +4,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
 Stylet::Config.update({
     :screen_size      => [640, 480],
     # :screen_size      => [800, 600],
-    :color_depth      => 8,
+    # :color_depth      => 8,
   })
 
 module Helper
@@ -60,7 +60,7 @@ module Helper
       end
 
       if dir = axis_angle
-        @cursor += Stylet::Vector.sincos(dir) * @cursor_speed
+        @cursor += Stylet::Vector.angle_at(dir) * @cursor_speed
       end
 
       # vputs @mouse_vector.to_a

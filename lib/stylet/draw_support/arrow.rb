@@ -40,8 +40,8 @@ module Stylet
 
       # 傘の表示
       a = p1.angle_to(p0)
-      draw_line(p1, p1 + Vector.sincos(a + options[:angle]).scale(options[:arrow_size]), options)
-      draw_line(p1, p1 + Vector.sincos(a - options[:angle]).scale(options[:arrow_size]), options)
+      draw_line(p1, p1 + Vector.angle_at(a + options[:angle]).scale(options[:arrow_size]), options)
+      draw_line(p1, p1 + Vector.angle_at(a - options[:angle]).scale(options[:arrow_size]), options)
     # rescue Errno::EDOM
     #   # sqrt のエラーなんででる？
     end

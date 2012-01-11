@@ -36,7 +36,7 @@ class Ball
 
     # 自分の位置に戻る
     if @mode == "mode1"
-      @target = @win.rect.center + Stylet::Vector.sincos((1.0 / @win.objects.size * @index)) * @everyone_radius
+      @target = @win.rect.center + Stylet::Vector.angle_at((1.0 / @win.objects.size * @index)) * @everyone_radius
       @pos += (@target - @pos).scale(0.3)
 
       if (@target - @pos).length < 1.0

@@ -12,5 +12,4 @@ TAGS
 *.mpeg
 *.wav
 _*
-/Gemfile.lock
-
+/README.html

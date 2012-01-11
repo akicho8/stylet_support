@@ -27,11 +27,11 @@ class Joint
         # 0.1 ならゆっくりと自分に近付いてくる
         len = gap * @win.hard_level
         dir = @target.p0.angle_to(@p0)
-        @target.p0 += Stylet::Vector.sincos(dir) * len
+        @target.p0 += Stylet::Vector.angle_at(dir) * len
 
         # 固さ 1.0 のときは次のように p0 の方から相手をひっぱる方法でもよいが前者の方が、ゆっくり移動させるなど応用が効く
         # dir = @p0.angle_to(@target.p0)
-        # @target.p0 += Stylet::Vector.sincos(dir) * @win.length
+        # @target.p0 += Stylet::Vector.angle_at(dir) * @win.length
       end
     end
 

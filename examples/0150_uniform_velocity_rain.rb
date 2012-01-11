@@ -16,7 +16,7 @@ class Ball
     @arrow = rand(2).zero? ? 1 : -1
 
     @pos = Stylet::Vector.new(rand(@win.rect.w), @win.rect.min_y - @radius * 2)
-    @speed = Stylet::Vector.sincos(Stylet::Fee.clock(6)).scale(1 + rand * 2)
+    @speed = Stylet::Vector.angle_at(Stylet::Fee.clock(6)).scale(1 + rand * 2)
   end
 
   def reset

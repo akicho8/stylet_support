@@ -17,7 +17,7 @@ module Stylet
 
       points = (0...options[:vertex]).collect{|i|
         a = options[:angle] + 1.0 * i / options[:vertex]
-        p0 + Vector.sincos(a) * options[:radius]
+        p0 + Vector.angle_at(a) * options[:radius]
       }
       draw_polygon(points, options)
     end

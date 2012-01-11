@@ -22,13 +22,20 @@ module Stylet
     end
 
     #
-    # どこかが接触したか？
+    # 領域rectの中に点pが含まれているか？
     #
-    def rect_collision?(rect, p, options = {})
+    def rect_in?(rect, p, options = {})
       true &&
         (rect.min_x <= p.x && p.x <= rect.max_x) &&
         (rect.min_y <= p.y && p.y <= rect.max_y) &&
         true
+    end
+
+    #
+    # 領域rectの中に点pが含まていない？
+    #
+    def rect_out?(rect, p, options = {})
+      !rect_in?(rect, p, options)
     end
 
     # 長方形aと長方形bの一部が接触しているか？

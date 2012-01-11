@@ -18,13 +18,12 @@ class Ball
 
     @pos = @win.rect.center.clone                                                           # 中心点
     @speed = Stylet::Vector.new(Stylet::Etc.wide_rand(2.0), Stylet::Etc.range_rand(-6, -8)) # 速度ベクトル
-    @gravity = Stylet::Vector.new(0, 0.3)                                                   # 重力
+    @gravity = Stylet::Vector.new(0, 0.20)                                                  # 重力
     if index < 4
       @radius = 8 + ((index + 2) ** 2)                                                      # 半径
     else
       @radius = Stylet::Etc.range_rand(8, 20)                                               # 半径
     end
-    Stylet::Etc.upper_limited(1.5)
     @mass = @radius ** 2                                                                    # 質量は面積と比例することにする(PI*r二乗)
     @vertex = Stylet::Etc.range_rand(16, 16).to_i                                           # 何角形か？
   end
@@ -32,14 +31,26 @@ class Ball
   #
   # 線分 pA pB との当たり判定
   #
-  def collide_circle_vs_line(pA, pB)
+  def collide_circle_vs_line(pA, pB, options = {})
+    # 点Aと点Bに円がめり込んでいたら押す
+    [pA, pB].each do |pX|
+      diff = @pos - pX
+      if diff.length > 0
+        if diff.length < @radius
+          @pos = pX + diff.normalize.scale(@radius)
+          @speed = diff.normalize * @speed.length
+        end
+      end
+    end
+
     # 法線(正規化済み)
     normal = pA.normal(pB).normalize
+    # @win.draw_line(pA, pA + normal.scale(30))
 
     # t と C の取得
     begin
       # 自機から面と垂直な線を出して面と交差するか調べる
-      @vP = Stylet::Vector.sincos(normal.reverse.angle).scale(@radius)
+      @vP = Stylet::Vector.angle_at(normal.reverse.angle).scale(@radius)
 
       # 自機の原点・速度ベクトル・法線の原点(pAでもpBでもよい)・法線ベクトルを渡すと求まる
       @t = Stylet::Vector.collision_power_scale(@pos, @vP, pA, normal)
@@ -52,13 +63,20 @@ class Ball
       bc = @pC - pB
       if ac.nonzero? && bc.nonzero?
         @ip2 = Stylet::Vector.inner_product(ac, bc)
+      else
+        raise
       end
     end
 
     # 線の表裏どちらにいるか。また衝突しているか？ (この時点では無限線)
 
-    # if 0.0 < @t && @t <= 1.0 # めり込んでいる(これだと線を飛び越えてしまう)
-    if @t <= 1.0 # めり込んでいる or 通り過ぎている
+    f = false
+    if options[:ground]
+      f = @t <= 1.0 # めり込んでいる or 通り過ぎている
+    else
+      f = 0.0 < @t && @t <= 1.0 # めり込んでいる(これだと線を飛び越えてしまう)
+    end
+    if f
       if @ip2 < 0 # 線の中で
         # 円を押し戻す
         @pos = @pC + normal * @radius
@@ -71,16 +89,6 @@ class Ball
     # if @speed.length > @radius
     #   @speed = @speed.normalize.scale(@radius)
     # end
-
-    # 点Aと点Bに円がめり込んでいたら押す
-    [pA, pB].each do |pX|
-      diff = @pos - pX
-      if diff.length > 0
-        if diff.length < @radius
-          @pos = pX + diff.normalize.scale(@radius)
-        end
-      end
-    end
   end
 
   def self.collide_circle_vs_circle(oA, oB)
@@ -187,10 +195,17 @@ class Ball
     end
   end
 
-  def speed_limit!
+  def speed_limit!(r = 1.0)
     # 速度制限(円が線から飛び出さないようにする)
-    if @speed.length > @radius
-      @speed = @speed.normalize.scale(@radius)
+    if @speed.length > (@radius * r)
+      @speed = @speed.normalize.scale(@radius * r)
+    end
+  end
+
+  def speed_limit2!(v)
+    # 速度制限(円が線から飛び出さないようにする)
+    if @speed.length > v
+      @speed = @speed.normalize.scale(v)
     end
   end
 
@@ -198,7 +213,7 @@ class Ball
     # 操作
     begin
       # AとBで速度ベクトルの反映
-      # @pos += @speed.scale(@win.button.btA.repeat_0or1) + @speed.scale(-@win.button.btB.repeat_0or1)
+      @pos += @speed.scale(@win.button.btA.repeat_0or1) + @speed.scale(-@win.button.btB.repeat_0or1)
       # Cボタンおしっぱなし + マウスで自機位置移動
       if @win.button.btC.press?
         @pos = @win.cursor.clone
@@ -206,13 +221,14 @@ class Ball
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
         if @win.cursor != @pos
-          @speed = (@win.cursor - @pos).normalize * @speed.length
+          @speed = (@win.cursor - @pos).normalize * @speed.length.round
         end
       end
     end
 
     @speed += @gravity
-    # speed_limit!
+    # speed_limit2!(10.0)
+
     @pos += @speed
 
     # 自機(円)の表示
@@ -223,45 +239,72 @@ end
 class Scene
   def initialize(win)
     @win = win
-    @balls = Array.new(4){|i|Ball.new(@win, self, i)}
+    @balls = Array.new(5){|i|Ball.new(@win, self, i)}
     @count = 0
     @center = @win.rect.center
   end
 
   def update
-    # Aボタンおしっぱなし + マウスで自機角度変更
-    if @win.button.btA.press?
-      @center = @win.cursor.clone
-      # if @win.cursor != @center
-      #   @speed = (@win.cursor - @pos).normalize * @speed.length
-      # end
-    end
+    # # Aボタンおしっぱなし + マウスで自機角度変更
+    # if @win.button.btA.press?
+    #   @center = @win.cursor.clone
+    #   # if @win.cursor != @center
+    #   #   @speed = (@win.cursor - @pos).normalize * @speed.length
+    #   # end
+    # end
 
-    # @count += @win.button.btA.repeat_0or1 - @win.button.btB.repeat_0or1
+    _count = @count
 
+    # 線の準備
     @lines = []
     n = 5
     n.times{|i|
-      @lines << @center + Stylet::Vector.sincos((1.0 / 128 * @count) + 1.0 / n * i) * @win.rect.h * 0.4
+      @lines << @center + Stylet::Vector.angle_at((1.0 / 128 * _count) + 1.0 / n * i) * @win.rect.h * 0.45
     }
 
+    # 線の準備
+    @lines2 = []
+    n = 3
+    n.times{|i|
+      @lines2 << @center + Stylet::Vector.angle_at((1.0 / 512 * _count) + 1.0 / n * i) * @win.rect.h * 0.1
+    }
+
+    # 円と円の当たり判定
     @balls.each{|ball1|
       (@balls - [ball1]).each{|ball2|
         Ball.collide_circle_vs_circle(ball1, ball2)
       }
     }
 
+    # 円と線の当たり判定
     @lines.each_index{|i|
       a = @lines[i]
       b = @lines[i.next.modulo(@lines.size)]
       @balls.each{|ball|
-        ball.collide_circle_vs_line(a, b)
+        ball.collide_circle_vs_line(a, b, :ground => true)
       }
     }
 
+    # 円と線の当たり判定(中央の物体)
+    @lines2.each_index{|i|
+      a = @lines2[i]
+      b = @lines2[i.next.modulo(@lines2.size)]
+      @balls.each{|ball|
+        ball.collide_circle_vs_line(b, a)
+      }
+    }
+
+    # 線の描画
     @lines.each_index{|i|
       a = @lines[i]
       b = @lines[i.next.modulo(@lines.size)]
+      @win.draw_line(a, b)
+    }
+
+    # 線の描画
+    @lines2.each_index{|i|
+      a = @lines2[i]
+      b = @lines2[i.next.modulo(@lines2.size)]
       @win.draw_line(a, b)
     }
 

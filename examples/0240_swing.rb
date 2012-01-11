@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# ブランコのアルゴリズム
+# 振り子のアルゴリズム
 #
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
@@ -19,13 +19,13 @@ require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 #              dir2 (pBの方向)
 #
 class Swing
-  def initialize(win, p0)
+  def initialize(win)
     @win = win
-    @p0 = p0                     # 間接の座標
+    @p0 = @win.rect.center + Stylet::Vector.new(0, -@win.rect.h * 0)   # 円の中心
     @dir1 = Stylet::Fee.clock(1) # 角度
     @speed = 0                   # 角速度
     @friction = 0.0              # 摩擦(0.0:なし 1.0:最大)
-    @radius = @win.rect.hy * 0.4 # 糸の長さ
+    @radius = @win.rect.hy * 0.5 # 糸の長さ
     @ball_radius = 32            # 鉄球自体の半径
     @dir2 = nil                  # 振り子の中心(p0)からの重力反映座標(pB)の角度
     @gravity = Stylet::Vector.new(0, 1)   # 重力加速度(整数で指定すること)
@@ -53,7 +53,7 @@ class Swing
     end
 
     # 鉄球の座標(pA)を求める
-    @pA = @p0 + Stylet::Vector.sincos(@dir1).scale(@radius)
+    @pA = @p0 + Stylet::Vector.angle_at(@dir1).scale(@radius)
 
     # 鉄球の座標から重力を反映した座標(pB)を求める(pBを経由しなくてもpCは求まる)
     @pB = @pA + @gravity
@@ -105,7 +105,7 @@ class Swing
       @win.draw_line(@p0, @pA)
 
       # 実鉄球から仮想鉄球への線
-      @win.draw_line(@p0, @pB)
+      # @win.draw_line(@p0, @pB)
       @win.draw_line(@p0, @pC) # 振り子の中心(p0)から重力反映座標(pC)への線を表示確認
       @win.draw_line(@pA, @pB)
       @win.draw_line(@pB, @pC)
@@ -137,8 +137,8 @@ class Swing
   def rad90_line
     # @win.draw_line(@pB, @pC)
     # _r = 256
-    # p2 = @pA + Stylet::Vector.sincos(@dir1 - Stylet::Fee.r90) * _r
-    # p3 = @pA + Stylet::Vector.sincos(@dir1 + Stylet::Fee.r90) * _r
+    # p2 = @pA + Stylet::Vector.angle_at(@dir1 - Stylet::Fee.r90) * _r
+    # p3 = @pA + Stylet::Vector.angle_at(@dir1 + Stylet::Fee.r90) * _r
     # @win.draw_line(p2, p3)
   end
 end
@@ -148,7 +148,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
-    @objects << Swing.new(self, rect.center.clone)
+    @objects << Swing.new(self)
   end
 end
 

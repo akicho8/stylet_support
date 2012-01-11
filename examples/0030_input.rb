@@ -7,7 +7,7 @@ class Player
   include Stylet::Input::StandardKeybord
 
   def initialize(win)
-    super if defined? super
+    super()
     @win = win
   end
 
@@ -23,6 +23,7 @@ end
 class App < Stylet::Base
   def before_main_loop
     super
+    self.title = "キーボードの入力チェック"
     @player = Player.new(self)
   end
 

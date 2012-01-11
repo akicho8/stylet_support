@@ -1,92 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# 速度ベクトルの向きを取得するには？
-#
-#   speed.angle
-#
-# 速度ベクトルを45度傾けるには？
-#
-#   speed += Stylet::Vector.sincos(Stylet::Fee.r45) * speed.length
-#
-# p0の速度ベクトルをマウスの方向に設定するには？
-#
-#   speed = Stylet::Vector.sincos(p0.angle_to(win.mouse_vector)) * speed.length
-#
-# 円の速度制限をするには？(円が線から飛び出さないようにするときに使う)
-#
-#   if speed.length > radius
-#     speed = speed.normalize.scale(radius)
-#   end
-#
-# 線分ABの中央の位置を取得するには？
-#
-#   half_ab = pA + Stylet::Vector.sincos(pA.angle_to(pB)) * (pA.distance_to(pB) / 2)
-#
-#   Vector#pos_vector_rate(pA, pB, rate)
-#
-# 円(c,r)が点(dot)にめりこんだとき、点(dot)から円を押し出すには？
-#
-#   良い例
-#
-#     diff = c - dot
-#     if diff.length < r
-#       c = dot + diff.normalize * r
-#     end
-#
-#   悪い例
-#
-#     if p0.distance_to(p1) < r
-#       p0 = p1 + Stylet::Vector.sincos(p1.angle_to(p0)) * r
-#     end
-#
-# 円Aと円Bをお互い離すには？
-#
-#   diff = b - a
-#   rdiff = r * 2 - diff.length
-#   if rdiff > 0
-#     a -= diff.normalize * rdiff / 2
-#     b += diff.normalize * rdiff / 2
-#   end
-#
-# 正規化とは斜めの辺の長さを 1.0 にすること
-#
-#   v.normalize.length #=> 1.0
-#
-# A B C D ボタンとカーソルで操作できるとき物体(pA)と速度(speed)をコントロールするときの定石は？
-#
-#   # AとBで速度ベクトルの反映
-#   @pA += @speed.scale(@win.button.btA.repeat_0or1) + @speed.scale(-@win.button.btB.repeat_0or1)
-#   # @pA += @speed.scale(@win.button.btA.repeat) + @speed.scale(-@win.button.btB.repeat) # 加速したいとき
-#
-#   # Cボタンおしっぱなし + マウスで自機位置移動
-#   if @win.button.btC.press?
-#     @pA = @win.cursor.clone
-#   end
-#
-#   # Dボタンおしっぱなし + マウスで自機角度変更
-#   if @win.button.btD.press?
-#     if @win.cursor != @pA
-#       # @speed = Stylet::Vector.sincos(@pA.angle_to(@win.cursor)) * @speed.radius # ← よくある間違い
-#       @speed = (@win.cursor - @pA).normalize * @speed.length # @speed.length の時点で桁溢れで削れるのが嫌なら length.round とする手もあり
-#     end
-#   end
-#
-# 円が完全に重なっている場合、ランダムに引き離す定石
-#
-#   diff = a - b
-#   if diff.length.zero?
-#     arrow = Stylet::Vector.nonzero_random_new
-#     a -= arrow * ar
-#     b += arrow * br
-#   end
-#
-#
-# 参考URL
-# ・基礎の基礎編その１　内積と外積の使い方 http://marupeke296.com/COL_Basic_No1_InnerAndOuterProduct.html
-# ・内積が角度になる証明 http://marupeke296.com/COL_Basic_No1_DotProof.html
-# ・衝突判定編 http://marupeke296.com/COL_main.html
-# ・その５　反射ベクトルと壁ずりベクトル http://marupeke296.com/COL_Basic_No5_WallVector.html
-#
 module Stylet
   Point = Struct.new(:x, :y)
   Point3 = Struct.new(:x, :y, :z)
@@ -342,9 +254,9 @@ module Stylet
     #   cursor.x += Stylet::Fee.cos(dir) * speed
     #   cursor.y += Stylet::Fee.sin(dir) * speed
     #     ↓
-    #   cursor += Stylet::Fee.sincos(dir) * speed
+    #   cursor += Stylet::Fee.angle_at(dir) * speed
     #
-    def self.sincos(x, y = x)
+    def self.angle_at(x, y = x)
       new(Fee.cos(x), Fee.sin(y))
     end
 
@@ -437,7 +349,7 @@ module Stylet
     #   a と b の位置が同じ場合いろいろおかしくなる
     #
     def self.pos_vector_rate(a, b, rate)
-      a + sincos(a.angle_to(b)) * (a.distance_to(b) * rate) # FIXME: ダメなコード
+      a + angle_at(a.angle_to(b)) * (a.distance_to(b) * rate) # FIXME: ダメなコード
     end
 
     #
@@ -446,7 +358,7 @@ module Stylet
     #   自分が最初に考えた方法
     #
     def rotate(a)
-      self.class.sincos(angle + a) * length
+      self.class.angle_at(angle + a) * length
     end
 
     def rotate!(*args)

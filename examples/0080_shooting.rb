@@ -1,12 +1,49 @@
+# -*- coding: utf-8 -*-
 require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
-require File.expand_path(File.join(File.dirname(__FILE__), "gunship"))
+
+class GunShip
+  include Stylet::Input::Base
+
+  attr_reader :pos
+  attr_accessor :target
+
+  def initialize(win, pos)
+    super()
+    @win = win
+    @pos = pos                  # 自機の位置
+    @speed = 3                  # 移動速度
+    @size = 8 * 3               # 自機の大きさ
+    @joystick_index = nil       # 自分のジョイスティックの番号
+    @target = nil               # 相手
+  end
+
+  def update
+    super if defined? super
+
+    if @joystick_index
+      if joy = @win.joys[@joystick_index]
+        update_by_joy(joy)
+      end
+    end
+
+    key_counter_update_all
+
+    if dir = axis_angle
+      next_pos = @pos + Stylet::Vector.angle_at(dir) * @speed
+      if Stylet::CollisionSupport.rect_in?(@win.rect, next_pos)
+        @pos = next_pos
+      end
+    end
+
+    @win.draw_triangle(@pos, :radius => @size, :angle => @pos.angle_to(@target.pos))
+  end
+end
 
 module BulletTrigger
   def update
     super
-    dir = Stylet::Fee.angle(@pos.x, @pos.y, @target.pos.x, @target.pos.y)
     if @button.btA.count.modulo(8) == 1
-      @win.objects << Bullet.new(@win, @pos.clone, dir, 4.00)
+      @win.objects << Bullet.new(@win, @pos.clone, @pos.angle_to(@target.pos), 4.00)
     end
   end
 end
@@ -40,28 +77,17 @@ class Bullet
     @dir = dir
     @speed = speed
 
-    @size = 4
+    @size = 8
     @radius = 0
   end
 
   def screen_out?
-    unless (@win.rect.min_x - @size .. (@win.rect.max_x + @size)).include?(@pos.x)
-      return true
-    end
-    unless (@win.rect.min_y - @size .. (@win.rect.max_y + @size)).include?(@pos.y)
-      return true
-    end
-    if @radius < 0
-      return true
-    end
-    false
+    Stylet::CollisionSupport.rect_out?(@win.rect, @pos) || @radius < 0
   end
 
   def update
     @radius += @speed
-    x = @pos.x + Stylet::Fee.cos(@dir) * @radius
-    y = @pos.y + Stylet::Fee.sin(@dir) * @radius
-    @win.draw_rect(Stylet::Rect.new(x - @size, y - @size, @size * 2, @size * 2), :fill => true)
+    @win.draw_triangle(@pos + Stylet::Vector.angle_at(@dir) * @radius, :radius => @size, :angle => @dir)
   end
 end
 
@@ -70,6 +96,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super
+    self.title = "二人対戦シューティング(自己申告制)"
     @objects = []
     ship1 = GunShip1.new(self, Stylet::Vector.new(rect.hx, rect.hy - rect.hy * 0.8))
     ship2 = GunShip2.new(self, Stylet::Vector.new(rect.hx, rect.hy + rect.hy * 0.8))
@@ -86,4 +113,3 @@ class App < Stylet::Base
 end
 
 App.main_loop
-

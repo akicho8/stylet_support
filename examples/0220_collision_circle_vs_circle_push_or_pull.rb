@@ -14,22 +14,36 @@ class Ball
   end
 
   def update
-    radius2 = @radius + @win.cursor_radius
-    if @pos != @win
-      diff = @pos - @win.cursor
+    a = @win.cursor
+    ar = @win.cursor_radius
+
+    b = @pos
+    br = @radius
+
+    r2 = ar + br
+    if a != b
+      diff = b - a
+      rdiff = r2 - diff.length
       if @win.button.btA.press?
-        @win.vputs "PULL"
-        if diff.length > radius2
-          @pos = @win.cursor + diff.normalize.scale(radius2)
-        end
-      else
         @win.vputs "PUSH"
-        if diff.length < radius2
-          @pos = @win.cursor + diff.normalize.scale(radius2)
+        if rdiff > 0
+          # a = b + diff.normalize * r2 # Bを基点に押し出す
+          b += diff.normalize * rdiff    # Aを基点に押し出す
+        end
+      end
+      if @win.button.btB.press?
+        @win.vputs "PULL"
+        if rdiff < 0
+          # a = b + diff.normalize * r2 # Bを基点に戻す
+          b += diff.normalize * rdiff    # Aを基点に戻す
         end
       end
       @win.vputs "DIFF=#{diff.length}"
+      @win.vputs "RDIFF=#{rdiff}"
     end
+
+    @pos = pB
+
     @win.draw_line(@pos, @win.cursor)
     @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
   end

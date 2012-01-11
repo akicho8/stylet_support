@@ -83,7 +83,7 @@ class Ray
       @bc1 = @pC1 - @pB
       if @ac1.nonzero? && @bc1.nonzero?
         @ip1 = Stylet::Vector.inner_product(@ac1, @bc1)
-        @win.vputs "C1 inner_product(AC1, BC1): #{@ip} (#{inner_product_state(@ip1)})"
+        @win.vputs "C1 inner_product(AC1, BC1): #{@ip1} (#{inner_product_state(@ip1)})"
 
         @win.draw_vector(@ac1.normalize.scale(20), :origin => @pA + @normal.scale(-20*1), :arrow_size => 8)
         @win.draw_vector(@bc1.normalize.scale(20), :origin => @pB + @normal.scale(-20*1), :arrow_size => 8)
@@ -93,11 +93,12 @@ class Ray
     # t2 と C2 の取得
     begin
       # 自機から面と垂直な線を出して面と交差するか調べる(ここが点の場合と違う)
-      @vP = Stylet::Vector.sincos(@normal.reverse.angle).scale(@radius)
+      @vP = Stylet::Vector.angle_at(@normal.reverse.angle).scale(@radius) # スケールは半径と同じ長さとする
       @win.draw_vector(@vP, :origin => @p0)
       @win.vputs "vP", :vector => @vP + @p0
 
-      # 自機の原点・速度ベクトル・法線の原点(pAでもpBでもよい)・法線ベクトルを渡すと求まる
+      # 自機の原点・逆法線ベクトル・法線の原点(pAでもpBでもよい)・法線ベクトルを渡すと求まる
+      # @t2 = Stylet::Vector.collision_power_scale(@p0, @vP, @pA, @normal)
       @t2 = Stylet::Vector.collision_power_scale(@p0, @vP, @pA, @normal)
       @win.vputs "C2 t2: #{@t2} (#{ps_state(@t2)})"
 
@@ -175,6 +176,10 @@ class Ray
           if diff.length > 0
             if diff.length < @radius
               @p0 = pX + diff.normalize.scale(@radius)
+              if true
+                # 跳ね返す
+                @vS = diff.normalize.scale(@vS.length)
+              end
             end
           end
         end
@@ -195,7 +200,7 @@ class Ray
       pS = @vS
       @win.draw_vector(pS, :origin => @p0)
       @win.vputs "vS", :vector => @p0 + pS
-      @win.vputs "Speed Vector: #{@vS.to_a.inspect}"
+      @win.vputs "Speed Vector: #{@vS.length}"
 
       # 線分ABの視覚化
       @win.draw_line(@pA, @pB)

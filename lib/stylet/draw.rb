@@ -3,6 +3,7 @@
 module Stylet
   module Draw
     attr_reader :count, :check_fps, :sdl_event, :rect, :screen
+    attr_accessor :title
 
     def initialize
       super
@@ -22,6 +23,9 @@ module Stylet
       w, h = Config[:screen_size]
       @screen ||= SDL::Screen.open(w, h, Config[:color_depth], options)
       @rect = Rect.new(0, 0, @screen.w, @screen.h)
+      if @title
+        self.title = title
+      end
 
       if Config[:background] && Config[:background_image]
         unless @backgroud_image
@@ -67,13 +71,16 @@ module Stylet
     end
 
     def title=(title)
-      SDL::WM::set_caption(title, title)
+      @title = title
+      if @screen
+        SDL::WM::set_caption(@title, @title)
+      end
     end
 
     def polling
       if @sdl_event = SDL::Event.poll
         case @sdl_event
-        when SDL::Event::Quit # Window の X が押されたとき
+        when SDL::Event::Quit # Window の [x] が押されたとき
           throw :exit, :break
         when SDL::Event::KeyDown
           if @sdl_event.sym == SDL::Key::ESCAPE || @sdl_event.sym == SDL::Key::Q

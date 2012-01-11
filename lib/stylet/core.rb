@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 module Stylet
   module Core
     def initialize
@@ -14,9 +12,6 @@ module Stylet
       @sdl_initialized = true
     end
 
-    def after_main_loop
-    end
-
     def before_update
     end
 
@@ -26,7 +21,10 @@ module Stylet
     def after_update
     end
 
-    def main_loop(&block)
+    def after_main_loop
+    end
+
+    def main_loop(*args, &block)
       before_main_loop
       catch(:exit) do
         loop do

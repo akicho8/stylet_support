@@ -22,12 +22,12 @@ class Scene
     @win = win
 
     @pA = @win.rect.center.clone + Stylet::Vector.new(80, -70)
-    @sA = Stylet::Vector.sincos(Stylet::Fee.clock(6, 15)).scale(1.0)
+    @sA = Stylet::Vector.angle_at(Stylet::Fee.clock(6, 15)).scale(1.0)
     @a_radius = 100
     @am = @a_radius ** 2
 
     @pB = @win.rect.center.clone + Stylet::Vector.new(-120, -80)
-    @sB = Stylet::Vector.sincos(Stylet::Fee.clock(4)).scale(1.0)
+    @sB = Stylet::Vector.angle_at(Stylet::Fee.clock(4)).scale(1.0)
     @b_radius = 60
     @bm = @b_radius ** 2            # 質量
 

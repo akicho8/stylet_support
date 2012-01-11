@@ -9,7 +9,7 @@ class Circle
     @win = win
     @p0 = p0                                       # 円の中心
     @radius = 64                                   # 円の半径
-    @speed = Stylet::Vector.sincos(Stylet::Fee.r0) # 速度ベクトル(0度の方向)
+    @speed = Stylet::Vector.angle_at(Stylet::Fee.r0) # 速度ベクトル(0度の方向)
   end
 
   def update
@@ -19,7 +19,7 @@ class Circle
     # 円と点の距離が円の半径より小さかったら
     if @p0.distance_to(@win.cursor) < @radius
       # カーソルから円を押し出す
-      @p0 = @win.cursor + Stylet::Vector.sincos(@win.cursor.angle_to(@p0)) * @radius
+      @p0 = @win.cursor + Stylet::Vector.angle_at(@win.cursor.angle_to(@p0)) * @radius
     end
 
     @win.draw_circle(@p0, :radius => @radius, :vertex => 32)

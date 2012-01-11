@@ -9,7 +9,7 @@ class Scene
     @win = win
 
     @pA = @win.rect.center.clone
-    @sA = Stylet::Vector.sincos(Stylet::Fee.clock(8))
+    @sA = Stylet::Vector.angle_at(Stylet::Fee.clock(8))
     @rect = Stylet::Rect.centered_create(50)
 
     @radius = 50

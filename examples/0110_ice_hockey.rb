@@ -72,7 +72,7 @@ class IccHockeyBall
     _p.y = @p0.y + Stylet::Fee.sin(@dir) * @radius
 
     # 画面内なら更新
-    if Stylet::CollisionSupport.rect_collision?(@win.rect, _p)
+    if Stylet::CollisionSupport.rect_in?(@win.rect, _p)
       @pos = _p
     end
 

@@ -19,7 +19,7 @@ class BezierUnit
       n = 5
       r = hy * 0.9
       @mpoints += Array.new(n){|i|
-        MovablePoint.new(self, @win.rect.center + Stylet::Vector.sincos(1.0 / n * i).scale(r))
+        MovablePoint.new(self, @win.rect.center + Stylet::Vector.angle_at(1.0 / n * i).scale(r))
       }
     end
   end
