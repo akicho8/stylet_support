@@ -1,3 +1,4 @@
+# -*- coding: undecided -*-
 class Stylet::ArashiAdapter < Stylet::JoystickAdapter
   def lever_on?(dir)
     pos = {
@@ -15,8 +16,12 @@ class Stylet::ArashiAdapter < Stylet::JoystickAdapter
     pos = {
       :btA => 15,
       :btB => 12,
-      :btC => 11,
-      :btD => 10,
+      # :btC => 11,
+      # :btD => 10,
+
+      # PS3コントローラーの場合
+      :btC => 13,
+      :btD => 14,
     }[key]
     if pos
       @object.button(pos)
