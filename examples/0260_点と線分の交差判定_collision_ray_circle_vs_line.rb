@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# レイの当り判定
+# 点と線分の交差判定と反射
 #
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
@@ -244,6 +244,7 @@ class App < Stylet::Base
 
   def before_main_loop
     super if defined? super
+    self.title = "点と線分の交差判定と反射"
 
     @ray_mode = false          # true:ドット false:円
     @reflect_mode = true       # true:反射する

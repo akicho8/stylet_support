@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
 
-Stylet::Config.update({
-    :screen_size      => [640, 480],
-    # :screen_size      => [800, 600],
-    # :color_depth      => 8,
-  })
+# Stylet::Config.update({
+#     # :screen_size      => [640, 480],
+#     # :screen_size      => [800, 600],
+#     # :color_depth      => 8,
+#   })
 
 module Helper
   module SpaceObject
@@ -66,9 +66,9 @@ module Helper
       # vputs @mouse_vector.to_a
       # vputs mouse_moved?
 
-      unless @objects.empty?
-        vputs "objects=#{@objects.size}"
-      end
+      # unless @objects.empty?
+      #   vputs "objects=#{@objects.size}"
+      # end
 
       @objects.each{|e|e.update}
       @objects.reject!{|e| e.respond_to?(:screen_out?) && e.screen_out?}

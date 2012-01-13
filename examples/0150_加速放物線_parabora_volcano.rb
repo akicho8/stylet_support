@@ -81,6 +81,7 @@ class App < Stylet::Base
   def before_main_loop
     super if defined? super
     @cursor_display = false
+    self.title = "加速・放物線・バウンド"
   end
 
   def update

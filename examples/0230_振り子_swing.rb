@@ -149,6 +149,7 @@ class App < Stylet::Base
   def before_main_loop
     super if defined? super
     @objects << Swing.new(self)
+    self.title = "振り子"
   end
 end
 

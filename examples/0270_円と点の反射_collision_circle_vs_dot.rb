@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# 円と点の衝突と反発
+# 円と点の反射
 #
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 

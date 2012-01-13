@@ -2,8 +2,6 @@
 #
 # 円同士の当り判定(ベクトルを使った方法)
 #
-#   Aボタンを押していると引くモードになる
-#
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Ball
@@ -42,7 +40,7 @@ class Ball
       @win.vputs "RDIFF=#{rdiff}"
     end
 
-    @pos = pB
+    @pos = b
 
     @win.draw_line(@pos, @win.cursor)
     @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
@@ -57,6 +55,7 @@ class App < Stylet::Base
     @objects << Ball.new(self, rect.center.clone)
     @cursor_radius = 100
     @cursor_vertex = 32
+    self.title = "円の押し引き"
   end
 end
 

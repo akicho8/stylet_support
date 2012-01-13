@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #
-# 円と円の当たり判定
+# 円と円の反射
 #
-# 反発係数の関係(正面衝突したとする)
+# 反射係数の関係(正面衝突したとする)
 #
-#   -(反発B - 反発A) / (衝突B - 衝突A) #=> 1.0
+#   -(反射B - 反射A) / (衝突B - 衝突A) #=> 1.0
 #
 # 速度と質量を乗算すると運動量
 #
@@ -13,7 +13,7 @@
 # 運動量保存の法則により、衝突前の円の運動量の合計値と、衝突後の円の運動量の合計値は等しくなる
 #
 #   運動量保存の法則
-#   質量A * 衝突A + 質量B * 衝突B = 質量A * 反発A + 質量B * 反発B
+#   質量A * 衝突A + 質量B * 衝突B = 質量A * 反射A + 質量B * 反射B
 #
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
@@ -33,7 +33,7 @@ class Scene
 
     @s_radius = 100 # 速度ベクトル 1.0 を画面上では何ドットで表わすか？
     @vertex = 32
-    @reflect_ratio = 1.0 # 反発係数
+    @reflect_ratio = 1.0 # 反射係数
   end
 
   def update
@@ -215,6 +215,7 @@ class App < Stylet::Base
 
     @objects << Scene.new(self)
     @cursor_vertex = 3
+    self.title = "円と円の反射"
   end
 
   def update

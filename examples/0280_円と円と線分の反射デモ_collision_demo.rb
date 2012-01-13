@@ -5,7 +5,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
 class Ball
-  REFLECT_RATIO = 1.0 # 反発係数
+  REFLECT_RATIO = 1.0 # 反射係数
 
   attr_accessor :pos            # 中心点
   attr_accessor :speed          # 速度

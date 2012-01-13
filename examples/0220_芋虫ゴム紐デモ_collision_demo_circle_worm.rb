@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# 紐・幼虫・多関節のアルゴリズム
+# 芋虫・多関節・ゴム・紐
 #
 require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
 
@@ -67,6 +67,8 @@ class App < Stylet::Base
     @body_display = true # 胴体描画モード
     @length = 32         # 線と線の間
     @hard_level = 1.0    # 幼虫の間接の伸び(堅い1.0〜柔らか0.1)
+
+    self.title = "芋虫・多関節・ゴム・紐"
   end
 
   def update

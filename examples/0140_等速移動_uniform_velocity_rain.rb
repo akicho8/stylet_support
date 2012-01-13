@@ -38,11 +38,10 @@ end
 class App < Stylet::Base
   include Helper::TriangleCursor
 
-  attr_reader :mode
-
   def before_main_loop
     super if defined? super
     @cursor_display = false
+    self.title = "等速落下"
   end
 
   def update
