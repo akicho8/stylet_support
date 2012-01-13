@@ -44,7 +44,7 @@
 #### 良い例
 
     diff = c - dot
-    rdiff = diff.length < r
+    rdiff = diff.length - r
     if rdiff > 0
       # c = dot + diff.normalize * r # ドットから押す場合(ドットが釘ならこれでもよい)
       c += diff.normalize * rdiff
