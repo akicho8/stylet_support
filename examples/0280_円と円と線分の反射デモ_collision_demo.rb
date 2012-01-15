@@ -322,15 +322,6 @@ class App < Stylet::Base
     super if defined? super
     @objects << Scene.new(self)
   end
-
-  def update
-    super if defined? super
-
-    #    Stylet::Base.instance.vputs "foo"
-
-    # 操作説明
-    # vputs "Z:ray++ X:ray-- C:drag V:angle"
-  end
 end
 
 App.main_loop

@@ -105,7 +105,7 @@ module Stylet
     #
     def __draw_rect(x, y, w, h, options = {})
       options = {
-        :color => "white",
+        :color => "foreground",
       }.merge(options)
       raise "w, h は正を指定するように" if w < 0 || h < 0
       return if w.zero? || h.zero?
@@ -128,7 +128,7 @@ module Stylet
 
     def draw_line(p0, p1, options = {})
       options = {
-        :color => "white",
+        :color => "foreground",
       }.merge(options)
       @screen.draw_line(p0.x, p0.y, p1.x, p1.y, Palette[options[:color]])
     rescue RangeError => error

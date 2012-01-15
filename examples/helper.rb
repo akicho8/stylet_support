@@ -7,6 +7,16 @@ require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
 #     # :color_depth      => 8,
 #   })
 
+# Stylet::Palette.update({
+#     "background" => [255, 255, 255],
+#     "foreground" => [0, 0, 0],
+#   })
+
+# Stylet::Palette.update({
+#     "background" => [0, 8*12, 0],
+#     "foreground" => [0, 8*31, 0],
+#   })
+
 module Helper
   module SpaceObject
     def initialize(win, *)

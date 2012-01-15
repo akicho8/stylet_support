@@ -11,6 +11,7 @@ module Stylet
     "white"      => [255, 255, 255],
 
     "background" => [  0,   0,   0],
+    "foreground" => [255, 255, 255],
     "font"       => [ 80, 160, 255],
   }
 end
