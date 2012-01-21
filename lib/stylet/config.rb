@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 module Stylet
-  unless const_defined? :Config
-    Config = {
+  unless const_defined? :Conf
+    Conf = {
       # :font_name        => "FAMania2.6.otf",
       # :font_size        => 12,
 

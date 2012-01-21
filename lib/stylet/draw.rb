@@ -17,19 +17,19 @@ module Stylet
       @check_fps = CheckFPS.new
 
       options = SDL::HWSURFACE | SDL::DOUBLEBUF
-      if Config[:full_screen]
+      if Conf[:full_screen]
         options |= SDL::FULLSCREEN
       end
-      w, h = Config[:screen_size]
-      @screen ||= SDL::Screen.open(w, h, Config[:color_depth], options)
+      w, h = Conf[:screen_size]
+      @screen ||= SDL::Screen.open(w, h, Conf[:color_depth], options)
       @rect = Rect.new(0, 0, @screen.w, @screen.h)
       if @title
         self.title = title
       end
 
-      if Config[:background] && Config[:background_image]
+      if Conf[:background] && Conf[:background_image]
         unless @backgroud_image
-          background_image = Pathname(File.expand_path(File.join(File.dirname(__FILE__), "assets", Config[:background_image])))
+          background_image = Pathname(File.expand_path(File.join(File.dirname(__FILE__), "assets", Conf[:background_image])))
           if background_image.exist?
             @backgroud_image = SDL::Surface.load_bmp(background_image)
             if false
