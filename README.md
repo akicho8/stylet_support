@@ -1,32 +1,32 @@
 物理運動アルゴリズムのお勉強用Ruby/SDLラッパーライブラリ
 ========================================================
 
-## Ruby/SDL環境の作り方(for Mac OS X)
+## Ruby/SDL環境の作り方とサンプルの実行方法(for Mac OS X)
 
 ### 基本ライブラリのインストール
 
-    sudo port install libsdl libsdl_ttf libsdl_sound libsdl_pango libsdl_mixer libsdl_image rb-opengl
+    $ sudo port install libsdl libsdl_ttf libsdl_sound libsdl_pango libsdl_mixer libsdl_image rb-opengl
 
 ### SGEのインストール(debianだと一発でインストールできたはず)
 
-    sge030809.tar.gz をダウンロードして ~/Downloads/sge030809 に展開。
-    http://coderepos.org/share/changeset/10163 から *.patch をダウンロードし ~/Downloads/sge030809 にコピー。
-    cd ~/Downloads/sge030809
-    patch -p1 < Makefile.conf.patch
-    patch -p1 < Makefile.patch
-    make
-    sudo make install
+* sge030809.tar.gz をダウンロードして ~/Downloads/sge030809 に展開。
+* http://coderepos.org/share/changeset/10163 から *.patch をダウンロードし ~/Downloads/sge030809 にコピー。
+
+    $ cd ~/Downloads/sge030809
+    $ patch -p1 < Makefile.conf.patch
+    $ patch -p1 < Makefile.patch
+    $ make
+    $ sudo make install
 
 ### rubysdlのインストール(上のライブラリを更新、追加した場合は改めて↓を実行すること)
 
     gem install rubysdl rsdl
 
-    Macの場合 ruby からではなく rsdl から実行する
+Macの場合 ruby からではなく rsdl から実行する
 
-## Hello, world の実行方法
+### Hello, world の実行方法
 
     $ cat hello.rb
-    # -*- coding: utf-8 -*-
     require "stylet"
     Stylet::Base.main_loop do |win|
       win.vputs "Hello, world."
@@ -35,12 +35,13 @@
     $ bundle exec rsdl hello.rb
     [q]で終了
 
-## サンプルの一括動作テスト方法
+### サンプルの一括動作テスト方法
 
     $ cd examples
     ruby test_all.rb
 
-## TIPS
+TIPS
+====
 
 ### 速度ベクトルの向きを取得するには？
 
@@ -172,11 +173,13 @@
     #  2. →←         負 (v   < 0.0) お互いだいたい逆の方向を向いている
     #  3. →↓ →↑    零 (0.0)       お互いが直角の関係
 
-### TODO
+TODO
+====
 
 * x1, y1 = points[i % points.size] は cons に置き換えれる
 
-### 参考URL
+参考URL
+=======
 
 * [Flashゲーム講座&アクションスクリプトサンプル集](http://hakuhin.jp/as.html)
 * [基礎の基礎編その１ 内積と外積の使い方](http://marupeke296.com/COL_Basic_No1_InnerAndOuterProduct.html)
