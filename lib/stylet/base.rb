@@ -80,7 +80,7 @@ module Stylet
     include ClOptions
 
     def self.main_loop(*args, &block)
-      instance.send(__method__, *args, &block)
+      instance.public_send(__method__, *args, &block)
     end
   end
 end

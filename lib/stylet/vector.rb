@@ -13,10 +13,10 @@ module Stylet
           {:name => :sub, :sym => :-},
         ].each{|attr|
           define_method(attr[:name]) do |o|
-            self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o.send(m))})
+            self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], o.public_send(m))})
           end
           define_method("#{attr[:name]}!") do |*args|
-            instance_copy_from(send(attr[:name], *args))
+            instance_copy_from(public_send(attr[:name], *args))
           end
           alias_method attr[:sym], attr[:name]
         }
@@ -26,10 +26,10 @@ module Stylet
           {:name => :div,   :sym => :/},
         ].each{|attr|
           define_method(attr[:name]) do |o|
-            self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o)})
+            self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], o)})
           end
           define_method("#{attr[:name]}!") do |*args|
-            instance_copy_from(send(attr[:name], *args))
+            instance_copy_from(public_send(attr[:name], *args))
           end
           alias_method attr[:sym], attr[:name]
         }
@@ -41,10 +41,10 @@ module Stylet
           {:name => :round},
         ].each{|attr|
           define_method(attr[:name]) do
-            self.class.new(*members.collect{|m|Float(send(m)).send(attr[:name])})
+            self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:name])})
          end
           define_method("#{attr[:name]}!") do |*args|
-            instance_copy_from(send(attr[:name], *args))
+            instance_copy_from(public_send(attr[:name], *args))
           end
         }
       end
@@ -103,7 +103,7 @@ module Stylet
       def inner_product(a, b)
         a = a.normalize
         b = b.normalize
-        members.collect{|m|a.send(m) * b.send(m)}.inject(0, &:+) # a.x * b.x + a.y * b.y
+        members.collect{|m|a.public_send(m) * b.public_send(m)}.inject(0, &:+) # a.x * b.x + a.y * b.y
       end
     end
 
@@ -112,7 +112,7 @@ module Stylet
       # 汎用
       #
       # def __send(method, *args)
-      #   self.class.new(*members.collect{|m|Float(send(m)).send(method, *args)})
+      #   self.class.new(*members.collect{|m|Float(public_send(m)).public_send(method, *args)})
       # end
       #
       # def __send!(method, *args)
@@ -121,7 +121,7 @@ module Stylet
 
       def instance_copy_from(other)
         tap do
-          members.each{|m|send("#{m}=", other.send(m))} # self.x, self.y = obj.x, obj.y
+          members.each{|m|public_send("#{m}=", other.public_send(m))} # self.x, self.y = obj.x, obj.y
         end
       end
 
@@ -202,7 +202,7 @@ module Stylet
 
       # 内積
       def inner_product(other)
-        self.class.send(__method__, self, other)
+        self.class.public_send(__method__, self, other)
       end
 
       #

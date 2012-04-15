@@ -54,7 +54,7 @@ describe Stylet::Fee do
 
   it "方向を抽象化" do
     Stylet::Fee.r0.should == Stylet::Fee.clock(3)
-    Stylet::Fee.r45.to_s.should == Stylet::Fee.clock(4, 30).to_s
+    (Stylet::Fee.r45 * 10000).round.should == (Stylet::Fee.clock(4, 30) * 10000).round
     Stylet::Fee.r90.should == Stylet::Fee.clock(6)
     Stylet::Fee.r180.should == Stylet::Fee.clock(9)
   end

@@ -118,7 +118,7 @@ module Stylet
         w = w.abs - 1
         h = h.abs - 1
       end
-      @screen.send(method, x, y, w, h, Palette[options[:color]])
+      @screen.public_send(method, x, y, w, h, Palette[options[:color]])
     end
 
     # def fill_rect(x, y, w, h, color = "white")

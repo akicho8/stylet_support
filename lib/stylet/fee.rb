@@ -173,7 +173,7 @@ module Stylet
     class << self
       [:isin, :icos, :iangle, :sin, :cos, :angle].each{|method|
         define_method(method){|*args, &block|
-          instance.send(method, *args, &block)
+          instance.public_send(method, *args, &block)
         }
       }
     end
@@ -189,8 +189,8 @@ module Stylet
     # 一周をアナログ時計の単位と考えたときの角度(抽象化のため)
     def self.clock(hour = 6, minute = 0)
       t = -(1.0 / 4) + (1.0 * (hour % 12) / 12)
-      t += 1.0 * minute / (60 * 12)
-      t.modulo(1.0) / 1.0.to_f
+      t += minute.to_f / (60 * 12)
+      t.modulo(1.0) / 1.0
     end
 
     # 一周を360度と考えたときの角度(抽象化のため)

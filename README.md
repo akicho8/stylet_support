@@ -38,7 +38,7 @@ Macの場合 ruby からではなく rsdl から実行する
 ### サンプルの一括動作テスト方法
 
     $ cd examples
-    ruby test_all.rb
+    $ ruby test_all.rb
 
 TIPS
 ====
