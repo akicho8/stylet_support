@@ -6,7 +6,7 @@ require "singleton"
 require "pp"
 require "pathname"
 
-require File.expand_path(File.join(File.dirname(__FILE__), "config"))
+require_relative "config"
 
 # 汎用ライブラリ
 require File.expand_path(File.join(File.dirname(__FILE__), "color"))

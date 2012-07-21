@@ -9,7 +9,7 @@ module Stylet
   module SinTableModule
     def initialize
       super
-      @sin_table = (0...ROUND).collect{|i|(Math.sin(2 * Math::PI * i / ROUND) * ONE).round}
+      @sin_table = ROUND.times.collect{|i|(Math.sin(2 * Math::PI * i / ROUND) * ONE).round}
     end
 
     def isin(a)
@@ -259,6 +259,6 @@ if $0 == __FILE__
   #   dir = Stylet::Fee.angle(0, 0, x, y)
   #   [i, r, dir, (r == dir)]
   # }
-  # pp (0...8).collect{|i|[i, Stylet::Fee.sin(1.0 / 8 * i)]}
+  # pp 8.times.collect{|i|[i, Stylet::Fee.sin(1.0 / 8 * i)]}
   # pp (0..12).collect{|i|[i, Stylet::Fee.clock(i)]}
 end
