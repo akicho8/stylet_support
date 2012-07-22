@@ -58,7 +58,7 @@ module Stylet
 
     # 長方形aのなかにbが含まれているか？
     def rect_include?(a, b)
-      if true && 
+      if true &&
           a.min_xi <= b.min_xi &&
           b.max_xi <= a.max_xi &&
           a.min_yi <= b.min_yi &&

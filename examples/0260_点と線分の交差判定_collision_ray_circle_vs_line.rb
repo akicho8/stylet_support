@@ -2,7 +2,7 @@
 #
 # 点と線分の交差判定と反射
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Ray
   def initialize(win, p0)
@@ -192,7 +192,7 @@ class Ray
         @win.draw_triangle(@p0, :radius => @dot_radius, :angle => @vS.angle)
       else
         # 自機(円)の表示
-        @win.draw_circle(@p0, :radius => @radius, :vertex => @vertex, :angle => @vS.angle)
+        @win.draw_polygon(@p0, :radius => @radius, :vertex => @vertex, :angle => @vS.angle)
       end
       @win.vputs "p0", :vector => @p0
 

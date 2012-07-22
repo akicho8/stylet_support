@@ -2,7 +2,7 @@
 #
 # PSPやPS3やトルネのインターフェイスでありがちなメニューの動き
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Ball
   def initialize(win, index)
@@ -66,7 +66,7 @@ class Ball
 
     @mode_count += 1
 
-    @win.draw_circle(@pos, :radius => @radius, :vertex => @vertex, :angle => 1.0 / 256 * @win.count)
+    @win.draw_polygon(@pos, :radius => @radius, :vertex => @vertex, :angle => 1.0 / 256 * @win.count)
     @win.vputs @name, :vector => @pos
   end
 end

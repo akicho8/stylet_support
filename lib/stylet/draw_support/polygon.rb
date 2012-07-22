@@ -17,7 +17,7 @@ module Stylet
 end
 
 if $0 == __FILE__
-  require File.expand_path(File.join(File.dirname(__FILE__), "../../stylet"))
+  require_relative "../../stylet"
   Stylet::Base.main_loop do |win|
     points = Array.new(3){Stylet::Vector.new(rand(win.rect.w), rand(win.rect.h))}
     win.draw_polygon(points)

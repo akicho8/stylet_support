@@ -2,7 +2,7 @@
 #
 # ブロックとブロックの当たり判定
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Scene
   def initialize(win)

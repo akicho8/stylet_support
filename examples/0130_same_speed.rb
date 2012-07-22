@@ -2,7 +2,7 @@
 #
 # 円の移動の定石
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Scene
   def initialize(win)

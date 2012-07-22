@@ -15,7 +15,7 @@
 #   運動量保存の法則
 #   質量A * 衝突A + 質量B * 衝突B = 質量A * 反射A + 質量B * 反射B
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Scene
   def initialize(win)
@@ -129,11 +129,11 @@ class Scene
       end
     end
 
-    @win.draw_circle(@pA, :vertex => @vertex, :radius => @a_radius)
+    @win.draw_polygon(@pA, :vertex => @vertex, :radius => @a_radius)
     @win.vputs "A(#{@am})", :vector => @pA
     @win.draw_vector(@sA.scale(@s_radius), :origin => @pA, :label => @sA.length)
 
-    @win.draw_circle(@pB, :vertex => @vertex, :radius => @b_radius)
+    @win.draw_polygon(@pB, :vertex => @vertex, :radius => @b_radius)
     @win.vputs "B(#{@bm})", :vector => @pB
     @win.draw_vector(@sB.scale(@s_radius), :origin => @pB, :label => @sB.length)
 
@@ -147,10 +147,10 @@ class Scene
 
       if @resp
         @pA2 = @pA + @sA.normalize.scale(@resp[:f0])
-        @win.draw_circle(@pA2, :vertex => @vertex, :radius => @a_radius)
+        @win.draw_polygon(@pA2, :vertex => @vertex, :radius => @a_radius)
 
         @pB2 = @pB + @sB.normalize.scale(@resp[:f0])
-        @win.draw_circle(@pB2, :vertex => @vertex, :radius => @b_radius)
+        @win.draw_polygon(@pB2, :vertex => @vertex, :radius => @b_radius)
       end
     end
   end

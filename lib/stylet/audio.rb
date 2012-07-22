@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-require File.expand_path(File.join(File.dirname(__FILE__), "config"))
-require File.expand_path(File.join(File.dirname(__FILE__), "logger"))
+require_relative "config"
+require_relative "logger"
 
 require "singleton"
 
@@ -153,7 +153,7 @@ module Stylet
 end
 
 if $0 == __FILE__
-  require File.expand_path(File.join(File.dirname(__FILE__), "../stylet"))
+  require_relative "../stylet"
 
   filename = File.expand_path(File.join(File.dirname(__FILE__), "assets/bgm.wav"))
   Stylet::Audio.instance.play(filename)

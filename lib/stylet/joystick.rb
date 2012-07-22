@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), "joystick_adapter"))
+require_relative "joystick_adapter"
 
 module Stylet
   module Joystick
@@ -12,7 +12,7 @@ module Stylet
     def before_main_loop
       super if defined? super
       logger.debug "SDL::Joystick.num: #{SDL::Joystick.num}" if logger
-      @joys = (0...SDL::Joystick.num).collect{|i|JoystickAdapter.create(SDL::Joystick.open(i))}
+      @joys = SDL::Joystick.num.times.collect{|i|JoystickAdapter.create(SDL::Joystick.open(i))}
     end
 
     def polling

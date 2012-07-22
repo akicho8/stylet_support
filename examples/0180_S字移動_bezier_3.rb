@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require File.expand_path(File.join(File.dirname(__FILE__), "bezier"))
+require_relative "bezier"
 
 class BezierUnit
   include BezierUnitBase

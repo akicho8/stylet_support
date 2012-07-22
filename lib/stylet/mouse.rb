@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require File.expand_path(File.join(File.dirname(__FILE__), "vector"))
+require_relative "vector"
 
 module Stylet
   module Mouse
@@ -40,7 +40,7 @@ module Stylet
 end
 
 if $0 == __FILE__
-  require File.expand_path(File.join(File.dirname(__FILE__), "../stylet"))
+  require_relative "../stylet"
   Stylet::Base.main_loop do |win|
     win.vputs "start_mouse_vector: #{win.start_mouse_vector.to_a.inspect}"
     win.vputs "before_mouse_vector: #{win.before_mouse_vector.to_a.inspect}"

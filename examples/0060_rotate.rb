@@ -2,7 +2,7 @@
 #
 # Vector#rotate の確認
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
+require_relative "../lib/stylet"
 
 Stylet::Base.instance.title = "Vector#rotate系の二つのメソッドの確認"
 

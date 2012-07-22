@@ -2,7 +2,7 @@
 #
 # デモ - かごの中で球が転がある
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Ball
   REFLECT_RATIO = 1.0 # 反射係数
@@ -232,7 +232,7 @@ class Ball
     @pos += @speed
 
     # 自機(円)の表示
-    @win.draw_circle(@pos, :radius => @radius, :vertex => @vertex, :angle => @speed.angle)
+    @win.draw_polygon(@pos, :radius => @radius, :vertex => @vertex, :angle => @speed.angle)
   end
 end
 

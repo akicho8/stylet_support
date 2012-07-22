@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
+require_relative "../lib/stylet"
 
 # Stylet::Conf.update({
 #     # :screen_size      => [640, 480],
@@ -84,7 +84,7 @@ module Helper
       @objects.reject!{|e| e.respond_to?(:screen_out?) && e.screen_out?}
 
       if @cursor_display
-        draw_circle(@cursor, :radius => @cursor_radius, :vertex => @cursor_vertex, :angle => 1.0 / 64 * @count)
+        draw_polygon(@cursor, :radius => @cursor_radius, :vertex => @cursor_vertex, :angle => 1.0 / 64 * @count)
       end
     end
   end

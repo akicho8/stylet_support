@@ -2,7 +2,7 @@
 #
 # 円の移動の定石
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Scene
   def initialize(win)
@@ -32,7 +32,7 @@ class Scene
       end
     end
 
-    @win.draw_circle(@pA, :vertex => @vertex, :radius => @radius)
+    @win.draw_polygon(@pA, :vertex => @vertex, :radius => @radius)
     @win.draw_vector(@sA.scale(@radius), :origin => @pA)
   end
 

@@ -2,7 +2,7 @@
 #
 # 芋虫・多関節・ゴム・紐
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Joint
   attr_accessor :p0
@@ -47,7 +47,7 @@ class Joint
 
     # 胴体の表示
     if @win.body_display
-      @win.draw_circle(@p0, :radius => @win.length / 2, :vertex => 16)
+      @win.draw_polygon(@p0, :radius => @win.length / 2, :vertex => 16)
     end
   end
 end

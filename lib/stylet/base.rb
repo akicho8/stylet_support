@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-require "rubygems"
 require "sdl"
 require "singleton"
 require "pp"
@@ -9,35 +8,35 @@ require "pathname"
 require_relative "config"
 
 # 汎用ライブラリ
-require File.expand_path(File.join(File.dirname(__FILE__), "color"))
-require File.expand_path(File.join(File.dirname(__FILE__), "vsync_wait"))
-require File.expand_path(File.join(File.dirname(__FILE__), "check_fps"))
-require File.expand_path(File.join(File.dirname(__FILE__), "logger"))
-require File.expand_path(File.join(File.dirname(__FILE__), "vector"))
-require File.expand_path(File.join(File.dirname(__FILE__), "rect"))
-require File.expand_path(File.join(File.dirname(__FILE__), "fee"))
-require File.expand_path(File.join(File.dirname(__FILE__), "collision_support"))
-require File.expand_path(File.join(File.dirname(__FILE__), "etc"))
+require_relative "color"
+require_relative "vsync_wait"
+require_relative "check_fps"
+require_relative "logger"
+require_relative "vector"
+require_relative "rect"
+require_relative "fee"
+require_relative "collision_support"
+require_relative "etc"
 
 # 描画系
-require File.expand_path(File.join(File.dirname(__FILE__), "core"))
-require File.expand_path(File.join(File.dirname(__FILE__), "system_pause"))
-require File.expand_path(File.join(File.dirname(__FILE__), "cl_options"))
-require File.expand_path(File.join(File.dirname(__FILE__), "draw"))
-require File.expand_path(File.join(File.dirname(__FILE__), "font"))
+require_relative "core"
+require_relative "system_pause"
+require_relative "cl_options"
+require_relative "draw"
+require_relative "font"
 
 # 描画サポート
-require File.expand_path(File.join(File.dirname(__FILE__), "draw_support/circle"))
-require File.expand_path(File.join(File.dirname(__FILE__), "draw_support/polygon"))
-require File.expand_path(File.join(File.dirname(__FILE__), "draw_support/arrow"))
+require_relative "draw_support/circle"
+require_relative "draw_support/polygon"
+require_relative "draw_support/arrow"
 
 # 入力系
-require File.expand_path(File.join(File.dirname(__FILE__), "joystick"))
-require File.expand_path(File.join(File.dirname(__FILE__), "keyboard"))
-require File.expand_path(File.join(File.dirname(__FILE__), "mouse"))
+require_relative "joystick"
+require_relative "keyboard"
+require_relative "mouse"
 
 # オーディオ系
-require File.expand_path(File.join(File.dirname(__FILE__), "audio"))
+require_relative "audio"
 
 module Stylet
   #
@@ -47,9 +46,10 @@ module Stylet
     return @spec if @spec
     @spec ||= []
     @spec << "SGE" if sge_support?
-    @spec << "MPEG" if SDL.constants.include?("MPEG")
-    @spec << "Mixer" if SDL.constants.include?("Mixer")
-    @spec << "GL" if SDL.constants.include?("GL")
+    @spec << "MPEG" if SDL.constants.include?(:MPEG)
+    @spec << "Mixer" if SDL.constants.include?(:Mixer)
+    @spec << "GL" if SDL.constants.include?(:GL)
+    @spec
   end
 
   #

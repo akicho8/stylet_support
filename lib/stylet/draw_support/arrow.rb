@@ -49,7 +49,7 @@ module Stylet
 end
 
 if $0 == __FILE__
-  require File.expand_path(File.join(File.dirname(__FILE__), "../../stylet"))
+  require_relative "../../stylet"
   Stylet::Base.main_loop do |win|
     win.draw_arrow(win.rect.center, win.rect.center + Stylet::Vector.new(50, 50))
     win.draw_vector(Stylet::Vector.new(100, -100), :origin => win.rect.center)

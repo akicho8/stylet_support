@@ -23,7 +23,7 @@ module Stylet
 end
 
 if $0 == __FILE__
-  require File.expand_path(File.join(File.dirname(__FILE__), "../stylet"))
+  require_relative "../stylet"
   ARGV << "--shutdown=60"
   Stylet::Base.main_loop
 end

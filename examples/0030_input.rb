@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # キーボードの入力チェック
-require File.expand_path(File.join(File.dirname(__FILE__), "../lib/stylet"))
+require_relative "../lib/stylet"
 
 class Player
   include Stylet::Input::Base

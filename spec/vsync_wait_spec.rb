@@ -10,7 +10,7 @@ describe Stylet::VSyncWait do
   it "一秒を二回待つ" do
     t = Time.now
     x = Stylet::VSyncWait.new(@frame_count)
-    resp = (0...@count).collect{|i|
+    resp = @count.times.collect{|i|
       [i, Time.now].tap{x.wait}
     }
     t = Time.now - t

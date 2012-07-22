@@ -2,7 +2,7 @@
 #
 # 円と点の反射
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Circle
   def initialize(win)
@@ -27,7 +27,7 @@ class Circle
       end
     end
 
-    @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
+    @win.draw_polygon(@pos, :radius => @radius, :vertex => 32)
     @win.vputs "Z:x++ X:x--"
   end
 end

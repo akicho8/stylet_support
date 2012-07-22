@@ -12,7 +12,7 @@ module Stylet
       joystick_name = SDL::Joystick.index_name(object.index).strip
       p [object.index, joystick_name]
       driver_name = "#{adapters[joystick_name]}_adapter"
-      require File.expand_path(File.join(File.dirname(__FILE__), "joystick_adapters/#{driver_name}"))
+      require_relative "joystick_adapters/#{driver_name}"
       "Stylet::#{driver_name.classify}".constantize.new(object)
     end
 
@@ -90,7 +90,7 @@ module Stylet
     # end
 
     def button_str
-      (0...@object.num_buttons).collect{|index|
+      @object.num_buttons.times.collect{|index|
         if @object.button(index)
           "#{index}"
         end
@@ -116,6 +116,6 @@ module Stylet
 end
 
 if $0 == __FILE__
-  require File.expand_path(File.join(File.dirname(__FILE__), "../stylet"))
+  require_relative "../stylet"
   Stylet::Base.main_loop
 end

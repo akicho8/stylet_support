@@ -2,7 +2,7 @@
 #
 # マウスで円をアイスホッケーの球のように動かすアルゴリズム
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 #
 # 円の中心
@@ -76,7 +76,7 @@ class IccHockeyBall
       @pos = _p
     end
 
-    @win.draw_circle(@pos, :radius => @body_radius, :vertex => 32)
+    @win.draw_polygon(@pos, :radius => @body_radius, :vertex => 32)
     @win.vputs @power
     @win.vputs @pos.distance_to(@win.mouse_vector)
     @win.vputs @speed

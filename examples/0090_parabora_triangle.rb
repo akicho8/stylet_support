@@ -2,7 +2,7 @@
 #
 # マウスの位置からZボタンで放物線を描く三角を表示
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Ball
   def initialize(win, p0, speed, friction)

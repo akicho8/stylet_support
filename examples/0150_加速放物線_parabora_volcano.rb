@@ -7,7 +7,7 @@
 # ・Cでマウスの位置にセット
 # ・Vで速度ベクトルの向きをマウスの向きへ
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Ball
   def initialize(win)
@@ -71,7 +71,7 @@ class Ball
       @win.objects.delete(self)
     end
 
-    @win.draw_circle(@pos, :radius => @radius, :vertex => @vertex, :angle => 1.0 / 256 * (@speed.length + @win.count) * @arrow)
+    @win.draw_polygon(@pos, :radius => @radius, :vertex => @vertex, :angle => 1.0 / 256 * (@speed.length + @win.count) * @arrow)
   end
 end
 

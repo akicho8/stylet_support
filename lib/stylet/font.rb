@@ -61,7 +61,7 @@ module Stylet
 end
 
 if $0 == __FILE__
-  require File.expand_path(File.join(File.dirname(__FILE__), "../stylet"))
+  require_relative "../stylet"
   Stylet::Conf.update(:font_name => "VeraMono.ttf", :font_size => 20)
   Stylet::Base.main_loop do |win|
     25.times{|i|win.vputs [i, ("A".."Z").to_a.join].join(" ")}

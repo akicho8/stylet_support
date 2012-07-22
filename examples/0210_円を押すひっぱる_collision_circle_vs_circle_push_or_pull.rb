@@ -2,7 +2,7 @@
 #
 # 円同士の当り判定(ベクトルを使った方法)
 #
-require File.expand_path(File.join(File.dirname(__FILE__), "helper"))
+require_relative "helper"
 
 class Ball
   def initialize(win, pos)
@@ -43,7 +43,7 @@ class Ball
     @pos = b
 
     @win.draw_line(@pos, @win.cursor)
-    @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
+    @win.draw_polygon(@pos, :radius => @radius, :vertex => 32)
   end
 end
 
