@@ -3,6 +3,10 @@
 
 * 物理シミュレーション覚書
 
+file:images/demo1.png
+file:images/demo2.png
+file:images/demo3.png
+
 ** セットアップ手順
 
    Homebrew を最新に
