@@ -19,7 +19,8 @@ end
 if $0 == __FILE__
   require_relative "../../stylet"
   Stylet::Base.main_loop do |win|
-    points = Array.new(3){Stylet::Vector.new(rand(win.rect.w), rand(win.rect.h))}
+    points = Array.new(3 + rand(3)){Stylet::Vector.new(rand(win.rect.w), rand(win.rect.h))}
     win.draw_polygon(points)
+    sleep(0.25)
   end
 end

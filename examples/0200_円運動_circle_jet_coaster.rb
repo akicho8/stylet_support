@@ -14,7 +14,7 @@ class Ball
     p0 = pos_new(@win.count)      # 現在の位置を取得
     p1 = pos_new(@win.count.next) # 次のフレームの位置を取得
     dir = p0.angle_to(p1)          # 現在の位置から見て未来の角度を取得
-    @win.draw_polygon(p0, :radius => 20, :vertex => 3, :angle => dir) # 次に進む方向に向けて三角を表示
+    @win.draw_circle(p0, :radius => 20, :vertex => 3, :angle => dir) # 次に進む方向に向けて三角を表示
   end
 
   #

@@ -1,4 +1,5 @@
 source :rubygems
+gemspec
 
 gem "activesupport"
 gem "rsdl", ">= 0.1.4"
@@ -8,3 +9,6 @@ gem "i18n"
 group :test do
   gem "rspec"
 end
+
+gem "tapp"
+gem "pry-debugger"

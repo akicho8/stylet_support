@@ -82,7 +82,7 @@ module Stylet
     #   end
     #   dir
     # end
-    # 
+    #
     # def axis_angle
     #   if dir = axis_angle_index
     #     1.0 / 8 * dir

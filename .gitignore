@@ -1,15 +1,2 @@
-ChangeLog
-*.db
-*.log
-/doc/app
-/_data
-.picasa.ini
-TAGS
-*.bmp
-*.mp3
-*.mp4
-*.mpg
-*.mpeg
-*.wav
-_*
 /README.html
+/Gemfile.lock

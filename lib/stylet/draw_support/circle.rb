@@ -4,7 +4,7 @@ module Stylet
     #
     # 多角形の描画
     #
-    def draw_polygon(p0, options = {})
+    def draw_circle(p0, options = {})
       options = {
         :radius => 64,       # 半径
         :vertex => 8,        # n角形
@@ -26,14 +26,14 @@ module Stylet
     # 三角形の描画
     #
     def draw_triangle(p0, options = {})
-      draw_polygon(p0, {:vertex => 3}.merge(options))
+      draw_circle(p0, {:vertex => 3}.merge(options))
     end
 
     #
     # 正方形の描画
     #
     def draw_square(p0, options = {})
-      draw_polygon(p0, {:vertex => 4}.merge(options))
+      draw_circle(p0, {:vertex => 4}.merge(options))
     end
   end
 end
@@ -41,8 +41,8 @@ end
 if $0 == __FILE__
   require_relative "../../stylet"
   Stylet::Base.main_loop do |win|
-    win.draw_polygon(win.rect.center)
-    # win.draw_triangle(win.rect.center)
-    # win.draw_square(win.rect.center)
+    win.draw_circle(win.rect.center)
+    win.draw_triangle(win.rect.center)
+    win.draw_square(win.rect.center)
   end
 end

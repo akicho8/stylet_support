@@ -84,7 +84,7 @@ module Helper
       @objects.reject!{|e| e.respond_to?(:screen_out?) && e.screen_out?}
 
       if @cursor_display
-        draw_polygon(@cursor, :radius => @cursor_radius, :vertex => @cursor_vertex, :angle => 1.0 / 64 * @count)
+        draw_circle(@cursor, :radius => @cursor_radius, :vertex => @cursor_vertex, :angle => 1.0 / 64 * @count)
       end
     end
   end

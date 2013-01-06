@@ -76,7 +76,7 @@ class IccHockeyBall
       @pos = _p
     end
 
-    @win.draw_polygon(@pos, :radius => @body_radius, :vertex => 32)
+    @win.draw_circle(@pos, :radius => @body_radius, :vertex => 32)
     @win.vputs @power
     @win.vputs @pos.distance_to(@win.mouse_vector)
     @win.vputs @speed

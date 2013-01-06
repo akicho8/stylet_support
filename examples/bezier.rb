@@ -41,9 +41,9 @@ class MovablePoint
     end
 
     if self == @unit.dragging_current
-      @win.draw_polygon(@pos, :radius => @radius, :vertex => 32)
+      @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
     else
-      @win.draw_polygon(@pos, :radius => 2)
+      @win.draw_circle(@pos, :radius => 2)
     end
   end
 end
@@ -99,7 +99,7 @@ module BezierUnitBase
         # ○の表示
         pos = 0.5 + (Stylet::Fee.sin(@win.count / 256.0) * 0.5)
         xy = __bezier_point(pos)
-        @win.draw_polygon(xy, :radius => 64, :vertex => 32)
+        @win.draw_circle(xy, :radius => 64, :vertex => 32)
         @win.vputs(pos)
       else
         # △の表示で進んでいる方向を頂点にする

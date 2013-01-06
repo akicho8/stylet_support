@@ -32,7 +32,7 @@ class Scene
       end
     end
 
-    @win.draw_polygon(@pA, :vertex => @vertex, :radius => @radius)
+    @win.draw_circle(@pA, :vertex => @vertex, :radius => @radius)
     @win.draw_vector(@sA.scale(@radius), :origin => @pA)
   end
 

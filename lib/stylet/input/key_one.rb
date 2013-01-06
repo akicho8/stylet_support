@@ -28,10 +28,9 @@ module Stylet
       end
 
       attr_reader :mark, :count, :free_count
-      # attr_accessor :state
 
       def initialize(mark = "?")
-        @mark = mark.to_s.scan(/./) # "AR" だったら A と R に対応
+        @mark = mark.to_s.scan(/./) # "AL" だったら A と L に対応
         @count = 0
         @free_count = 0
         @state = false              # 直近のフラグ
@@ -40,16 +39,19 @@ module Stylet
       #
       # 直近フラグを設定。falseにはできない。
       #
+      #   フラグが有効になる条件が複数ある場合に使うと便利
+      #
+      #   有効になるもの
+      #     obj << "A" # 同じマーク
+      #     obj << 1
+      #     obj << true
+      #
       def <<(arg)
         case arg
         when String
-          if false
-            arg = arg.include?(@mark)
-          else
-            arg = !!@mark.find{|m|arg.include?(m)}
-          end
+          arg = !!@mark.any?{|m|arg.include?(m)}
         when Fixnum
-          arg = (arg != 0)
+          arg = arg.nonzero?
         end
         @state |= arg
       end
@@ -134,6 +136,8 @@ module Stylet
       #
       # 優先度チェック用
       #
+      #   FIXME: もっと簡潔に書けるはず
+      #
       def <=>(other)                # sortで優先度の高い順に並べる為の比較処理
         if @count == 0 || other.count == 0
           other.count <=> @count    # 0はもっとも優先度が低い為逆にする
@@ -157,4 +161,15 @@ module Stylet
       end
     end
   end
+end
+
+if $0 == __FILE__
+  key_one = Stylet::Input::KeyOne.new("A")
+  key_one.update("A")
+  p key_one.state_to_s
+  p key_one.press?
+  p key_one.trigger?
+  p key_one.free?
+  p key_one.free_trigger?
+  p key_one.to_s
 end

@@ -15,7 +15,7 @@ module Stylet
 
       def initialize(*)
         super if defined? super
-        @axis = Axis.new(KeyOne.new("u"), KeyOne.new("d"), KeyOne.new("l"), KeyOne.new("r"))
+        @axis   = Axis.new(KeyOne.new("u"), KeyOne.new("d"), KeyOne.new("l"), KeyOne.new("r"))
         @button = Button.new(KeyOne.new("AL"), KeyOne.new("BR"), KeyOne.new("C"), KeyOne.new("D"))
       end
 
@@ -40,8 +40,10 @@ module Stylet
       #
       def to_s(stype=nil)
         case stype.to_s
-        when "axis"   then @axis.values.to_s
-        when "button" then @button.values.to_s
+        when "axis"
+          @axis.values.to_s
+        when "button"
+          @button.values.to_s
         else
           key_objects.to_s
         end
@@ -79,4 +81,18 @@ module Stylet
       end
     end
   end
+end
+
+if $0 == __FILE__
+  require_relative "../base"
+
+  b = Stylet::Input::KeyOne.new
+  b.update(true)
+
+  p Stylet::Vector.angle_at(0.0)
+
+  Stylet::Input
+
+  # Stylet::Vector.angle_at(speed.angle + Stylet::Fee.r45) * speed.length
+  # p Stylet::Fee.angle_at(0.0)
 end

@@ -97,7 +97,7 @@ class Swing
     @win.draw_line(@p0, @pA)
 
     # 鉄球
-    @win.draw_polygon(@pA, :radius => @ball_radius, :vertex => 16)
+    @win.draw_circle(@pA, :radius => @ball_radius, :vertex => 16)
 
     # デバッグモード
     if @debug_mode || @win.button.btD.press?
@@ -119,7 +119,7 @@ class Swing
       rad90_line
 
       # 軌道の円周
-      @win.draw_polygon(@p0, :radius => @radius, :vertex => 32)
+      @win.draw_circle(@p0, :radius => @radius, :vertex => 32)
 
       # @win.draw_line(@pB, @pB + (@pA - @pB).scale(2))
     end

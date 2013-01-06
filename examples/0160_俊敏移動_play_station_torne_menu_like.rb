@@ -66,7 +66,7 @@ class Ball
 
     @mode_count += 1
 
-    @win.draw_polygon(@pos, :radius => @radius, :vertex => @vertex, :angle => 1.0 / 256 * @win.count)
+    @win.draw_circle(@pos, :radius => @radius, :vertex => @vertex, :angle => 1.0 / 256 * @win.count)
     @win.vputs @name, :vector => @pos
   end
 end

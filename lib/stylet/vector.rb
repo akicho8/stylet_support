@@ -221,7 +221,7 @@ module Stylet
         Vector3.new(*(values + [0]).take(3))
       end
 
-      # ゼロベクトルか？
+      # 0ベクトルか？
       def zero?
         values.all?{|v|v.zero?}
       end

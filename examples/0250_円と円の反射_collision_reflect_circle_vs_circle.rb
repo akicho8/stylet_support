@@ -129,11 +129,11 @@ class Scene
       end
     end
 
-    @win.draw_polygon(@pA, :vertex => @vertex, :radius => @a_radius)
+    @win.draw_circle(@pA, :vertex => @vertex, :radius => @a_radius)
     @win.vputs "A(#{@am})", :vector => @pA
     @win.draw_vector(@sA.scale(@s_radius), :origin => @pA, :label => @sA.length)
 
-    @win.draw_polygon(@pB, :vertex => @vertex, :radius => @b_radius)
+    @win.draw_circle(@pB, :vertex => @vertex, :radius => @b_radius)
     @win.vputs "B(#{@bm})", :vector => @pB
     @win.draw_vector(@sB.scale(@s_radius), :origin => @pB, :label => @sB.length)
 
@@ -147,10 +147,10 @@ class Scene
 
       if @resp
         @pA2 = @pA + @sA.normalize.scale(@resp[:f0])
-        @win.draw_polygon(@pA2, :vertex => @vertex, :radius => @a_radius)
+        @win.draw_circle(@pA2, :vertex => @vertex, :radius => @a_radius)
 
         @pB2 = @pB + @sB.normalize.scale(@resp[:f0])
-        @win.draw_polygon(@pB2, :vertex => @vertex, :radius => @b_radius)
+        @win.draw_circle(@pB2, :vertex => @vertex, :radius => @b_radius)
       end
     end
   end

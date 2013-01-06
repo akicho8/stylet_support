@@ -31,7 +31,7 @@ class Ball
       @win.objects.delete(self)
     end
 
-    @win.draw_polygon(@pos, :radius => @radius, :vertex => @vertex, :angle => 1.0 / 256 * (@speed.length + @win.count) * @arrow)
+    @win.draw_circle(@pos, :radius => @radius, :vertex => @vertex, :angle => 1.0 / 256 * (@speed.length + @win.count) * @arrow)
   end
 end
 

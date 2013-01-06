@@ -27,7 +27,7 @@ class Circle
       end
     end
 
-    @win.draw_polygon(@pos, :radius => @radius, :vertex => 32)
+    @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
     @win.vputs "Z:x++ X:x--"
   end
 end
