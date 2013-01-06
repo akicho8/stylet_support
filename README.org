@@ -3,10 +3,9 @@
 
 * 物理シミュレーション覚書
 
-
-file:https://raw.github.com/akicho8/stylet/master/images/demo1.png
-file:https://raw.github.com/akicho8/stylet/master/images/demo2.png
-file:https://raw.github.com/akicho8/stylet/master/images/demo3.png
+[[https://raw.github.com/akicho8/stylet/master/images/demo1.png]]
+[[https://raw.github.com/akicho8/stylet/master/images/demo2.png]]
+[[https://raw.github.com/akicho8/stylet/master/images/demo3.png]]
 
 ** セットアップ手順
 
