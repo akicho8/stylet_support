@@ -8,7 +8,7 @@ require "pathname"
 require_relative "config"
 
 # 汎用ライブラリ
-require_relative "color"
+require_relative "palette"
 require_relative "vsync_wait"
 require_relative "check_fps"
 require_relative "logger"

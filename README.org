@@ -6,6 +6,7 @@
 [[https://raw.github.com/akicho8/stylet/master/images/demo1.png]]
 [[https://raw.github.com/akicho8/stylet/master/images/demo2.png]]
 [[https://raw.github.com/akicho8/stylet/master/images/demo3.png]]
+[[https://raw.github.com/akicho8/stylet/master/images/demo4.png]]
 
 ** セットアップ手順
 
