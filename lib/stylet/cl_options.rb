@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# コマンドライン対応
+#  ruby sample.rb --shutdown=60 とすれば60フレーム後に終了する
+#  サンプルプログラムを連続実行して落ちないことを確認するために作成
+
 require "optparse"
 
 module Stylet

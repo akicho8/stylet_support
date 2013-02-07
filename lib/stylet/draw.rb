@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+#
+# SDL描画関連
+#
 
 module Stylet
   module Draw
@@ -52,8 +55,10 @@ module Stylet
     def before_draw
     end
 
+    # ハードウェアがダブルバッファ対応の場合、flipで自動的にVSYNCを待って切り替えるため
+    # ハードウェアのフレーム数(60FPS)以上にはならないことに注意
     def after_draw
-      # ハードウェアがダブルバッファ対応の場合、flipで自動的にVSYNCを待って切り替えるので、ハードウェアのフレーム数(60FPS)以上にはならないことに注意
+      super
       @screen.flip
       @count += 1
     end

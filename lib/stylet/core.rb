@@ -21,6 +21,9 @@ module Stylet
     def after_update
     end
 
+    def after_draw
+    end
+
     def after_main_loop
     end
 

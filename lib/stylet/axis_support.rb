@@ -4,9 +4,7 @@ module Stylet
   module AxisSupport
     extend self
 
-    #
     # レバーの状態から8方向の番号インデックスに変換
-    #
     #        [U]
     #         6
     #       5   7
@@ -14,7 +12,6 @@ module Stylet
     #       3   1
     #         2
     #        [D]
-    #
     def axis_angle_index(axis)
       dir = nil
       if axis.up.press?
@@ -41,17 +38,14 @@ module Stylet
       dir
     end
 
-    #
     # 8方向レバーの状態から一周を1.0としたときの方向を返す
-    #
-    #           [U]
-    #          0.750
-    #       0.625 0.875
-    #   [L]0.500   0.000[R]
-    #       0.375 0.125
-    #          0.250
-    #           [D]
-    #
+    #            [U]
+    #           0.750
+    #        0.625 0.875
+    #   [L] 0.500   0.000 [R]
+    #        0.375 0.125
+    #           0.250
+    #            [D]
     def axis_angle(axis)
       if dir = axis_angle_index(axis)
         1.0 / 8 * dir
@@ -62,5 +56,5 @@ end
 
 if $0 == __FILE__
   require_relative "fee"
-  p Stylet::Fee.angle_at(dir)
+  p Stylet::Fee.angle_at(0)
 end

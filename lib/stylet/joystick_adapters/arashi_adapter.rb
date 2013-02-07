@@ -1,4 +1,5 @@
-# -*- coding: undecided -*-
+# -*- coding: utf-8 -*-
+
 class Stylet::ArashiAdapter < Stylet::JoystickAdapter
   def lever_on?(dir)
     pos = {
