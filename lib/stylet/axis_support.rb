@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+#
+# レバーの状態から方向を返す便利メソッド
+#
 
 module Stylet
   module AxisSupport

@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+#
+# ボタン1つの押し下げ管理
+#
 module Stylet
   module Input
     #
@@ -36,7 +39,6 @@ module Stylet
         @state = false              # 直近のフラグ
       end
 
-      #
       # 直近フラグを設定。falseにはできない。
       #
       #   フラグが有効になる条件が複数ある場合に使うと便利
@@ -56,18 +58,13 @@ module Stylet
         @state |= arg
       end
 
-      #
-      #  更新する前のon/off状態を取得(廃止予定)
-      #
+      # 更新する前のon/off状態を取得(廃止予定)
       def state_to_s
         @state ? mark.first : ""
       end
 
-      #
       # @state の状態を @count に反映する
-      #
       #   引数が指定されていればそれを直近の状態に設定して更新する
-      #
       def update(state = nil)
         if state
           self << state
@@ -94,30 +91,22 @@ module Stylet
         self.class.repeat(@count, key_repeat)
       end
 
-      #
       # 押されていない？
-      #
       def free?
         @count == 0
       end
 
-      #
       # 押しっぱなし？
-      #
       def press?
         @count >= 1
       end
 
-      #
       # 押した瞬間？
-      #
       def trigger?
         @count == 1
       end
 
-      #
       # 押していないとき 0.0 で押している間は 1.0 を返す
-      #
       def repeat_0or1
         if repeat >= 1
           1.0
@@ -126,9 +115,7 @@ module Stylet
         end
       end
 
-      #
       # 離した瞬間？
-      #
       def free_trigger?
         @free_count == 1
       end
@@ -146,16 +133,12 @@ module Stylet
         end
       end
 
-      #
       # 指定のボタンと同時押し状態？
-      #
       def ==(other)
         @count == other.count
       end
 
-      #
       # 押されているときだけ自分のマークを返す
-      #
       def to_s
         press? ? @mark.first : ""
       end

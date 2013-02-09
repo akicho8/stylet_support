@@ -7,9 +7,7 @@ module Stylet
     Axis   = Struct.new(:up, :down, :left, :right)
     Button = Struct.new(:btA, :btB, :btC, :btD)
 
-    #
     # このモジュールをプレイヤーや人工無能相当に直接includeしてaxisとbuttonの情報を持たせるようにする
-    #
     module Base
       attr_reader :axis, :button
 
@@ -19,25 +17,18 @@ module Stylet
         @button = Button.new(KeyOne.new("AL"), KeyOne.new("BR"), KeyOne.new("C"), KeyOne.new("D"))
       end
 
-      #
       # 上下左右とボタンの状態を配列で返す
-      #
       def key_objects
         @axis.values + @button.values
       end
 
-      #
       # レバーの更新前のビット状態を取得
-      #
       #   更新前であることに注意
-      #
       def state_to_s
         @axis.values.collect{|e|e.state_to_s}.to_s
       end
 
-      #
       # 適当に文字列化
-      #
       def to_s(stype=nil)
         case stype.to_s
         when "axis"
@@ -49,50 +40,45 @@ module Stylet
         end
       end
 
-      #
       # 左右の溜めが完了しているか?(次の状態から使えるか?)
-      #
       def key_power_effective?(power_delay)
         Input::Support.key_power_effective?(@axis.left, @axis.right, power_delay)
       end
 
-      # #
       # # ここで各ボタンを押す
-      # #
       # def update
       #   # raise NotImplementedError, "#{__method__} is not implemented"
       # end
 
-      #
       # ボタンとレバーのカウンタを更新する
-      #
       #   実行後に state は false になる
-      #
       def key_counter_update_all
         key_objects.each{|e|e.update}
       end
 
+      # レバーの状態から8方向の番号インデックスに変換
       def axis_angle_index
         AxisSupport.axis_angle_index(@axis)
       end
 
+      # 8方向レバーの状態から一周を1.0としたときの方向を返す
       def axis_angle
         AxisSupport.axis_angle(@axis)
       end
     end
   end
-end
 
-if $0 == __FILE__
-  require_relative "../base"
+  if $0 == __FILE__
+    require_relative "key_one"
+    require_relative "../vector"
+    require_relative "../fee"
 
-  b = Stylet::Input::KeyOne.new
-  b.update(true)
+    # b = Input::KeyOne.new
+    # b.update(true)
+    # 
+    # p Vector.angle_at(0.0)
 
-  p Stylet::Vector.angle_at(0.0)
-
-  Stylet::Input
-
-  # Stylet::Vector.angle_at(speed.angle + Stylet::Fee.r45) * speed.length
-  # p Stylet::Fee.angle_at(0.0)
+    # Stylet::Vector.angle_at(speed.angle + Stylet::Fee.r45) * speed.length
+    # p Stylet::Fee.angle_at(0.0)
+  end
 end
