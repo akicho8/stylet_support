@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 
+# gem
 require "sdl"
-require "singleton"
+require "active_support/concern"
+
+# ruby library
 require "pp"
+require "singleton"
 require "pathname"
 
-require_relative "config"
+require "stylet/config"
 
 # 汎用ライブラリ
 require_relative "palette"
@@ -39,24 +43,22 @@ require_relative "mouse"
 require_relative "audio"
 
 module Stylet
-  #
   # スペックを配列で返す
-  #
-  def self.spec
-    return @spec if @spec
-    @spec ||= []
-    @spec << "SGE" if sge_support?
-    @spec << "MPEG" if SDL.constants.include?(:MPEG)
-    @spec << "Mixer" if SDL.constants.include?(:Mixer)
-    @spec << "GL" if SDL.constants.include?(:GL)
-    @spec
+  def self.suppprt
+    @suppprt ||= [].tap do |a|
+      a << :sge   if SDL.respond_to?(:autoLock)
+      a << :mpeg  if SDL.constants.include?(:MPEG)
+      a << :mixer if SDL.constants.include?(:Mixer)
+      a << :gl    if SDL.constants.include?(:GL)
+    end
   end
 
+  # ショートカット
   #
-  # SGEの機能が使えるか?
+  #   Stylet.app { vputs "Hello" }
   #
-  def self.sge_support?
-    SDL.respond_to?(:autoLock)
+  def self.app(*args, &block)
+    Base.app(*args, &block)
   end
 
   #
@@ -77,15 +79,11 @@ module Stylet
     include Mouse
     include SystemPause
     include ClOptions
-
-    def self.main_loop(*args, &block)
-      instance.public_send(__method__, *args, &block)
-    end
   end
 end
 
 if $0 == __FILE__
-  p Stylet.spec
+  p Stylet.suppprt
   count = 0
   Stylet::Base.main_loop do |win|
     win.vputs(count += 1)

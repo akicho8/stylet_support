@@ -20,19 +20,19 @@ module Stylet
       @check_fps = CheckFPS.new
 
       options = SDL::HWSURFACE | SDL::DOUBLEBUF
-      if Conf[:full_screen]
+      if Config[:full_screen]
         options |= SDL::FULLSCREEN
       end
-      w, h = Conf[:screen_size]
-      @screen ||= SDL::Screen.open(w, h, Conf[:color_depth], options)
+      w, h = Config[:screen_size]
+      @screen ||= SDL::Screen.open(w, h, Config[:color_depth], options)
       @rect = Rect.new(0, 0, @screen.w, @screen.h)
       if @title
         self.title = title
       end
 
-      if Conf[:background] && Conf[:background_image]
+      if Config[:background] && Config[:background_image]
         unless @backgroud_image
-          background_image = Pathname(File.expand_path(File.join(File.dirname(__FILE__), "assets", Conf[:background_image])))
+          background_image = Pathname(File.expand_path(File.join(File.dirname(__FILE__), "assets", Config[:background_image])))
           if background_image.exist?
             @backgroud_image = SDL::Surface.load_bmp(background_image)
             if false
@@ -46,8 +46,8 @@ module Stylet
 
       background_clear
 
-      if Stylet.sge_support?
-        # SGE関係でウィンドウを自動ロックさせる(これは必要なのか？)
+      # SGE関係でウィンドウを自動ロックさせる(これは必要なのか？)
+      if SDL.respond_to?(:autoLock)
         SDL.autoLock = true
       end
     end
@@ -78,7 +78,7 @@ module Stylet
     def title=(title)
       @title = title
       if @screen
-        SDL::WM::set_caption(@title, @title)
+        SDL::WM::set_caption(@title.to_s, @title.to_s)
       end
     end
 

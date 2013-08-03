@@ -145,7 +145,7 @@ module Stylet
         # end
 
         if c.zero?
-          if Conf[:cry]
+          if Config[:cry]
             raise ZeroDivisionError, "#{[x, y].inspect}"
           end
           return clone

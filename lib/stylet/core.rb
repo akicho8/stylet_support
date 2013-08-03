@@ -1,5 +1,18 @@
+# -*- coding: utf-8 -*-
 module Stylet
   module Core
+    extend ActiveSupport::Concern
+
+    module ClassMethods
+      def main_loop(*args, &block)
+        instance.main_loop(*args, &block)
+      end
+
+      def app(*args, &block)
+        instance.main_loop(*args){|win|win.instance_eval(&block)}
+      end
+    end
+
     def initialize
       @init_mode = 0
       @sdl_initialized = false
@@ -32,6 +45,11 @@ module Stylet
     end
 
     def main_loop(*args, &block)
+      options = {
+      }.merge(args.extract_options!)
+      if options[:title]
+        @title = options[:title]
+      end
       before_main_loop
       catch(:exit) do
         loop do

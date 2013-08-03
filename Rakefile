@@ -11,6 +11,6 @@ require "yard"
 YARD::Rake::YardocTask.new
 
 desc "examples/* の最低限の動作確認"
-task :examples_test_all do
+task :test_examples do
   system("cd examples && ruby test_all.rb")
 end

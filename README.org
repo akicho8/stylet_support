@@ -32,13 +32,13 @@
    : ruby -r sdl -e 'p [:mixer, SDL.constants.include?(:Mixer)]'
    : ruby -r sdl -e 'p [:ttf, SDL.constants.include?(:TTF)]'
 
-   ウィンドウ表示確認
+   rubysdl の表示確認
 
    : rsdl -r sdl -e 'SDL.init(SDL::INIT_EVERYTHING); SDL.set_video_mode(640, 480, 16, SDL::SWSURFACE); sleep(1)'
 
-   Hello, World. 確認([q]で終了)
+   このライブラリの動作確認([q]で終了)
 
-   : rsdl -e 'require "stylet"; Stylet::Base.main_loop{|win|win.vputs "Hello, world."}'
+   : rsdl -r stylet -e 'Stylet.app { vputs "Hello, world." }'
 
    以下参考
 

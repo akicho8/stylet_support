@@ -13,14 +13,12 @@ class Lifegame
 
   def initialize(win)
     @win = win
-    @matrixs = []
 
+    @matrixs = Array.new(2){{}}
     @generation = 0
-    @matrixs[0] = {}
-    @matrixs[1] = {}
     @cell_list_index = 0
 
-    @size = 16
+    @size = 12
 
     if true
       @width  = @win.rect.width / @size
@@ -35,7 +33,7 @@ class Lifegame
 
   def reset
     @generation = 0
-    @matrixs[0] = {}
+    @matrixs[0].clear
     object_list[@cell_list_index.modulo(object_list.size)].strip.lines.each_with_index{|line, y|
       line.chars.each_with_index{|char, x|
         if char.match(/[oO■]/)
@@ -65,13 +63,7 @@ class Lifegame
         count = AroundVectors.count{|v|
           @matrix[(vec + v).to_a.collect(&:to_i)]
         }
-        flag = false
-        if @matrix[vec.to_a]
-          flag = (count == 2 || count == 3)
-        else
-          flag = (count == 3)
-        end
-        @next_matrix[vec.to_a] = flag
+        @next_matrix[vec.to_a] = @matrix[vec.to_a] ? (count == 2 || count == 3) : (count == 3)
       end
     end
 
@@ -84,7 +76,7 @@ class Lifegame
         if cell
           v = Stylet::Vector.new(*xy)
           v = (v * @size) + @win.rect.to_vector + @win.cursor
-          @win.draw_rect(Stylet::Rect.new(*v.to_a, @size, @size), :fill => true, :color => "green")
+          @win.draw_rect(Stylet::Rect.new(*v.to_a, @size, @size), :fill => true, :color => "font")
         end
       }
     end

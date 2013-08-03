@@ -1,10 +1,7 @@
-require "bundler/setup"
-require "tapp"
-require "stylet"
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'stylet'
 
-log_file = Pathname("#{__dir__}/../log/test.log").expand_path
-FileUtils.makedirs(log_file.dirname)
-Stylet.logger = ActiveSupport::Logger.new(log_file)
+Stylet.logger = ActiveSupport::Logger.new("#{__dir__}/../log/test.log")
 
 RSpec.configure do |config|
 end

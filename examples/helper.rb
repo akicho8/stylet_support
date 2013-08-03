@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require_relative "../lib/stylet"
 
-# Stylet::Conf.update({
+# Stylet::Config.update({
 #     # :screen_size      => [640, 480],
 #     # :screen_size      => [800, 600],
 #     # :color_depth      => 8,
