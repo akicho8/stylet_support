@@ -3,6 +3,10 @@
 
 * 物理シミュレーション覚書
 
+  - [[https://travis-ci.org/akicho8/stylet][Travis]]: [[https://travis-ci.org/akicho8/stylet.png]]
+  - [[https://gemnasium.com/akicho8/stylet/][Gemnasium]]: [[https://gemnasium.com/akicho8/stylet.png]]
+  - [[https://codeclimate.com/github/akicho8/stylet][Code Climate]]: [[https://codeclimate.com/github/akicho8/stylet.png]]
+
   [[https://raw.github.com/akicho8/stylet/master/images/demo1.png]]
   [[https://raw.github.com/akicho8/stylet/master/images/demo2.png]]
   [[https://raw.github.com/akicho8/stylet/master/images/demo3.png]]
