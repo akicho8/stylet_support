@@ -69,7 +69,6 @@ module Stylet
   class Base
     include Singleton
     include Core
-    include Logger
     include Draw
     include DrawSupport
     include Font

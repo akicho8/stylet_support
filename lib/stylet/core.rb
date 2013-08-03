@@ -5,6 +5,10 @@ module Stylet
       @sdl_initialized = false
     end
 
+    def logger
+      Stylet.logger
+    end
+
     def before_main_loop
       return if @sdl_initialized
       SDL.init(@init_mode)
