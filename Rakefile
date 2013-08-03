@@ -1,16 +1,16 @@
+# -*- coding: utf-8 -*-
+require "bundler"
+Bundler::GemHelper.install_tasks
+
 require "rspec/core/rake_task"
 RSpec::Core::RakeTask.new
 task :default => :spec
 task :test => :spec
 
-require "bundler"
-Bundler::GemHelper.install_tasks
-
-# require "rake/clean"
-# CLEAN << "pkg" << ".yardoc" << "doc" << "log" << "tmp"
-
 require "yard"
-YARD::Rake::YardocTask.new do |t|
-  t.files   = ['lib/**/*.rb', 'spec/**/*_spec.rb']
-  # t.options = ['--debug'] # optional arguments
+YARD::Rake::YardocTask.new
+
+desc "examples/* の最低限の動作確認"
+task :examples_test_all do
+  system("cd examples && ruby test_all.rb")
 end

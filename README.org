@@ -3,30 +3,28 @@
 
 * 物理シミュレーション覚書
 
-[[https://raw.github.com/akicho8/stylet/master/images/demo1.png]]
-[[https://raw.github.com/akicho8/stylet/master/images/demo2.png]]
-[[https://raw.github.com/akicho8/stylet/master/images/demo3.png]]
-[[https://raw.github.com/akicho8/stylet/master/images/demo4.png]]
+  [[https://raw.github.com/akicho8/stylet/master/images/demo1.png]]
+  [[https://raw.github.com/akicho8/stylet/master/images/demo2.png]]
+  [[https://raw.github.com/akicho8/stylet/master/images/demo3.png]]
+  [[https://raw.github.com/akicho8/stylet/master/images/demo4.png]]
 
 ** セットアップ手順
 
-   Homebrew を最新に
-
-   : (cd /usr/local && git reset --hard origin/master && brew update)
-
-   各種ライブラリをいったんアンインストールしてからインストール
-
-   : brew uninstall sdl sdl_gfx sdl_image sdl_mixer sdl_ttf
-   : brew install sdl sdl_gfx sdl_image sdl_mixer sdl_ttf
+   : brew uninstall sdl
+   : brew uninstall sdl_ttf
+   : brew uninstall sdl_mixer
+   : brew uninstall sdl_image
+   : brew uninstall sge
+   : gem uninstall -ax rubysdl rsdl
    :
-   : brew uninstall sge-manualcompile
-   : brew install https://raw.github.com/gist/3115276/719f284d6e340487dba6ef3e5beb7b7a4098414f/sge-manualcompile.rb
-   : brew link --overwrite sge-manualcompile
+   : brew update
    :
-   : gem uninstall -axI rubysdl rsdl
+   : brew install sdl
+   : brew install sdl_mixer
+   : brew install sdl_ttf
+   : brew install sdl_image
+   : brew install https://gist.github.com/mitmul/5410467/raw/c4fa716635e951b61f489726976b10f00dd41306/sge.rb
    : gem install rubysdl rsdl
-
-   ※ Mac OS X Lionにsgeを入れる http://qiita.com/items/f52daed19fa0198121b5 を参考にしました
 
    すべて true になれば次へ
 
@@ -41,6 +39,11 @@
    Hello, World. 確認([q]で終了)
 
    : rsdl -e 'require "stylet"; Stylet::Base.main_loop{|win|win.vputs "Hello, world."}'
+
+   以下参考
+
+   - Mac OS X Lionにsgeを入れる http://qiita.com/items/f52daed19fa0198121b5 (2013-08-03 の時点ではSGEがTTF関連でこけてしまった)
+   - MacにRuby/SDL、rsdl、SGEを入れて、ゲームライブラリMyGameを動かす http://qiita.com/noanoa07/items/88fefe232dc605720e09
 
 * TIPS
 
@@ -142,12 +145,12 @@
    : # AとBで速度ベクトルの反映
    : @pA += @speed.scale(@win.button.btA.repeat_0or1) + @speed.scale(-@win.button.btB.repeat_0or1)
    : # @pA += @speed.scale(@win.button.btA.repeat) + @speed.scale(-@win.button.btB.repeat) # 加速したいとき
-   : 
+   :
    : # Cボタンおしっぱなし + マウスで自機位置移動
    : if @win.button.btC.press?
    :   @pA = @win.cursor.clone
    : end
-   : 
+   :
    : # Dボタンおしっぱなし + マウスで自機角度変更
    : if @win.button.btD.press?
    :   if @win.cursor != @pA
