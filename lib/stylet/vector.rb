@@ -3,6 +3,8 @@ module Stylet
   Point = Struct.new(:x, :y)
   Point3 = Struct.new(:x, :y, :z)
 
+  class ZeroVectorError < StandardError; end
+
   module BasicVector
     def self.included(base)
       base.extend(ClassMethods)
@@ -57,10 +59,7 @@ module Stylet
 
       def safe_new(*args)
         new(*args).tap do |obj|
-          if obj.zero?
-            p [self, caller]
-            raise "ベクトル0はNaNになるので入れんな"
-          end
+          raise ZeroVectorError if obj.zero?
         end
       end
 
@@ -103,7 +102,7 @@ module Stylet
       def inner_product(a, b)
         a = a.normalize
         b = b.normalize
-        members.collect{|m|a.public_send(m) * b.public_send(m)}.inject(0, &:+) # a.x * b.x + a.y * b.y
+        members.collect{|m|a.public_send(m) * b.public_send(m)}.reduce(:+) || 0 # a.x * b.x + a.y * b.y
       end
     end
 
@@ -133,24 +132,8 @@ module Stylet
       #   とするとベクトル 0 ができて n / 0.0 で NaN になるので注意
       #
       def normalize
+        raise ZeroVectorError if zero?
         c = length
-
-        # if c > 0                # これは ZeroDivisionError を出さないためのものなので 0, 0 のベクトルがなければ不要
-        #   c = 1.0 / c
-        # end
-
-        # これはダメ。ベクトルが消えてしまう
-        # if c.zero?
-        #   return Vector.new(0, 0)
-        # end
-
-        if c.zero?
-          if Config[:cry]
-            raise ZeroDivisionError, "#{[x, y].inspect}"
-          end
-          return clone
-        end
-
         self.class.safe_new(*values.collect{|v|Float(v) / c})
       end
 

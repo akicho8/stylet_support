@@ -16,14 +16,14 @@ class Ball
   end
 
   def update
-    dx = (@pos.x - @win.mouse_vector.x).abs
-    dy = (@pos.y - @win.mouse_vector.y).abs
+    dx = (@pos.x - @win.mouse.point.x).abs
+    dy = (@pos.y - @win.mouse.point.y).abs
     distance = Math.sqrt((dx ** 2) + (dy ** 2))
     @win.vputs(distance)
     radius_plus = @radius + @win.radius
     gap = radius_plus - distance
     if gap > 0
-      @dir = Stylet::Fee.angle(@win.mouse_vector.x, @win.mouse_vector.y, @pos.x, @pos.y)
+      @dir = Stylet::Fee.angle(@win.mouse.point.x, @win.mouse.point.y, @pos.x, @pos.y)
       @cpos = @pos.clone
       @r = 0
       @vr = gap
@@ -52,7 +52,7 @@ module Helper
 
     def before_main_loop
       super if defined? super
-      @cursor = @mouse_vector.clone
+      @cursor = @mouse.point.clone
       @cursor_speed = 5
       @objects = []
     end
@@ -65,8 +65,8 @@ module Helper
       end
       key_counter_update_all
 
-      if mouse_moved?
-        @cursor = @mouse_vector.clone
+      if mouse.moved?
+        @cursor = @mouse.point.clone
       end
 
       if dir = axis_angle
@@ -74,8 +74,8 @@ module Helper
         @cursor.y += Stylet::Fee.sin(dir) * @cursor_speed
       end
 
-      vputs @mouse_vector.to_a
-      vputs mouse_moved?
+      vputs @mouse.point.to_a
+      vputs mouse.moved?
 
       vputs @objects.size
       @objects.each{|e|e.update}
@@ -98,7 +98,7 @@ class App < Stylet::Base
 
   def update
     super if defined? super
-    draw_polygon(@mouse_vector, :radius => @radius, :vertex => 32)
+    draw_polygon(@mouse.point, :radius => @radius, :vertex => 32)
   end
 end
 

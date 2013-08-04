@@ -60,7 +60,7 @@
 
 ** p0の速度ベクトルをマウスの方向に設定
 
-   : speed = Vector.angle_at(p0.angle_to(win.mouse_vector)) * speed.length
+   : speed = Vector.angle_at(p0.angle_to(win.mouse.point)) * speed.length
 
 ** 円の速度制限
 

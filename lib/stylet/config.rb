@@ -28,7 +28,5 @@ module Stylet
     :background_image => "background.bmp",
     :color_depth      => 32,
     :sound_frequency  => 44100, # SDLのデフォルトは 22050
-
-    :cry              => true,
   }
 end

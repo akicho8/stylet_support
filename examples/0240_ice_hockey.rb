@@ -24,25 +24,25 @@ class IccHockeyBall
     @lock = false
 
     @body_radius = 64 # 物体の大きさ
-    @speed_max = 12   # 速度最大
-    @friction = 0.15  # 摩擦
+    @speed_max = 16   # 速度最大
+    @friction = 0.3   # 摩擦
   end
 
   def update
     # ボタンをクリックした瞬間に、
     if @win.button.btA.trigger?
       # 自分の円のなかにカーソルがあればロックする
-      if @pos.distance_to(@win.mouse_vector) < @body_radius
+      if @pos.distance_to(@win.mouse.point) < @body_radius
         @lock = true
       end
     end
 
     # ロックしているときに、ボタンが押されっぱなしなら
     if @lock && @win.button.btA.press?
-      @p0 = @win.mouse_vector.clone        # 円の座標をマウスと同じにする
-      @power = @win.__mouse_before_distance # マウスの直前からの移動距離を速度と考える
-      @speed = 0                    # 速度を0とする
-      @radius = 0                   # 半径を0とする
+      @p0 = @win.mouse.point.clone      # 円の座標をマウスと同じにする
+      @power = @win.mouse.vector.length # マウスの直前からの移動距離を速度と考える
+      @speed = 0                        # 速度を0とする
+      @radius = 0                       # 半径を0とする
     end
 
     # ボタンが離された瞬間
@@ -51,9 +51,9 @@ class IccHockeyBall
       @lock = false
       # 速度が設定されていれば
       if @power
-        @speed = @power        # 速度を円に反映し、
-        @dir = @win.mouse_angle # 円の方向にマウスが移動した方向を合わせる
-        @power = nil           # 球が動いているときにボタンを連打すると @dir が再設定されてしまうので nil にしておく
+        @speed = @power                  # 速度を円に反映し、
+        @dir   = @win.mouse.vector.angle # 円の方向にマウスが移動した方向を合わせる
+        @power = nil                     # 球が動いているときにボタンを連打すると @dir が再設定されてしまうので nil にしておく
       end
     end
 
@@ -78,7 +78,7 @@ class IccHockeyBall
 
     @win.draw_circle(@pos, :radius => @body_radius, :vertex => 32)
     @win.vputs @power
-    @win.vputs @pos.distance_to(@win.mouse_vector)
+    @win.vputs @pos.distance_to(@win.mouse.point)
     @win.vputs @speed
     @win.vputs @radius
   end

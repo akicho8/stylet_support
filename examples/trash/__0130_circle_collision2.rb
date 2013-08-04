@@ -55,7 +55,7 @@ class App < Stylet::Base
   def update
     super if defined? super
     if object = @objects.first
-      object.pos = @mouse_vector.clone
+      object.pos = @mouse.point.clone
     end
   end
 end

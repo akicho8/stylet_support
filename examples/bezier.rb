@@ -19,7 +19,7 @@ class MovablePoint
     begin
       unless @dragging
         if @win.button.btA.trigger?
-          if Stylet::CollisionSupport.squire_collision?(@pos, @win.mouse_vector, :radius => 8)
+          if Stylet::CollisionSupport.squire_collision?(@pos, @win.mouse.point, :radius => 8)
             # 他の奴がアクティブじゃなかったときだけ自分を有効にできる
             # これを入れないと同時に複数のポイントをドラッグできてしまう
             unless @unit.dragging_current
@@ -36,7 +36,7 @@ class MovablePoint
       end
 
       if self == @unit.dragging_current
-        @pos = @win.mouse_vector.clone
+        @pos = @win.mouse.point.clone
       end
     end
 

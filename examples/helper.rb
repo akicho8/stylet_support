@@ -49,7 +49,7 @@ module Helper
 
     def before_main_loop
       super if defined? super
-      @cursor = @mouse_vector.clone
+      @cursor = @mouse.point.clone
       @cursor_speed = 5
       @cursor_vertex = 3
       @cursor_radius = 8
@@ -65,16 +65,16 @@ module Helper
       end
       key_counter_update_all
 
-      if mouse_moved?
-        @cursor = @mouse_vector.clone
+      if mouse.moved?
+        @cursor = @mouse.point.clone
       end
 
       if dir = axis_angle
         @cursor += Stylet::Vector.angle_at(dir) * @cursor_speed
       end
 
-      # vputs @mouse_vector.to_a
-      # vputs mouse_moved?
+      # vputs @mouse.point.to_a
+      # vputs mouse.moved?
 
       # unless @objects.empty?
       #   vputs "objects=#{@objects.size}"

@@ -11,7 +11,7 @@ module Stylet
     module Base
       attr_reader :axis, :button
 
-      def initialize(*)
+      def initialize
         super if defined? super
         @axis   = Axis.new(KeyOne.new("u"), KeyOne.new("d"), KeyOne.new("l"), KeyOne.new("r"))
         @button = Button.new(KeyOne.new("AL"), KeyOne.new("BR"), KeyOne.new("C"), KeyOne.new("D"))

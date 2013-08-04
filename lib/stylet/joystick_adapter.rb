@@ -25,6 +25,8 @@ module Stylet
 
     delegate :index, :to => :object
 
+    private_class_method :new
+
     def initialize(object)
       @object = object
     end
@@ -63,7 +65,7 @@ module Stylet
     def button_str
       @object.num_buttons.times.collect{|index|
         if @object.button(index)
-          "#{index}"
+          index
         end
       }.join
     end
@@ -71,7 +73,7 @@ module Stylet
     def axis_str
       [:up, :down, :right, :left].collect{|dir|
         if lever_on?(dir)
-          dir.to_s.slice(/^(.)/)
+          dir.to_s.slice(/^(.)/).upcase
         end
       }.join
     end

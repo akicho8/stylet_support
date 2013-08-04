@@ -21,9 +21,9 @@ module Stylet
     module MouseButtonAsCounter
       def update
         super if defined? super
-        @button.btA << @mouse_btA
-        @button.btB << @mouse_btB
-        @button.btC << @mouse_btC
+        @button.btA << @mouse.button.a
+        @button.btB << @mouse.button.b
+        @button.btC << @mouse.button.c
       end
     end
 
