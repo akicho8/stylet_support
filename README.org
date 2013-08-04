@@ -14,15 +14,8 @@
 
 ** セットアップ手順
 
-   : brew uninstall sdl
-   : brew uninstall sdl_ttf
-   : brew uninstall sdl_mixer
-   : brew uninstall sdl_image
-   : brew uninstall sge
-   : gem uninstall -ax rubysdl rsdl
-   :
-   : brew update
-   :
+   rubysdl_setup.sh より抜粋
+
    : brew install sdl
    : brew install sdl_mixer
    : brew install sdl_ttf
@@ -30,7 +23,7 @@
    : brew install https://gist.github.com/mitmul/5410467/raw/c4fa716635e951b61f489726976b10f00dd41306/sge.rb
    : gem install rubysdl rsdl
 
-   すべて true になれば次へ
+   以下が true なら次へ
 
    : ruby -r sdl -e 'p [:sge, SDL.respond_to?(:autoLock)]'
    : ruby -r sdl -e 'p [:mixer, SDL.constants.include?(:Mixer)]'
@@ -44,10 +37,10 @@
 
    : rsdl -r stylet -e 'Stylet.app { vputs "Hello, world." }'
 
-   以下参考
+   参考
 
    - Mac OS X Lionにsgeを入れる http://qiita.com/items/f52daed19fa0198121b5 (2013-08-03 の時点ではSGEがTTF関連でこけてしまった)
-   - MacにRuby/SDL、rsdl、SGEを入れて、ゲームライブラリMyGameを動かす http://qiita.com/noanoa07/items/88fefe232dc605720e09
+   - MacにRuby/SDL、rsdl、SGEを入れて、ゲームライブラリMyGameを動かす http://qiita.com/noanoa07/items/88fefe232dc605720e09 (2013-08-03 の時点ではインストールできた)
 
 * TIPS
 

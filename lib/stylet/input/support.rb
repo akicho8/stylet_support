@@ -26,13 +26,17 @@ module Stylet
         case
         when rhs.press? && lhs.press?
           case
-          when rhs.count < lhs.count; rhs
-          when lhs.count < rhs.count; lhs
+          when rhs.count < lhs.count
+            rhs
+          when lhs.count < rhs.count
+            lhs
           else
             default_key
           end
-        when rhs.press?; rhs
-        when lhs.press?; lhs
+        when rhs.press?
+          rhs
+        when lhs.press?
+          lhs
         else
           nil
         end

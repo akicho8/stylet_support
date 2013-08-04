@@ -135,18 +135,10 @@ module Stylet
       ip = @atan_area_info_table[area_no]
       dir = ip.basedir
       if div_value.nonzero?
-        # p [value, div_value]
         if value != div_value
-          # p "#{value} * #{ROUND} / 8 / #{div_value}"
           index = (value.to_f * ROUND / 8 / div_value).round
           raise unless index < @atan_table.size
-          # p @atan_table
-          # p [dir, index, ip.sign, @atan_table[index]]
-
-          # p({:value => value, :div_value => div_value, :index => index, :dir => dir, :atan_table => @atan_table, :sign => ip.sign})
-
           dirsub = ip.sign * @atan_table[index]
-          # dirsub = dirsub
           dir += dirsub
         else
           dir += ip.sign * ROUND / 8
