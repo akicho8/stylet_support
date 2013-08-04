@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-require_relative "../lib/stylet"
+require_relative "setup"
 
 class App < Stylet::Base
   def before_main_loop
-    super if defined? super
+    super
     self.title = "テンプレートメソッドパターン"
   end
 
   def update
-    super if defined? super
+    super
     vputs "Hello, world."
   end
 end
