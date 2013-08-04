@@ -24,6 +24,7 @@ require_relative "etc"
 
 # 描画系
 require_relative "core"
+require_relative "callbacks"
 require_relative "system_pause"
 require_relative "cl_options"
 require_relative "draw"
@@ -61,6 +62,10 @@ module Stylet
     Base.app(*args, &block)
   end
 
+  def self.hello_world
+    app { vputs "Hello, World" }
+  end
+
   #
   # 全機能入りのクラス
   #
@@ -71,6 +76,7 @@ module Stylet
   class Base
     include Singleton
     include Core
+    include Callbacks
     include Draw
     include DrawSupport
     include Font
