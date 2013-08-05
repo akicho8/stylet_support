@@ -19,11 +19,11 @@ class Ball
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super
-    @cursor_display = false
+    @cursor.display = false
     @objects << Ball.new(self)
   end
 end

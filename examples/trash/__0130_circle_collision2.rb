@@ -41,7 +41,7 @@ class Ball
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   attr_reader :objects
 

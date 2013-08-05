@@ -89,12 +89,12 @@ class IccHockeyBall
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super
     @objects << IccHockeyBall.new(self, rect.center.clone)
-    @cursor_display = false
+    @cursor.display = false
   end
 end
 

@@ -151,7 +151,7 @@ module BezierUnitBase
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super

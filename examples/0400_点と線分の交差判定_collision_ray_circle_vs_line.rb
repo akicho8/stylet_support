@@ -36,12 +36,12 @@ class Ray
       @p0 += @vS.scale(@win.button.btA.repeat_0or1) + @vS.scale(-@win.button.btB.repeat_0or1)
       # Cボタンおしっぱなし + マウスで自機位置移動
       if @win.button.btC.press?
-        @p0 = @win.cursor.clone
+        @p0 = @win.cursor.point.clone
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
-        if @win.cursor != @p0
-          @vS = (@win.cursor - @p0).normalize * @vS.length
+        if @win.cursor.point != @p0
+          @vS = (@win.cursor.point - @p0).normalize * @vS.length
         end
       end
     end
@@ -237,7 +237,7 @@ class Ray
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   attr_reader :ray_mode
   attr_reader :reflect_mode
@@ -250,7 +250,7 @@ class App < Stylet::Base
     @reflect_mode = true       # true:反射する
 
     @objects << Ray.new(self, rect.center.clone)
-    @cursor_vertex = 3
+    @cursor.vertex = 3
   end
 
   def update

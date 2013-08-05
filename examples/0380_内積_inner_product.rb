@@ -15,7 +15,7 @@ class Scene
     @hour += (@win.button.btA.repeat - @win.button.btB.repeat)
 
     vA = Stylet::Vector.angle_at(Stylet::Fee.clock(@hour)).scale(@win.rect.hy * 0.8)    # ベクトルAはキーボードで移動できる
-    vB = Stylet::Vector.angle_at(@win.rect.center.angle_to(@win.cursor)).scale(@win.rect.hy * 0.8)  # ベクトルBはマウスの方を向く
+    vB = Stylet::Vector.angle_at(@win.rect.center.angle_to(@win.cursor.point)).scale(@win.rect.hy * 0.8)  # ベクトルBはマウスの方を向く
 
     @win.vputs ["Inner Product: ", Stylet::Vector.inner_product(vA, vB)] # 内積が求まる
 
@@ -28,7 +28,7 @@ class Scene
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super

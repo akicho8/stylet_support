@@ -52,8 +52,8 @@ module Helper
 
     def before_main_loop
       super if defined? super
-      @cursor = @mouse.point.clone
-      @cursor_speed = 5
+      @cursor.point = @mouse.point.clone
+      @cursor.speed = 5
       @objects = []
     end
 
@@ -66,12 +66,12 @@ module Helper
       key_counter_update_all
 
       if mouse.moved?
-        @cursor = @mouse.point.clone
+        @cursor.point = @mouse.point.clone
       end
 
       if dir = axis_angle
-        @cursor.x += Stylet::Fee.cos(dir) * @cursor_speed
-        @cursor.y += Stylet::Fee.sin(dir) * @cursor_speed
+        @cursor.point.x += Stylet::Fee.cos(dir) * @cursor.speed
+        @cursor.point.y += Stylet::Fee.sin(dir) * @cursor.speed
       end
 
       vputs @mouse.point.to_a
@@ -80,13 +80,13 @@ module Helper
       vputs @objects.size
       @objects.each{|e|e.update}
       @objects.reject!{|e|e.screen_out?}
-      draw_polygon(@cursor, :radius => 16, :vertex => 3, :angle => 1.0 / 64 * @count)
+      draw_polygon(@cursor.point, :radius => 16, :vertex => 3, :angle => 1.0 / 64 * @count)
     end
   end
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   attr_reader :radius
 

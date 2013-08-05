@@ -75,7 +75,7 @@ class Lifegame
       @next_matrix.each{|xy, cell|
         if cell
           v = Stylet::Vector.new(*xy)
-          v = (v * @size) + @win.rect.to_vector + @win.cursor
+          v = (v * @size) + @win.rect.to_vector + @win.cursor.point
           @win.draw_rect(Stylet::Rect.new(*v.to_a, @size, @size), :fill => true, :color => "font")
         end
       }
@@ -194,7 +194,7 @@ O..O...OOOO.OO.O..............OO.
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super

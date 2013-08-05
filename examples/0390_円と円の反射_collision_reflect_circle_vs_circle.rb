@@ -44,12 +44,12 @@ class Scene
       @pB += @sB.scale(@win.button.btA.repeat_0or1) + @sB.scale(-@win.button.btB.repeat_0or1)
       # Cボタンおしっぱなし + マウスで自機位置移動
       if @win.button.btC.press?
-        @pA = @win.cursor.clone
+        @pA = @win.cursor.point.clone
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
-        if @win.cursor != @pA
-          @sA = (@win.cursor - @pA).normalize * @sA.length
+        if @win.cursor.point != @pA
+          @sA = (@win.cursor.point - @pA).normalize * @sA.length
         end
       end
     end
@@ -202,7 +202,7 @@ class Scene
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   attr_reader :reflect_mode
 
@@ -214,7 +214,7 @@ class App < Stylet::Base
     @reflect_mode = @modes.first
 
     @objects << Scene.new(self)
-    @cursor_vertex = 3
+    @cursor.vertex = 3
     self.title = "円と円の反射"
   end
 

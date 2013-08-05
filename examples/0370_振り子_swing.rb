@@ -43,7 +43,7 @@ class Swing
 
       # Aボタンが押されているときだけ鉄球の位置をカーソルの方向に向ける
       if @win.button.btD.press?
-        @dir1 = @p0.angle_to(@win.cursor)
+        @dir1 = @p0.angle_to(@win.cursor.point)
         @speed = 0
       end
 
@@ -144,7 +144,7 @@ class Swing
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super

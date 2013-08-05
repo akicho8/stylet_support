@@ -12,8 +12,8 @@ class Ball
   end
 
   def update
-    a = @win.cursor
-    ar = @win.cursor_radius
+    a = @win.cursor.point
+    ar = @win.cursor.radius
 
     b = @pos
     br = @radius
@@ -42,19 +42,19 @@ class Ball
 
     @pos = b
 
-    @win.draw_line(@pos, @win.cursor)
+    @win.draw_line(@pos, @win.cursor.point)
     @win.draw_circle(@pos, :radius => @radius, :vertex => 32)
   end
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super
     @objects << Ball.new(self, rect.center.clone)
-    @cursor_radius = 100
-    @cursor_vertex = 32
+    @cursor.radius = 100
+    @cursor.vertex = 32
     self.title = "円の押し引き"
   end
 end

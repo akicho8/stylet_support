@@ -38,14 +38,14 @@ class Ball
 
       # Cボタンおしっぱなし + マウスで位置移動
       if @win.button.btC.press?
-        @pos = @win.cursor.clone
+        @pos = @win.cursor.point.clone
       end
 
       # Dボタンおしっぱなし + マウスで角度変更
       if @win.button.btD.press?
-        if @win.cursor != @pos
-          # @speed = (@win.cursor - @pos).normalize * @speed.length
-          @speed = (@win.cursor - @pos).normalize * @speed.length
+        if @win.cursor.point != @pos
+          # @speed = (@win.cursor.point - @pos).normalize * @speed.length
+          @speed = (@win.cursor.point - @pos).normalize * @speed.length
         end
       end
     end
@@ -76,11 +76,11 @@ class Ball
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super
-    @cursor_display = false
+    @cursor.display = false
     self.title = "加速・放物線・バウンド"
   end
 

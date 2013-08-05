@@ -29,13 +29,13 @@ class Ball
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   attr_reader :xc, :yc
 
   def before_main_loop
     super if defined? super
-    @cursor_display = false
+    @cursor.display = false
     @objects += Array.new(16){|i|Ball.new(self, i)}
     @xc = 3.0
     @yc = 3.0

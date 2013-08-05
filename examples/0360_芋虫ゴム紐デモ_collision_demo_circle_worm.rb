@@ -37,7 +37,7 @@ class Joint
 
     # 頭だけカーソルで動かす
     if @index.zero?
-      @p0 = @win.cursor
+      @p0 = @win.cursor.point
     end
 
     # 次の間接まで線を引く
@@ -53,7 +53,7 @@ class Joint
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   attr_reader :body_display
   attr_reader :length
@@ -62,7 +62,7 @@ class App < Stylet::Base
   def before_main_loop
     super if defined? super
     @objects = Array.new(42){|i|Joint.new(self, i, rect.center.clone)}
-    @cursor_display = false     # 三角カーソル非表示
+    @cursor.display = false     # 三角カーソル非表示
 
     @body_display = true # 胴体描画モード
     @length = 32         # 線と線の間

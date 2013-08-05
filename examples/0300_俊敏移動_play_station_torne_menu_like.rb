@@ -72,12 +72,12 @@ class Ball
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super
     self.title = "torne風メニュー(PSのシステムにありがちな動き)"
-    @cursor_display = false
+    @cursor.display = false
     @objects = Array.new(8){|i|Ball.new(self, i)}
   end
 end

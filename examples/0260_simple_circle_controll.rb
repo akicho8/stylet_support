@@ -22,12 +22,12 @@ class Scene
       @pA += @sA.scale(@win.button.btA.repeat_0or1) + @sA.scale(-@win.button.btB.repeat_0or1)
       # Cボタンおしっぱなし + マウスで自機位置移動
       if @win.button.btC.press?
-        @pA = @win.cursor.clone
+        @pA = @win.cursor.point.clone
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
-        if @win.cursor != @pA
-          @sA = (@win.cursor - @pA).normalize * @sA.length
+        if @win.cursor.point != @pA
+          @sA = (@win.cursor.point - @pA).normalize * @sA.length
         end
       end
     end
@@ -42,7 +42,7 @@ class Scene
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   attr_reader :ray_mode
   attr_reader :reflect_mode
@@ -54,7 +54,7 @@ class App < Stylet::Base
     @reflect_mode = true       # true:反射する
 
     @objects << Scene.new(self)
-    @cursor_vertex = 3
+    @cursor.vertex = 3
   end
 
   def update

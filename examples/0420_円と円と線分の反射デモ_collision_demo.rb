@@ -216,12 +216,12 @@ class Ball
       @pos += @speed.scale(@win.button.btA.repeat_0or1) + @speed.scale(-@win.button.btB.repeat_0or1)
       # Cボタンおしっぱなし + マウスで自機位置移動
       if @win.button.btC.press?
-        @pos = @win.cursor.clone
+        @pos = @win.cursor.point.clone
       end
       # Dボタンおしっぱなし + マウスで自機角度変更
       if @win.button.btD.press?
-        if @win.cursor != @pos
-          @speed = (@win.cursor - @pos).normalize * @speed.length.round
+        if @win.cursor.point != @pos
+          @speed = (@win.cursor.point - @pos).normalize * @speed.length.round
         end
       end
     end
@@ -247,9 +247,9 @@ class Scene
   def update
     # # Aボタンおしっぱなし + マウスで自機角度変更
     # if @win.button.btA.press?
-    #   @center = @win.cursor.clone
-    #   # if @win.cursor != @center
-    #   #   @speed = (@win.cursor - @pos).normalize * @speed.length
+    #   @center = @win.cursor.point.clone
+    #   # if @win.cursor.point != @center
+    #   #   @speed = (@win.cursor.point - @pos).normalize * @speed.length
     #   # end
     # end
 
@@ -316,7 +316,7 @@ class Scene
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super

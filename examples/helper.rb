@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-require_relative "../lib/stylet"
+require_relative "setup"
 
-# Stylet::Config.update({
-#     # :screen_size      => [640, 480],
-#     # :screen_size      => [800, 600],
-#     # :color_depth      => 8,
-#   })
+Stylet::Config.update({
+    # :screen_size      => [640, 480],
+    # :screen_size      => [800, 600],
+    # :color_depth      => 8,
+  })
 
 # Stylet::Palette.update({
 #     "background" => [255, 255, 255],
@@ -18,47 +17,26 @@ require_relative "../lib/stylet"
 #   })
 
 module Helper
-  module SpaceObject
-    def initialize(win, *)
-      @win = win
-      @count = 0
-    end
+  module Cursor
+    extend ActiveSupport::Concern
 
-    def screen_out?
-      false
-    end
-
-    def before_update
-    end
-
-    def update
-    end
-
-    def after_update
-      @count += 1
-    end
-  end
-
-  module TriangleCursor
     include Stylet::Input::Base
     include Stylet::Input::StandardKeybord
     include Stylet::Input::JoystickBinding
     include Stylet::Input::MouseButtonAsCounter
 
-    attr_reader :cursor, :cursor_radius, :cursor_vertex, :objects
+    included do
+      attr_reader :cursor
+    end
 
     def before_main_loop
-      super if defined? super
-      @cursor = @mouse.point.clone
-      @cursor_speed = 5
-      @cursor_vertex = 3
-      @cursor_radius = 8
-      @cursor_display = true
-      @objects = []
+      super
+      @cursor = CursorSet.new
+      @cursor.point = @mouse.point.clone
     end
 
     def update
-      super if defined? super
+      super
 
       if joy = joys.first
         update_by_joy(joy)
@@ -66,26 +44,59 @@ module Helper
       key_counter_update_all
 
       if mouse.moved?
-        @cursor = @mouse.point.clone
+        @cursor.point = @mouse.point.clone
       end
 
-      if dir = axis_angle
-        @cursor += Stylet::Vector.angle_at(dir) * @cursor_speed
+      if angle = axis_angle
+        @cursor.point += Stylet::Vector.angle_at(angle) * @cursor.speed
       end
 
-      # vputs @mouse.point.to_a
-      # vputs mouse.moved?
-
-      # unless @objects.empty?
-      #   vputs "objects=#{@objects.size}"
-      # end
-
-      @objects.each{|e|e.update}
-      @objects.reject!{|e| e.respond_to?(:screen_out?) && e.screen_out?}
-
-      if @cursor_display
-        draw_circle(@cursor, :radius => @cursor_radius, :vertex => @cursor_vertex, :angle => 1.0 / 64 * @count)
+      if @cursor.display
+        draw_circle(@cursor.point, :radius => @cursor.radius, :vertex => @cursor.vertex, :angle => 1.0 / 64 * @count)
       end
     end
+
+    class CursorSet
+      attr_accessor :point, :speed, :vertex, :radius, :display
+
+      def initialize
+        @speed   = 5
+        @vertex  = 3
+        @radius  = 8
+        @display = true
+      end
+    end
+  end
+
+  module ObjectCollection
+    extend ActiveSupport::Concern
+
+    included do
+      attr_reader :objects
+    end
+
+    def before_main_loop
+      super
+      @objects = []
+    end
+
+    def update
+      super
+      @objects.each(&:update)
+      @objects.reject!{|e|e.respond_to?(:screen_out?) && e.screen_out?}
+    end
+  end
+
+  module CursorWithObjectCollection
+    extend ActiveSupport::Concern
+    include ObjectCollection
+    include Cursor
+  end
+end
+
+if $0 == __FILE__
+  Class.new(Stylet::Base) do
+    include Helper::CursorWithObjectCollection
+    main_loop
   end
 end

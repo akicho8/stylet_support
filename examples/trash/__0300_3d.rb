@@ -70,12 +70,12 @@ class Scene
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super
     self.title = "3D"
-    # @cursor_display = false
+    # @cursor.display = false
     @objects << Scene.new(self)
   end
 end

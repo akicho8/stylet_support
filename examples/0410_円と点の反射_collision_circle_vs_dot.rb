@@ -19,10 +19,10 @@ class Circle
     @speed += @gravity
     @pos += @speed
 
-    diff = @pos - @win.cursor
+    diff = @pos - @win.cursor.point
     if diff.length > 0
       if diff.length < @radius
-        @pos = @win.cursor + diff.normalize.scale(@radius)
+        @pos = @win.cursor.point + diff.normalize.scale(@radius)
         @speed = diff.normalize * @speed.length
       end
     end
@@ -33,12 +33,12 @@ class Circle
 end
 
 class App < Stylet::Base
-  include Helper::TriangleCursor
+  include Helper::CursorWithObjectCollection
 
   def before_main_loop
     super if defined? super
     @objects << Circle.new(self)
-    @cursor_radius = 1
+    @cursor.radius = 1
   end
 end
 
