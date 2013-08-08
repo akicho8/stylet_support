@@ -20,26 +20,29 @@ module Stylet
       @check_fps = CheckFPS.new
 
       options = SDL::HWSURFACE | SDL::DOUBLEBUF
-      if Config[:full_screen]
+      if Stylet.config.full_screen
         options |= SDL::FULLSCREEN
       end
-      w, h = Config[:screen_size]
-      @screen ||= SDL::Screen.open(w, h, Config[:color_depth], options)
+      w, h = Stylet.config.screen_size
+      @screen ||= SDL::Screen.open(w, h, Stylet.config.color_depth, options)
       @rect = Rect.new(0, 0, @screen.w, @screen.h)
       if @title
         self.title = title
       end
 
-      if Config[:background] && Config[:background_image]
-        unless @backgroud_image
-          background_image = Pathname("#{__dir__}/assets/#{Config[:background_image]}")
-          if background_image.exist?
-            @backgroud_image = SDL::Surface.load_bmp(background_image.to_s)
+      unless @backgroud_image
+        if Stylet.config.background && Stylet.config.background_image
+          file = Pathname(Stylet.config.background_image)
+          unless file.exist?
+            file = Pathname("#{__dir__}/assets/#{file}")
+          end
+          if file.exist?
+            bin = SDL::Surface.load(file.to_s) # SDL.image があれば BMP 以外をロードできる
             if false
               # これを設定すると黒色は透明色になって描画されない
-              @backgroud_image.set_color_key(SDL::SRCCOLORKEY, 0)
+              bin.set_color_key(SDL::SRCCOLORKEY, 0)
             end
-            @backgroud_image = @backgroud_image.display_format
+            @backgroud_image = bin.display_format
           end
         end
       end

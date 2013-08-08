@@ -1,21 +1,5 @@
 require_relative "setup"
 
-Stylet::Config.update({
-    # :screen_size      => [640, 480],
-    # :screen_size      => [800, 600],
-    # :color_depth      => 8,
-  })
-
-# Stylet::Palette.update({
-#     "background" => [255, 255, 255],
-#     "foreground" => [0, 0, 0],
-#   })
-
-# Stylet::Palette.update({
-#     "background" => [0, 8*12, 0],
-#     "foreground" => [0, 8*31, 0],
-#   })
-
 module Helper
   module Cursor
     extend ActiveSupport::Concern

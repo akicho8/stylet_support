@@ -1,32 +1,20 @@
 # -*- coding: utf-8 -*-
+require "active_support/configurable"
 
 module Stylet
-  Config = {
-    # :font_name        => "FAMania2.6.otf",
-    # :font_size        => 12,
+  include ActiveSupport::Configurable
 
-    # :font_name        => "gamecuben.ttf",
-    # :font_size        => 12,
+  config_accessor(:screen_size)      { [640, 480]       }
+  config_accessor(:full_screen)      { false            }
+  config_accessor(:color_depth)      { 32               }
 
-    # :font_name        => "orangeki.ttf",
-    # :font_size        => 20,
+  config_accessor(:sound_freq)       { 44100            } # SDLのデフォルトは 22050
 
-    # :font_name        => "flappy_for_famicom.ttf",
-    # :font_size        => 16,
+  config_accessor(:font_name)        { "luxirr.ttf"     }
+  config_accessor(:font_size)        { 18               }
+  config_accessor(:font_margin)      { 3                } # 行間
+  config_accessor(:font_bold)        { false            }
 
-    :font_name        => "luxirr.ttf",
-    :font_size        => 18,
-
-    # :font_name        => "VeraMono.ttf",
-    # :font_size        => 20,
-
-    :font_margin      => 3,    # 行間
-    :font_bold        => false,
-    :full_screen      => false,
-    :screen_size      => [640, 480],
-    :background       => true,
-    :background_image => "background.bmp",
-    :color_depth      => 32,
-    :sound_frequency  => 44100, # SDLのデフォルトは 22050
-  }
+  config_accessor(:background)       { true             }
+  config_accessor(:background_image) { "background.bmp" }
 end
