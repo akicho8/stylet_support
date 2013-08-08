@@ -6,7 +6,7 @@ module Stylet
 
     def initialize
       super
-      @init_mode |= SDL::INIT_JOYSTICK
+      @init_code |= SDL::INIT_JOYSTICK
     end
 
     def before_main_loop

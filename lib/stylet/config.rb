@@ -24,7 +24,7 @@ module Stylet
     :font_bold        => false,
     :full_screen      => false,
     :screen_size      => [640, 480],
-    :background       => false,
+    :background       => true,
     :background_image => "background.bmp",
     :color_depth      => 32,
     :sound_frequency  => 44100, # SDLのデフォルトは 22050

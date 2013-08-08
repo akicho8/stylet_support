@@ -14,8 +14,8 @@ module Stylet
     end
 
     def initialize
-      @init_mode = 0
-      @sdl_initialized = false
+      @init_code = 0
+      @initialized = false
     end
 
     def logger
@@ -23,10 +23,13 @@ module Stylet
     end
 
     def before_main_loop
-      return if @sdl_initialized
-      SDL.init(@init_mode)
-      logger.debug "SDL.init #{'%08x' % @init_mode}" if logger
-      @sdl_initialized = true
+      return if @initialized
+      SDL.init(@init_code)
+      logger.debug "SDL.init #{'%08x' % @init_code}" if logger
+      @initialized = true
+    end
+
+    def polling
     end
 
     def before_update

@@ -10,7 +10,7 @@ module Stylet
 
     def initialize
       super
-      @init_mode |= SDL::INIT_VIDEO
+      @init_code |= SDL::INIT_VIDEO
     end
 
     def before_main_loop
@@ -32,9 +32,9 @@ module Stylet
 
       if Config[:background] && Config[:background_image]
         unless @backgroud_image
-          background_image = Pathname(File.expand_path(File.join(File.dirname(__FILE__), "assets", Config[:background_image])))
+          background_image = Pathname("#{__dir__}/assets/#{Config[:background_image]}")
           if background_image.exist?
-            @backgroud_image = SDL::Surface.load_bmp(background_image)
+            @backgroud_image = SDL::Surface.load_bmp(background_image.to_s)
             if false
               # これを設定すると黒色は透明色になって描画されない
               @backgroud_image.set_color_key(SDL::SRCCOLORKEY, 0)
@@ -83,6 +83,7 @@ module Stylet
     end
 
     def polling
+      super
       if @sdl_event = SDL::Event.poll
         case @sdl_event
         when SDL::Event::Quit # Window の [x] が押されたとき
