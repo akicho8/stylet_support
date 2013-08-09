@@ -33,4 +33,4 @@ class BezierUnit
   end
 end
 
-App.main_loop
+App.run

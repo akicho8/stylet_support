@@ -5,5 +5,5 @@ class App < Stylet::Base
   after_update { vputs "Hello, world."}
   after_update { vputs "Hello, world."}
   after_update { vputs "Hello, world."}
-  main_loop
+  run
 end

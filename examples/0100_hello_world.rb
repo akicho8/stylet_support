@@ -1,5 +1,5 @@
 require_relative "setup"
 
-Stylet.app do
+Stylet.run do
   vputs "Hello World"
 end

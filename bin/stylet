@@ -5,4 +5,4 @@ rescue LoadError
   require "rubygems"
   require "stylet"
 end
-Stylet::Base.main_loop
+Stylet.run

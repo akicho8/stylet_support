@@ -90,5 +90,5 @@ end
 
 if $0 == __FILE__
   require_relative "../stylet"
-  Stylet::Base.main_loop
+  Stylet.run
 end

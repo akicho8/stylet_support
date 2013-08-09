@@ -75,4 +75,4 @@ class App < Bezier
   end
 end
 
-App.main_loop
+App.run

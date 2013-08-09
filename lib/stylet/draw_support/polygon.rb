@@ -17,7 +17,7 @@ module Stylet
 
   if $0 == __FILE__
     require_relative "../../stylet"
-    Base.main_loop do |win|
+    Base.run do |win|
       points = Array.new(3 + rand(3)){Vector.new(rand(win.rect.w), rand(win.rect.h))}
       win.draw_polygon(points)
       win.draw_polygon([Vector.new(0, 0), Vector.new(0, 100), Vector.new(50, 50)])

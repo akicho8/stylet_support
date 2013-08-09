@@ -4,12 +4,12 @@ module Stylet
     def before_main_loop
       super if defined? super
       SDL::TTF.init
-      if Stylet.config.font_name
-        font_file = Pathname("#{__dir__}/assets/#{Stylet.config.font_name}")
+      if Stylet::Config.font_name
+        font_file = Pathname("#{__dir__}/assets/#{Stylet::Config.font_name}")
         if font_file.exist?
-          @font = SDL::TTF.open(font_file.to_s, Stylet.config.font_size)
+          @font = SDL::TTF.open(font_file.to_s, Stylet::Config.font_size)
           logger.debug "load: #{font_file}" if logger
-          if Stylet.config.font_bold
+          if Stylet::Config.font_bold
             @font.style = SDL::TTF::STYLE_BOLD
           end
         end
@@ -53,7 +53,7 @@ module Stylet
         rescue RangeError
         end
       else
-        vputs(str, :vector => Vector.new(0, @__vputs_lines * (@font.line_skip + Stylet.config.font_margin)))
+        vputs(str, :vector => Vector.new(0, @__vputs_lines * (@font.line_skip + Stylet::Config.font_margin)))
         @__vputs_lines += 1
       end
     end
@@ -62,9 +62,9 @@ end
 
 if $0 == __FILE__
   require_relative "../stylet"
-  Stylet.config.font_name = "VeraMono.ttf"
-  Stylet.config.font_size = 20
-  Stylet::Base.main_loop do |win|
+  Stylet::Config.font_name = "VeraMono.ttf"
+  Stylet::Config.font_size = 20
+  Stylet.run do |win|
     25.times{|i|win.vputs [i, ("A".."Z").to_a.join].join(" ")}
   end
 end

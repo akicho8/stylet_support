@@ -98,4 +98,4 @@ class App < Stylet::Base
   end
 end
 
-App.main_loop
+App.run

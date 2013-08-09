@@ -81,6 +81,6 @@ end
 if $0 == __FILE__
   Class.new(Stylet::Base) do
     include Helper::CursorWithObjectCollection
-    main_loop
+    run
   end
 end

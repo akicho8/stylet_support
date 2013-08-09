@@ -8,7 +8,7 @@ Stylet::Base.instance.title = "Vector#rotate系の二つのメソッドの確認
 
 pos1 = Stylet::Vector.new(100, 0)
 pos2 = Stylet::Vector.new(100, 0)
-Stylet::Base.main_loop do |win|
+Stylet.run do |win|
   pos1 = pos1.rotate(1.0 / 256)
   pos2 = pos2.rotate2(1.0 / 256)
   win.vputs(pos1 == pos2)

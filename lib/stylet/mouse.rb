@@ -54,7 +54,7 @@ end
 
 if $0 == __FILE__
   require_relative "../stylet"
-  Stylet.app do
+  Stylet.run do
     vputs "mouse: #{mouse}"
     draw_vector(mouse.vector, :origin => rect.center, :label => mouse.vector.length)
   end

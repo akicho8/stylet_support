@@ -40,7 +40,7 @@ module Stylet
 
   if $0 == __FILE__
     require_relative "../../stylet"
-    Base.main_loop do |win|
+    Base.run do |win|
       win.draw_circle(win.rect.center)
       win.draw_triangle(win.rect.center)
       win.draw_square(win.rect.center)

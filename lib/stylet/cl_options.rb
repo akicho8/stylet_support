@@ -30,5 +30,5 @@ end
 if $0 == __FILE__
   require_relative "../stylet"
   ARGV << "--shutdown=60"
-  Stylet::Base.main_loop
+  Stylet.run
 end

@@ -53,7 +53,7 @@ module Stylet
 
   if $0 == __FILE__
     require_relative "../../stylet"
-    Base.main_loop do |win|
+    Base.run do |win|
       win.draw_arrow(win.rect.center, win.rect.center + Vector.new(50, 50))
       win.draw_vector(Vector.new(100, -100), :origin => win.rect.center, :label => "ok")
       win.draw_vector(Vector.new(100, 0), :origin => Vector.new(50, 50), :label => "ok")

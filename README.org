@@ -35,7 +35,7 @@
 
    このライブラリの動作確認([q]で終了)
 
-   : rsdl -r stylet -e 'Stylet.app { vputs "Hello, world." }'
+   : rsdl -r stylet -e 'Stylet.run { vputs "Hello, world." }'
 
    参考
 

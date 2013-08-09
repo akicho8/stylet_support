@@ -12,9 +12,9 @@ module Stylet
     end
 
     def polling
-      super
+      super if defined? super
       if @pause.keys.any?{|key|key_down?(key)}
-        @pause.toggle
+        @pause.enable = !@pause.enable
       end
     end
 
@@ -24,10 +24,6 @@ module Stylet
 
     class Info
       attr_accessor :enable, :keys
-
-      def toggle
-        self.enable = !enable
-      end
     end
   end
 end

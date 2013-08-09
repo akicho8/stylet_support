@@ -4,12 +4,10 @@ module Stylet
     extend ActiveSupport::Concern
 
     module ClassMethods
-      def main_loop(*args, &block)
+      # run{|win| win.vputs 'Hello' }
+      # run{ vputs 'Hello' }
+      def run(*args, &block)
         instance.main_loop(*args, &block)
-      end
-
-      def app(*args, &block)
-        instance.main_loop(*args){|win|win.instance_eval(&block)}
       end
     end
 
@@ -57,7 +55,7 @@ module Stylet
       catch(:exit) do
         loop do
           polling
-          if system_pause?
+          if pause?
             next
           end
           before_draw
@@ -65,7 +63,11 @@ module Stylet
           before_update
           update
           if block_given?
-            block.call(self)
+            if block.arity == 1
+              block.call(self)
+            else
+              instance_eval(&block)
+            end
           end
           after_update
           after_draw
