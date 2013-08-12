@@ -1,4 +1,4 @@
-require_relative "setup"
+require "./setup"
 
 Stylet.run do
   vputs "Hello World"

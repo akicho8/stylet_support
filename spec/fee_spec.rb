@@ -16,7 +16,6 @@ module Stylet
           x = Fee.icos(r)
           y = Fee.isin(r)
           dir = Fee.iangle(0, 0, x, y)
-          # p [x, y, r, dir, (r == dir)]
           r == dir
         }.should be_all
       end
@@ -39,17 +38,16 @@ module Stylet
           x = Fee.cos(r)
           y = Fee.sin(r)
           dir = Fee.angle(0, 0, x, y)
-          # p [i, r, dir]
           r == dir
         }.should be_all
       end
     end
 
     it "時計の時で方向指定" do
-      Fee.clock(0).should == 0.75
-      Fee.clock(3).should == 0.0
-      Fee.clock(6).should == 0.25
-      Fee.clock(9).should == 0.5
+      Fee.clock(0).should  == 0.75
+      Fee.clock(3).should  == 0.0
+      Fee.clock(6).should  == 0.25
+      Fee.clock(9).should  == 0.5
       Fee.clock(12).should == 0.75
     end
 

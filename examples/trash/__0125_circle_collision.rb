@@ -50,7 +50,7 @@ module Helper
     include Stylet::Input::JoystickBinding
     include Stylet::Input::MouseButtonAsCounter
 
-    def before_main_loop
+    def before_run
       super if defined? super
       @cursor.point = @mouse.point.clone
       @cursor.speed = 5
@@ -90,7 +90,7 @@ class App < Stylet::Base
 
   attr_reader :radius
 
-  def before_main_loop
+  def before_run
     super if defined? super
     @objects << Ball.new(self, rect.center)
     @radius = 64

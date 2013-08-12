@@ -59,7 +59,7 @@ class App < Stylet::Base
   attr_reader :length
   attr_reader :hard_level
 
-  def before_main_loop
+  def before_run
     super if defined? super
     @objects = Array.new(42){|i|Joint.new(self, i, rect.center.clone)}
     @cursor.display = false     # 三角カーソル非表示

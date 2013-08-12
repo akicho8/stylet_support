@@ -138,6 +138,10 @@ module Stylet
         @count == other.count
       end
 
+      def inspect
+        "#{to_s}#{@count}"
+      end
+
       # 押されているときだけ自分のマークを返す
       def to_s
         press? ? @mark.first : ""

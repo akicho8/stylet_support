@@ -74,7 +74,7 @@ end
 class App < Stylet::Base
   include Helper::CursorWithObjectCollection
 
-  def before_main_loop
+  def before_run
     super if defined? super
     self.title = "torne風メニュー(PSのシステムにありがちな動き)"
     @cursor.display = false

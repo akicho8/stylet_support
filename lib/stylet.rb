@@ -22,11 +22,32 @@ module Stylet
     Base.run(*args, &block)
   end
 
-  def instance
-    Base.instance
+  def frame(&block)
+    if block
+      if block.arity == 1
+        block.call(Base.active_frame)
+      else
+        Base.active_frame.instance_eval(&block)
+      end
+    else
+      Base.active_frame
+    end
   end
 
   def hello_world
     run { vputs "Hello, World" }
   end
 end
+
+module Kernel
+  def frame(&block)
+    Stylet.frame(&block)
+  end
+end
+
+# Stylet.run do
+#   vputs "a"
+#   frame.vputs "b"
+#   frame { vputs "c" }
+#   frame {|f| f.vputs "d" }
+# end

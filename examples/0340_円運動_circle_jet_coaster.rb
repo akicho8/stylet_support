@@ -33,7 +33,7 @@ class App < Stylet::Base
 
   attr_reader :xc, :yc
 
-  def before_main_loop
+  def before_run
     super if defined? super
     @cursor.display = false
     @objects += Array.new(16){|i|Ball.new(self, i)}

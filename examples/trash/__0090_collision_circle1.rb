@@ -41,7 +41,7 @@ end
 class App < Stylet::Base
   include Helper::CursorWithObjectCollection
 
-  def before_main_loop
+  def before_run
     super if defined? super
     @objects << Ball.new(self, rect.center.clone)
     @cursor.radius = 64

@@ -45,7 +45,7 @@ class App < Stylet::Base
 
   attr_reader :objects
 
-  def before_main_loop
+  def before_run
     super if defined? super
     4.times{
       @objects << Ball.new(self, rect.center)

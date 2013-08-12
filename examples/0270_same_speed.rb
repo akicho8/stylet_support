@@ -56,7 +56,7 @@ class App < Stylet::Base
 
   attr_reader :mode
 
-  def before_main_loop
+  def before_run
     super if defined? super
     @cursor.vertex = 3
 

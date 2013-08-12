@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require_relative "setup"
+require "./setup"
 
 Stylet.run(:title => "(window_title)") do
   vputs title

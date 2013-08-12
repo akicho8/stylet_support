@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-require_relative "setup"
+require "./setup"
 
 class App < Stylet::Base
-  def before_main_loop
+  def before_run
     super
     self.title = "テンプレートメソッドパターン"
   end

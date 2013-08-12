@@ -242,7 +242,7 @@ class App < Stylet::Base
   attr_reader :ray_mode
   attr_reader :reflect_mode
 
-  def before_main_loop
+  def before_run
     super if defined? super
     self.title = "点と線分の交差判定と反射"
 

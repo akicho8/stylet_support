@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require_relative "../lib/stylet"
+require "./setup"
 
 class GunShip
   include Stylet::Input::Base
@@ -94,7 +94,7 @@ end
 class App < Stylet::Base
   attr_reader :objects
 
-  def before_main_loop
+  def before_run
     super
     self.title = "二人対戦シューティング(自己申告制)"
     @objects = []

@@ -119,7 +119,7 @@ class App < Stylet::Base
 
   attr_reader :reflect_mode
 
-  def before_main_loop
+  def before_run
     super if defined? super
 
     @ray_mode = true           # true:ドット false:円

@@ -45,7 +45,6 @@ require_relative 'audio'
 
 module Stylet
   class Base
-    include Singleton
     include Core
     include Callbacks
     include Draw

@@ -13,7 +13,7 @@ module Stylet
       @init_code |= SDL::INIT_VIDEO
     end
 
-    def before_main_loop
+    def before_run
       super
 
       @count = 0
@@ -66,7 +66,7 @@ module Stylet
       @count += 1
     end
 
-    def after_main_loop
+    def after_run
       super
       if @screen
         @screen.destroy

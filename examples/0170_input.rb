@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # キーボードの入力チェック
-require_relative "../lib/stylet"
+require "./setup"
 
 class Player
   include Stylet::Input::Base
@@ -12,7 +12,7 @@ class Player
   end
 
   def update
-    super if defined? super
+    super
     key_counter_update_all
     @win.vputs(to_s)
     @win.vputs(axis_angle_index.to_s)
@@ -21,7 +21,7 @@ class Player
 end
 
 class App < Stylet::Base
-  def before_main_loop
+  def before_run
     super
     self.title = "キーボードの入力チェック"
     @player = Player.new(self)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # ジョイスティックのチェック
-require_relative "setup"
+require "./setup"
 Stylet.run do
   vputs joys.count
 end

@@ -3,13 +3,13 @@ require "singleton"
 
 module Stylet
   AtanAreaInfo = Struct.new(:basedir, :sign)
-  ONE = 4096       # sin cos の精度
-  ROUND = 4096*2   # 4096の場合、64分割以上のときにズレが生じる。8092なら256分割でズレるようだ
+  ONE    = 4096     # sin cos の精度
+  AROUND = 4096*2   # 4096の場合、64分割以上のときにズレが生じる。8092なら256分割でズレるようだ
 
   module SinTableModule
     def initialize
       super
-      @sin_table = ROUND.times.collect{|i|(Math.sin(2 * Math::PI * i / ROUND) * ONE).round}
+      @sin_table = AROUND.times.collect{|i|(Math.sin(2 * Math::PI * i / AROUND) * ONE).round}
     end
 
     def isin(a)
@@ -33,43 +33,43 @@ module Stylet
   module AtanTableModule
     def initialize
       super
-      part = ROUND / 8
+      part = AROUND / 8
       @atan_table = (0..part).collect{|i|
         (Math.atan2(i, part) * part / (2 * Math::PI / 8)).round
       }
       # p @atan_table # [0, 319, 605, 839]
       @atan_area_info_table = [
-        # AtanAreaInfo.new(ROUND * 3 / 4 + @dir_offset, +1),
-        # AtanAreaInfo.new(ROUND * 4 / 4 + @dir_offset, -1),
-        # AtanAreaInfo.new(ROUND * 1 / 4 + @dir_offset, -1),
-        # AtanAreaInfo.new(ROUND * 0 / 4 + @dir_offset, +1),
-        # AtanAreaInfo.new(ROUND * 3 / 4 + @dir_offset, -1),
-        # AtanAreaInfo.new(ROUND * 2 / 4 + @dir_offset, +1),
-        # AtanAreaInfo.new(ROUND * 1 / 4 + @dir_offset, +1),
-        # AtanAreaInfo.new(ROUND * 2 / 4 + @dir_offset, -1),
+        # AtanAreaInfo.new(AROUND * 3 / 4 + @dir_offset, +1),
+        # AtanAreaInfo.new(AROUND * 4 / 4 + @dir_offset, -1),
+        # AtanAreaInfo.new(AROUND * 1 / 4 + @dir_offset, -1),
+        # AtanAreaInfo.new(AROUND * 0 / 4 + @dir_offset, +1),
+        # AtanAreaInfo.new(AROUND * 3 / 4 + @dir_offset, -1),
+        # AtanAreaInfo.new(AROUND * 2 / 4 + @dir_offset, +1),
+        # AtanAreaInfo.new(AROUND * 1 / 4 + @dir_offset, +1),
+        # AtanAreaInfo.new(AROUND * 2 / 4 + @dir_offset, -1),
 
-        # AtanAreaInfo.new(ROUND / 8 * 6 + @dir_offset, +1),
-        # AtanAreaInfo.new(ROUND / 8 * 7 + @dir_offset, -1),
-        # AtanAreaInfo.new(ROUND / 8 * 1 + @dir_offset, -1),
-        # AtanAreaInfo.new(ROUND / 8 * 0 + @dir_offset, +1),
-        # AtanAreaInfo.new(ROUND / 8 * 5 + @dir_offset, -1),
-        # AtanAreaInfo.new(ROUND / 8 * 4 + @dir_offset, +1),
-        # AtanAreaInfo.new(ROUND / 8 * 2 + @dir_offset, +1),
-        # AtanAreaInfo.new(ROUND / 8 * 3 + @dir_offset, -1),
+        # AtanAreaInfo.new(AROUND / 8 * 6 + @dir_offset, +1),
+        # AtanAreaInfo.new(AROUND / 8 * 7 + @dir_offset, -1),
+        # AtanAreaInfo.new(AROUND / 8 * 1 + @dir_offset, -1),
+        # AtanAreaInfo.new(AROUND / 8 * 0 + @dir_offset, +1),
+        # AtanAreaInfo.new(AROUND / 8 * 5 + @dir_offset, -1),
+        # AtanAreaInfo.new(AROUND / 8 * 4 + @dir_offset, +1),
+        # AtanAreaInfo.new(AROUND / 8 * 2 + @dir_offset, +1),
+        # AtanAreaInfo.new(AROUND / 8 * 3 + @dir_offset, -1),
 
-        AtanAreaInfo.new(ROUND / 4 * 3 + @dir_offset, +1),
-        AtanAreaInfo.new(ROUND / 4 * 4 + @dir_offset, -1),
-        AtanAreaInfo.new(ROUND / 4 * 1 + @dir_offset, -1),
-        AtanAreaInfo.new(ROUND / 4 * 0 + @dir_offset, +1),
-        AtanAreaInfo.new(ROUND / 4 * 3 + @dir_offset, -1),
-        AtanAreaInfo.new(ROUND / 4 * 2 + @dir_offset, +1),
-        AtanAreaInfo.new(ROUND / 4 * 1 + @dir_offset, +1),
-        AtanAreaInfo.new(ROUND / 4 * 2 + @dir_offset, -1),
+        AtanAreaInfo.new(AROUND / 4 * 3 + @dir_offset, +1),
+        AtanAreaInfo.new(AROUND / 4 * 4 + @dir_offset, -1),
+        AtanAreaInfo.new(AROUND / 4 * 1 + @dir_offset, -1),
+        AtanAreaInfo.new(AROUND / 4 * 0 + @dir_offset, +1),
+        AtanAreaInfo.new(AROUND / 4 * 3 + @dir_offset, -1),
+        AtanAreaInfo.new(AROUND / 4 * 2 + @dir_offset, +1),
+        AtanAreaInfo.new(AROUND / 4 * 1 + @dir_offset, +1),
+        AtanAreaInfo.new(AROUND / 4 * 2 + @dir_offset, -1),
       ]
     end
 
     def angle(ox, oy, tx, ty)
-      iangle(ox, oy, tx, ty).to_f / ROUND
+      iangle(ox, oy, tx, ty).to_f / AROUND
       # v % 1.0 # 一周したとき 1.0 にならないようにするため
     end
 
@@ -125,7 +125,7 @@ module Stylet
           end
         end
       end
-      # dir.modulo(ROUND)
+      # dir.modulo(AROUND)
       dir
     end
 
@@ -136,17 +136,17 @@ module Stylet
       dir = ip.basedir
       if div_value.nonzero?
         if value != div_value
-          index = (value.to_f * ROUND / 8 / div_value).round
+          index = (value.to_f * AROUND / 8 / div_value).round
           raise unless index < @atan_table.size
           dirsub = ip.sign * @atan_table[index]
           dir += dirsub
         else
-          dir += ip.sign * ROUND / 8
+          dir += ip.sign * AROUND / 8
         end
       end
-      # dir.modulo(ROUND) の場合は、振り子の左右の移動量が均等にならない
-      # dir.round.modulo(ROUND)
-      dir.modulo(ROUND)
+      # dir.modulo(AROUND) の場合は、振り子の左右の移動量が均等にならない
+      # dir.round.modulo(AROUND)
+      dir.modulo(AROUND)
     end
   end
 
@@ -175,7 +175,7 @@ module Stylet
     end
 
     def self.one_round
-      ROUND
+      AROUND
     end
 
     # 一周をアナログ時計の単位と考えたときの角度(抽象化のため)
@@ -220,7 +220,7 @@ if $0 == __FILE__
   # p Stylet::Fee.cos(0)
   # p Stylet::Fee.iangle(320.0, 240.0, 447.990361835411, 240.429243)
 
-  # n = Stylet::ROUND
+  # n = Stylet::AROUND
   # pp (0..(n*2)).collect{|i|
   #   if i == 4 || true
   #     # r = (Stylet::Fee.one_round / n * i) % Stylet::Fee.one_round

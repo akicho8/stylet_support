@@ -9,7 +9,7 @@ module Stylet
       @init_code |= SDL::INIT_JOYSTICK
     end
 
-    def before_main_loop
+    def before_run
       super
       logger.debug "SDL::Joystick.num: #{SDL::Joystick.num}" if logger
       @joys = SDL::Joystick.num.times.collect{|i|JoystickAdapter.create(SDL::Joystick.open(i))}

@@ -2,10 +2,9 @@
 #
 # 円の描画
 #
-require_relative "../lib/stylet"
+require "./setup"
 
-Stylet::Base.instance.title = "円の描画"
-Stylet.run do |win|
+Stylet.run(:title => "円の描画") do |win|
   win.draw_circle(win.rect.center, :vertex => 256)
 end
 

@@ -3,24 +3,34 @@ module Stylet
   module Core
     extend ActiveSupport::Concern
 
+    included do
+      include Singleton
+      cattr_accessor :_active_frame
+    end
+
     module ClassMethods
       # run{|win| win.vputs 'Hello' }
       # run{ vputs 'Hello' }
       def run(*args, &block)
-        instance.main_loop(*args, &block)
+        active_frame.run(*args, &block)
+      end
+
+      def active_frame
+        _active_frame || instance
       end
     end
 
     def initialize
       @init_code = 0
       @initialized = false
+      self._active_frame = self
     end
 
     def logger
       Stylet.logger
     end
 
-    def before_main_loop
+    def before_run
       return if @initialized
       SDL.init(@init_code)
       logger.debug "SDL.init #{'%08x' % @init_code}" if logger
@@ -42,16 +52,16 @@ module Stylet
     def after_draw
     end
 
-    def after_main_loop
+    def after_run
     end
 
-    def main_loop(*args, &block)
+    def run(*args, &block)
       options = {
       }.merge(args.extract_options!)
       if options[:title]
         @title = options[:title]
       end
-      before_main_loop
+      before_run
       catch(:exit) do
         loop do
           polling
@@ -73,7 +83,7 @@ module Stylet
           after_draw
         end
       end
-      after_main_loop
+      after_run
     end
   end
 end

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+require "active_support/concern"
+
 module Stylet
   Point = Struct.new(:x, :y)
   Point3 = Struct.new(:x, :y, :z)
@@ -6,50 +8,48 @@ module Stylet
   class ZeroVectorError < StandardError; end
 
   module BasicVector
-    def self.included(base)
-      base.extend(ClassMethods)
-      base.send(:include, InstanceMethods)
-      base.class_eval do
-        [
-          {:name => :add, :sym => :+},
-          {:name => :sub, :sym => :-},
-        ].each{|attr|
-          define_method(attr[:name]) do |o|
-            self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], o.public_send(m))})
-          end
-          define_method("#{attr[:name]}!") do |*args|
-            instance_copy_from(public_send(attr[:name], *args))
-          end
-          alias_method attr[:sym], attr[:name]
-        }
+    extend ActiveSupport::Concern
 
-        [
-          {:name => :scale, :sym => :*},
-          {:name => :div,   :sym => :/},
-        ].each{|attr|
-          define_method(attr[:name]) do |o|
-            self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], o)})
-          end
-          define_method("#{attr[:name]}!") do |*args|
-            instance_copy_from(public_send(attr[:name], *args))
-          end
-          alias_method attr[:sym], attr[:name]
-        }
+    included do
+      [
+        {:name => :add, :sym => :+},
+        {:name => :sub, :sym => :-},
+      ].each{|attr|
+        define_method(attr[:name]) do |o|
+          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], o.public_send(m))})
+        end
+        define_method("#{attr[:name]}!") do |*args|
+          instance_copy_from(public_send(attr[:name], *args))
+        end
+        alias_method attr[:sym], attr[:name]
+      }
 
-        alias mul scale
-        alias mul! scale!
+      [
+        {:name => :scale, :sym => :*},
+        {:name => :div,   :sym => :/},
+      ].each{|attr|
+        define_method(attr[:name]) do |o|
+          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], o)})
+        end
+        define_method("#{attr[:name]}!") do |*args|
+          instance_copy_from(public_send(attr[:name], *args))
+        end
+        alias_method attr[:sym], attr[:name]
+      }
 
-        [
-          {:name => :round},
-        ].each{|attr|
-          define_method(attr[:name]) do
-            self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:name])})
-         end
-          define_method("#{attr[:name]}!") do |*args|
-            instance_copy_from(public_send(attr[:name], *args))
-          end
-        }
-      end
+      alias mul scale
+      alias mul! scale!
+
+      [
+        {:name => :round},
+      ].each{|attr|
+        define_method(attr[:name]) do
+          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:name])})
+        end
+        define_method("#{attr[:name]}!") do |*args|
+          instance_copy_from(public_send(attr[:name], *args))
+        end
+      }
     end
 
     module ClassMethods
@@ -106,112 +106,110 @@ module Stylet
       end
     end
 
-    module InstanceMethods
-      ##--------------------------------------------------------------------------------
-      # 汎用
-      #
-      # def __send(method, *args)
-      #   self.class.new(*members.collect{|m|Float(public_send(m)).public_send(method, *args)})
-      # end
-      #
-      # def __send!(method, *args)
-      #   instance_copy_from(__send(method, *args))
-      # end
+    ##--------------------------------------------------------------------------------
+    # 汎用
+    #
+    # def __send(method, *args)
+    #   self.class.new(*members.collect{|m|Float(public_send(m)).public_send(method, *args)})
+    # end
+    #
+    # def __send!(method, *args)
+    #   instance_copy_from(__send(method, *args))
+    # end
 
-      def instance_copy_from(other)
-        tap do
-          members.each{|m|public_send("#{m}=", other.public_send(m))} # self.x, self.y = obj.x, obj.y
-        end
+    def instance_copy_from(other)
+      tap do
+        members.each{|m|public_send("#{m}=", other.public_send(m))} # self.x, self.y = obj.x, obj.y
       end
+    end
 
-      #
-      # 正規化
-      #
-      #   p = Vector.new(2, 3)
-      #   (p - p).normalize
-      #   とするとベクトル 0 ができて n / 0.0 で NaN になるので注意
-      #
-      def normalize
-        raise ZeroVectorError if zero?
-        c = length
-        self.class.safe_new(*values.collect{|v|Float(v) / c})
-      end
+    #
+    # 正規化
+    #
+    #   p = Vector.new(2, 3)
+    #   (p - p).normalize
+    #   とするとベクトル 0 ができて n / 0.0 で NaN になるので注意
+    #
+    def normalize
+      raise ZeroVectorError if zero?
+      c = length
+      self.class.safe_new(*values.collect{|v|Float(v) / c})
+    end
 
-      def normalize!
-        instance_copy_from(normalize)
-      end
+    def normalize!
+      instance_copy_from(normalize)
+    end
 
-      # 距離の取得
-      #
-      #   三平方の定理より
-      #
-      #             p2
-      #        c     b
-      #     p0   a  p1
-      #
-      #     c = sqrt(a * a + b * b)
-      #
-      #   x.abs ** 2 のように書いてたけど必要なかった
-      #   次のようにマイナスでも二回掛けると必ず正になるので
-      #     -2 * -2 = 4
-      #      2 *  2 = 4
-      #
-      #   当たり判定を次のように行なっている場合、
-      #     sx = mx - ax
-      #     sy = my - ay
-      #     if sqrt(sx * sx + sy * sy) < r
-      #     end
-      #
-      #   次のように sqrt を外すことができる
-      #     if (sx * sx + sy * sy) < (r ** 2)
-      #     end
-      #
-      def length
-        Math.sqrt(values.collect{|v|v ** 2}.inject(0, &:+)) # Math.sqrt(x ** 2 + y ** 2)
-      rescue Errno::EDOM => error
-        warn values.inspect
-        warn "(p - p).length と書いているコードがあるはず。それをやると sqrt(0) になるので if p != p を入れてくれ"
-        raise error
-      end
+    # 距離の取得
+    #
+    #   三平方の定理より
+    #
+    #             p2
+    #        c     b
+    #     p0   a  p1
+    #
+    #     c = sqrt(a * a + b * b)
+    #
+    #   x.abs ** 2 のように書いてたけど必要なかった
+    #   次のようにマイナスでも二回掛けると必ず正になるので
+    #     -2 * -2 = 4
+    #      2 *  2 = 4
+    #
+    #   当たり判定を次のように行なっている場合、
+    #     sx = mx - ax
+    #     sy = my - ay
+    #     if sqrt(sx * sx + sy * sy) < r
+    #     end
+    #
+    #   次のように sqrt を外すことができる
+    #     if (sx * sx + sy * sy) < (r ** 2)
+    #     end
+    #
+    def length
+      Math.sqrt(values.collect{|v|v ** 2}.inject(0, &:+)) # Math.sqrt(x ** 2 + y ** 2)
+    rescue Errno::EDOM => error
+      warn values.inspect
+      warn "(p - p).length と書いているコードがあるはず。それをやると sqrt(0) になるので if p != p を入れてくれ"
+      raise error
+    end
 
-      #
-      # 反対方向のベクトルを返す
-      #
-      def reverse
-        self.class.new(*values.collect{|v|-v})
-      end
+    #
+    # 反対方向のベクトルを返す
+    #
+    def reverse
+      self.class.new(*values.collect{|v|-v})
+    end
 
-      alias -@ reverse
+    alias -@ reverse
 
-      # 内積
-      def inner_product(other)
-        self.class.public_send(__method__, self, other)
-      end
+    # 内積
+    def inner_product(other)
+      self.class.public_send(__method__, self, other)
+    end
 
-      #
-      # 相手との距離を取得
-      #
-      def distance_to(target)
-        (target - self).length
-      end
+    #
+    # 相手との距離を取得
+    #
+    def distance_to(target)
+      (target - self).length
+    end
 
-      # FIXME: それぞれのクラスに書くべきだろうか
-      def to_2dv
-        Vector.new(*values.take(2))
-      end
+    # FIXME: それぞれのクラスに書くべきだろうか
+    def to_2dv
+      Vector.new(*values.take(2))
+    end
 
-      def to_3dv
-        Vector3.new(*(values + [0]).take(3))
-      end
+    def to_3dv
+      Vector3.new(*(values + [0]).take(3))
+    end
 
-      # 0ベクトルか？
-      def zero?
-        values.all?{|v|v.zero?}
-      end
+    # 0ベクトルか？
+    def zero?
+      values.all?{|v|v.zero?}
+    end
 
-      def nonzero?
-        !zero?
-      end
+    def nonzero?
+      !zero?
     end
   end
 

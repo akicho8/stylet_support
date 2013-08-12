@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 module Stylet
   module Font
-    def before_main_loop
+    def before_run
       super if defined? super
       SDL::TTF.init
       if Stylet::Config.font_name
@@ -21,7 +21,7 @@ module Stylet
       @__vputs_lines = 0
     end
 
-    def after_main_loop
+    def after_run
       super if defined? super
       if @font
         @font.close

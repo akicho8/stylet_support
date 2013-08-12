@@ -1,4 +1,4 @@
-require_relative "setup"
+require "./setup"
 
 module Helper
   module Cursor
@@ -13,7 +13,7 @@ module Helper
       attr_reader :cursor
     end
 
-    def before_main_loop
+    def before_run
       super
       @cursor = CursorSet.new
       @cursor.point = @mouse.point.clone
@@ -59,7 +59,7 @@ module Helper
       attr_reader :objects
     end
 
-    def before_main_loop
+    def before_run
       super
       @objects = []
     end

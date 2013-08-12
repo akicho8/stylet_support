@@ -2,7 +2,7 @@
 require_relative "bezier"
 
 class App < Bezier
-  def before_main_loop
+  def before_run
     super if defined? super
 
     case true

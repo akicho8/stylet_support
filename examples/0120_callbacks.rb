@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require_relative "setup"
+require "./setup"
 
 class App < Stylet::Base
   after_update { vputs "Hello, world."}
