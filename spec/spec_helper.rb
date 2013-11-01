@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'stylet'
-
-Stylet.logger = ActiveSupport::Logger.new("#{__dir__}/../log/test.log")
+require 'stylet_math'
+require 'stylet_math/fee'
+require 'stylet_math/etc'
 
 RSpec.configure do |config|
 end
