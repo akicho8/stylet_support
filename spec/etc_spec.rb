@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require "spec_helper"
 
-module StyletMath
+module Stylet
   describe Etc do
     it do
       Etc.range_limited(0.5).should == 0.5

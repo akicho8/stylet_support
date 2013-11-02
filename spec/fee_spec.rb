@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require "spec_helper"
 
-module StyletMath
+module Stylet
   describe Fee do
     describe "整数系" do
       it "sin/cos" do

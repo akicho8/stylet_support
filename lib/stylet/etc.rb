@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-module StyletMath
+module Stylet
   module Etc
     extend self
 
@@ -36,10 +36,8 @@ module StyletMath
   end
 end
 
-
 if $0 == __FILE__
-  p StyletMath::Etc.range_limited(0.5)
-  p StyletMath::Etc.upper_limited(1.5)
-  p StyletMath::Etc.lower_limited(-0.5)
+  p Stylet::Etc.range_limited(0.5)
+  p Stylet::Etc.upper_limited(1.5)
+  p Stylet::Etc.lower_limited(-0.5)
 end
-

@@ -1,2 +1,2 @@
 $LOAD_PATH.unshift "#{__dir__}/../lib"
-require "stylet_math"
+require "stylet_math/all"

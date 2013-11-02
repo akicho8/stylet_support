@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require "spec_helper"
 
-module StyletMath
+module Stylet
   describe Vector do
     before do
       @p0 = Vector.new(10, 20)

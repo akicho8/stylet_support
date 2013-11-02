@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require "singleton"
 
-module StyletMath
+module Stylet
   AtanAreaInfo = Struct.new(:basedir, :sign)
   ONE    = 4096     # sin cos の精度
   AROUND = 4096*2   # 4096の場合、64分割以上のときにズレが生じる。8092なら256分割でズレるようだ
@@ -210,24 +210,24 @@ end
 
 if $0 == __FILE__
   require "pp"
-  # p StyletMath::Fee.cos(0)
+  # p Stylet::Fee.cos(0)
   # exit
 
-  # p StyletMath::Fee.isin(0)
-  # p StyletMath::Fee.icos(0)
-  # p StyletMath::Fee.iangle(0, 0, 0, 1)
-  # p StyletMath::Fee.sin(0)
-  # p StyletMath::Fee.cos(0)
-  # p StyletMath::Fee.iangle(320.0, 240.0, 447.990361835411, 240.429243)
+  # p Stylet::Fee.isin(0)
+  # p Stylet::Fee.icos(0)
+  # p Stylet::Fee.iangle(0, 0, 0, 1)
+  # p Stylet::Fee.sin(0)
+  # p Stylet::Fee.cos(0)
+  # p Stylet::Fee.iangle(320.0, 240.0, 447.990361835411, 240.429243)
 
-  # n = StyletMath::AROUND
+  # n = Stylet::AROUND
   # pp (0..(n*2)).collect{|i|
   #   if i == 4 || true
-  #     # r = (StyletMath::Fee.one_round / n * i) % StyletMath::Fee.one_round
-  #     r = (StyletMath::Fee.one_round / n * i)
-  #     x = StyletMath::Fee.icos(r)
-  #     y = StyletMath::Fee.isin(r)
-  #     dir = StyletMath::Fee.iangle(0, 0, x, y)
+  #     # r = (Stylet::Fee.one_round / n * i) % Stylet::Fee.one_round
+  #     r = (Stylet::Fee.one_round / n * i)
+  #     x = Stylet::Fee.icos(r)
+  #     y = Stylet::Fee.isin(r)
+  #     dir = Stylet::Fee.iangle(0, 0, x, y)
   #     [i, [x, y], r, dir, (r == dir)]
   #   end
   # }.compact
@@ -235,10 +235,10 @@ if $0 == __FILE__
   # n = 32
   # (0..n).collect{|i|
   #   if true
-  #     r = ((StyletMath::Fee.one_round.to_f * i / n) % StyletMath::Fee.one_round)
-  #     x = StyletMath::Fee.icos(r)
-  #     y = StyletMath::Fee.isin(r)
-  #     dir = StyletMath::Fee.iangle(0, 0, x, y)
+  #     r = ((Stylet::Fee.one_round.to_f * i / n) % Stylet::Fee.one_round)
+  #     x = Stylet::Fee.icos(r)
+  #     y = Stylet::Fee.isin(r)
+  #     dir = Stylet::Fee.iangle(0, 0, x, y)
   #     p [x, y, r, dir, (r == dir)]
   #     r == dir
   #   end
@@ -246,11 +246,11 @@ if $0 == __FILE__
 
   # pp (0..8).collect{|i|
   #   r = 1.0 / 8 * i % 1.0
-  #   x = StyletMath::Fee.cos(r)
-  #   y = StyletMath::Fee.sin(r)
-  #   dir = StyletMath::Fee.angle(0, 0, x, y)
+  #   x = Stylet::Fee.cos(r)
+  #   y = Stylet::Fee.sin(r)
+  #   dir = Stylet::Fee.angle(0, 0, x, y)
   #   [i, r, dir, (r == dir)]
   # }
-  # pp 8.times.collect{|i|[i, StyletMath::Fee.sin(1.0 / 8 * i)]}
-  # pp (0..12).collect{|i|[i, StyletMath::Fee.clock(i)]}
+  # pp 8.times.collect{|i|[i, Stylet::Fee.sin(1.0 / 8 * i)]}
+  # pp (0..12).collect{|i|[i, Stylet::Fee.clock(i)]}
 end

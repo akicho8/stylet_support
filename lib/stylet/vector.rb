@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require "active_support/concern"
 
-module StyletMath
+module Stylet
   Point = Struct.new(:x, :y)
   Point3 = Struct.new(:x, :y, :z)
 
@@ -232,10 +232,10 @@ module StyletMath
     # 方向ベクトル
     #
     #   これを使うと次のように簡単に書ける
-    #   cursor.x += StyletMath::Fee.cos(dir) * speed
-    #   cursor.y += StyletMath::Fee.sin(dir) * speed
+    #   cursor.x += Stylet::Fee.cos(dir) * speed
+    #   cursor.y += Stylet::Fee.sin(dir) * speed
     #     ↓
-    #   cursor += StyletMath::Fee.angle_at(dir) * speed
+    #   cursor += Stylet::Fee.angle_at(dir) * speed
     #
     def self.angle_at(x, y = x)
       new(Fee.cos(x), Fee.sin(y))
@@ -369,18 +369,18 @@ module StyletMath
 end
 
 if $0 == __FILE__
-  p0 = StyletMath::Vector.new(1, 1)
-  p1 = StyletMath::Vector.new(1, 1)
+  p0 = Stylet::Vector.new(1, 1)
+  p1 = Stylet::Vector.new(1, 1)
   p(p0 + p1)
   p(p0.add(p1))
   p(p0.add!(p1))
   p(p0)
-  p(StyletMath::Vector.new(3, 4).length)
-  p(StyletMath::Vector.new(3, 4).normalize.scale(5))
-  p -StyletMath::Vector.new(3, 4)
+  p(Stylet::Vector.new(3, 4).length)
+  p(Stylet::Vector.new(3, 4).normalize.scale(5))
+  p -Stylet::Vector.new(3, 4)
 
-  # p0 = StyletMath::Vector.new(1, 1)
-  # p1 = StyletMath::Vector.new(1, 1)
+  # p0 = Stylet::Vector.new(1, 1)
+  # p1 = Stylet::Vector.new(1, 1)
   # p(p0 == p1)
   # p p0
   # p p0 + p1
@@ -389,6 +389,6 @@ if $0 == __FILE__
   # p p0.add!(p1)
   # p p0
   #
-  # p0 = StyletMath::Vector.new(0, 0)
+  # p0 = Stylet::Vector.new(0, 0)
   # p p0.normalize
 end

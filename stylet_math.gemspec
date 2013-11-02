@@ -4,8 +4,8 @@ require "stylet_math/version"
 Gem::Specification.new do |s|
   s.name          = "stylet_math"
   s.version       = StyletMath::VERSION
-  s.summary       = "Simple Vector library"
-  s.description   = "Simple Vector library"
+  s.summary       = "Vector library"
+  s.description   = "Vector library"
   s.author        = "akicho8"
   s.homepage      = "http://github.com/akicho8/stylet_math"
   s.email         = "akicho8@gmail.com"
