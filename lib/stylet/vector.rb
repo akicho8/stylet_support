@@ -28,8 +28,8 @@ module Stylet
         {:name => :scale, :sym => :*},
         {:name => :div,   :sym => :/},
       ].each{|attr|
-        define_method(attr[:name]) do |o|
-          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], o)})
+        define_method(attr[:name]) do |*args|
+          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], *args)})
         end
         define_method("#{attr[:name]}!") do |*args|
           instance_copy_from(public_send(attr[:name], *args))
@@ -43,8 +43,8 @@ module Stylet
       [
         {:name => :round},
       ].each{|attr|
-        define_method(attr[:name]) do
-          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:name])})
+        define_method(attr[:name]) do |*args|
+          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:name], *args)})
         end
         define_method("#{attr[:name]}!") do |*args|
           instance_copy_from(public_send(attr[:name], *args))
