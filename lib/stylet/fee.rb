@@ -165,7 +165,7 @@ module Stylet
     class << self
       [:isin, :icos, :iangle, :sin, :cos, :angle].each{|method|
         define_method(method){|*args, &block|
-          instance.public_send(method, *args, &block)
+          instance.send(method, *args, &block)
         }
       }
     end

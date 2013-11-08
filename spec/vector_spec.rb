@@ -10,7 +10,7 @@ module Stylet
     end
 
     it "ランダム" do
-      Vector.random
+      Vector.rand
     end
 
     it "加減演算" do
@@ -36,7 +36,7 @@ module Stylet
     end
 
     it "長さ" do
-      Vector.new(3, 4).length.should == 5
+      Vector.new(3, 4).magnitude.should == 5
     end
 
     it "距離" do

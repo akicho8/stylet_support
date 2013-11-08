@@ -2,8 +2,45 @@
 require "active_support/concern"
 
 module Stylet
-  Point = Struct.new(:x, :y)
-  Point3 = Struct.new(:x, :y, :z)
+  module Shared
+    # Point.new             # => [nil, nil]
+    # Point[1, 2]           # => [1, 2]
+    # Point[1, 2].members   # => [:x, :y]
+    # Point[1, 2].values    # => [1, 2]
+    # Point[1, 2]           # => [1, 2]
+    # Point.new(Point[1,2]) # => [1, 2]
+    # Point[Point[1,2]]     # => [1, 2]
+    # Vector.new.to_h       # => {:x=>0.0, :y=>0.0}
+    # Vector.new(1, 2).to_h # => {:x=>1, :y=>2}
+    def initialize(*args)
+      if args.empty?
+        args = [0.0] * members.size
+      elsif args.size == 1 && args.first.respond_to?(:values)
+        args = args.first.values
+      end
+      super(*args)
+    end
+
+    # Vector.zero.inspect # => "[0.0, 0.0]"
+    def inspect
+      values.inspect
+    end
+
+    # Vector.zero.to_s # => "[0.0, 0.0]"
+    def to_s
+      values.inspect
+    end
+  end
+
+  class Point2 < Struct.new(:x, :y)
+    include Shared
+  end
+
+  class Point3 < Struct.new(:x, :y, :z)
+    include Shared
+  end
+
+  Point = Point2
 
   class ZeroVectorError < StandardError; end
 
@@ -11,205 +48,177 @@ module Stylet
     extend ActiveSupport::Concern
 
     included do
-      [
-        {:name => :add, :sym => :+},
-        {:name => :sub, :sym => :-},
-      ].each{|attr|
-        define_method(attr[:name]) do |o|
-          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], o.public_send(m))})
-        end
-        define_method("#{attr[:name]}!") do |*args|
-          instance_copy_from(public_send(attr[:name], *args))
-        end
-        alias_method attr[:sym], attr[:name]
-      }
-
-      [
-        {:name => :scale, :sym => :*},
-        {:name => :div,   :sym => :/},
-      ].each{|attr|
-        define_method(attr[:name]) do |*args|
-          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:sym], *args)})
-        end
-        define_method("#{attr[:name]}!") do |*args|
-          instance_copy_from(public_send(attr[:name], *args))
-        end
-        alias_method attr[:sym], attr[:name]
-      }
-
-      alias mul scale
-      alias mul! scale!
-
-      [
-        {:name => :round},
-      ].each{|attr|
-        define_method(attr[:name]) do |*args|
-          self.class.new(*members.collect{|m|Float(public_send(m)).public_send(attr[:name], *args)})
-        end
-        define_method("#{attr[:name]}!") do |*args|
-          instance_copy_from(public_send(attr[:name], *args))
-        end
-      }
     end
 
     module ClassMethods
-      def random(r = 1.0)
-        new(*members.collect{Etc.wide_rand(r)})
+      # ゼロベクトルを返す
+      #   Vector.zero.to_a # => [0.0, 0.0]
+      def zero
+        new(*Array.new(members.size){0.0})
       end
 
+      # メンバーが 1.0 のベクトルを返す
+      #   Vector.one.to_a # => [1.0, 1.0]
+      def one
+        new(*Array.new(members.size){1.0})
+      end
+
+      # ランダムを返す
+      #   Vector.rand            # => [0.017480344343668852, 0.8764385584061907]
+      #   Vector.rand(3)         # => [2, 2]
+      #   Vector.rand(3..4)      # => [4, 3]
+      #   Vector.rand(3.0..4)    # => [3.969678485069191, 3.4220406563055144]
+      #   Vector.rand(-2.0..2.0) # => [-1.6587999052626938, 0.5996185615991392]
+      def rand(*args)
+        if args.empty?
+          args = [-1.0..1.0]
+        end
+        new(*members.collect{Kernel.rand(*args)})
+      end
+
+      # ゼロベクトルを作ろうとすると例外を出す new
       def safe_new(*args)
         new(*args).tap do |obj|
           raise ZeroVectorError if obj.zero?
         end
       end
 
-      # 1.0 と -1.0 で構成したランダム値
-      def nonzero_random_new
-        new(*members.collect{Etc.nonzero_random})
-      end
+      # # 1.0 と -1.0 で構成したランダム値
+      # def nonzero_random_new
+      #   new(*members.collect{Etc.nonzero_random})
+      # end
 
       # 内積
-      #
-      #   2つの単位ベクトルの平行の度合いを表わす
-      #   ・ベクトルは正規化しておくこと
-      #   ・引数の順序は関係なし
-      #
-      #   a が右向きのとき b のそれぞれの向きによって以下の値になる
-      #              0.0
-      #         -0.5  │   0.5
-      #               │
-      #      -1.0 ──＋── 1.0 (a)
-      #               │
-      #         -0.5  │   0.5
-      #              0.0
-      #
-      #   これからわかること
-      #   1. ←← or →→ 正 (0.0 < v)   お互いだいたい同じ方向を向いている
-      #   2. →←         負 (v   < 0.0) お互いだいたい逆の方向を向いている
-      #   3. →↓ →↑    零 (0.0)       お互いが直角の関係
-      #
-      #   計算式
-      #
-      #     a = a.normalize
-      #     b = b.normalize
-      #     a.x * b.x + a.y * b.y
-      #
-      #   名前はライブラリによって異なる
-      #     dot
-      #     inner_product
-      #     product
-      #
       def inner_product(a, b)
-        a = a.normalize
-        b = b.normalize
-        members.collect{|m|a.public_send(m) * b.public_send(m)}.reduce(:+) || 0 # a.x * b.x + a.y * b.y
+        members.collect{|m|a.send(m) * b.send(m)}.reduce(0, :+)
       end
+
+      # # 外積
+      # def outer_product(a, b)
+      #   members.collect {|m|
+      #     (members - [m]).collect {|n| a.send(m) * b.send(n) }
+      #   }.flatten.reduce(0, :+)
+      # end
     end
 
-    ##--------------------------------------------------------------------------------
-    # 汎用
-    #
-    # def __send(method, *args)
-    #   self.class.new(*members.collect{|m|Float(public_send(m)).public_send(method, *args)})
-    # end
-    #
-    # def __send!(method, *args)
-    #   instance_copy_from(__send(method, *args))
-    # end
-
-    def instance_copy_from(other)
-      tap do
-        members.each{|m|public_send("#{m}=", other.public_send(m))} # self.x, self.y = obj.x, obj.y
+    [
+      {:name => :add, :sym => :+},
+      {:name => :sub, :sym => :-},
+    ].each{|attr|
+      define_method(attr[:name]) do |o|
+        self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o.send(m))})
       end
+      define_method("#{attr[:name]}!") do |*args|
+        copy_from(send(attr[:name], *args))
+      end
+      alias_method attr[:sym], attr[:name]
+    }
+
+    [
+      {:name => :scale, :sym => :*},
+      {:name => :div,   :sym => :/},
+    ].each{|attr|
+      define_method(attr[:name])       {|*args| apply(attr[:sym], *args)  }
+      define_method("#{attr[:name]}!") {|*args| apply!(attr[:sym], *args) }
+      alias_method attr[:sym], attr[:name]
+    }
+
+    alias mul scale
+    alias mul! scale!
+
+    # Vector.rand.round.to_a    # => [1, 0]
+    # Vector.rand.round(2).to_a # => [0.37, 0.92]
+    # Vector.rand.floor.to_a    # => [0, 0]
+    # Vector.rand.ceil.to_a     # => [1, 1]
+    # Vector.rand.truncate.to_a # => [0, 0]
+    [:ceil, :floor, :round, :truncate].each do |name|
+      define_method(name)        {|*args| apply(name, *args)  }
+      define_method("#{name}!")  {|*args| apply!(name, *args) }
     end
 
-    #
-    # 正規化
-    #
-    #   p = Vector.new(2, 3)
-    #   (p - p).normalize
-    #   とするとベクトル 0 ができて n / 0.0 で NaN になるので注意
-    #
+    # メンバーだけ更新(主に内部用)
+    #   v = Vector.new
+    #   v.object_id                       # => 70228805905160
+    #   v.copy_from(Vector.rand) # => [-0.5190386805455354, -0.5679474000175717]
+    #   v.object_id                       # => 70228805905160
+    def copy_from(other)
+      tap { members.each{|m|send("#{m}=", other.send(m))} }
+    end
+
+    # 単位ベクトル化
+    #   Vector.one.normalize       # => [0.7071067811865475, 0.7071067811865475]
     def normalize
       raise ZeroVectorError if zero?
-      c = length
+      c = magnitude
       self.class.safe_new(*values.collect{|v|Float(v) / c})
     end
 
     def normalize!
-      instance_copy_from(normalize)
+      copy_from(normalize)
     end
 
-    # 距離の取得
-    #
-    #   三平方の定理より
-    #
-    #             p2
-    #        c     b
-    #     p0   a  p1
-    #
-    #     c = sqrt(a * a + b * b)
-    #
-    #   x.abs ** 2 のように書いてたけど必要なかった
-    #   次のようにマイナスでも二回掛けると必ず正になるので
-    #     -2 * -2 = 4
-    #      2 *  2 = 4
-    #
-    #   当たり判定を次のように行なっている場合、
-    #     sx = mx - ax
-    #     sy = my - ay
-    #     if sqrt(sx * sx + sy * sy) < r
-    #     end
-    #
-    #   次のように sqrt を外すことができる
-    #     if (sx * sx + sy * sy) < (r ** 2)
-    #     end
-    #
-    def length
-      Math.sqrt(values.collect{|v|v ** 2}.inject(0, &:+)) # Math.sqrt(x ** 2 + y ** 2)
+    # ベクトルの大きさを返す
+    #   Vector.one.magnitude       # => 1.4142135623730951
+    def magnitude
+      Math.sqrt(magnitude_sq)
     rescue Errno::EDOM => error
-      warn values.inspect
-      warn "(p - p).length と書いているコードがあるはず。それをやると sqrt(0) になるので if p != p を入れてくれ"
+      warn "(p - p).magnitude と書いているコードがあるはず。それをやると sqrt(0) になるので if p != p を入れよう: #{values.inspect}"
       raise error
     end
 
-    #
+    def magnitude_sq
+      values.collect{|v|v ** 2}.inject(0, &:+)
+    end
+
+    alias length magnitude
+    alias length_sq magnitude_sq
+
     # 反対方向のベクトルを返す
-    #
+    #   Vector.one.reverse # => [-1.0, -1.0]
     def reverse
       self.class.new(*values.collect{|v|-v})
     end
 
+    # -Vector.one # => [-1.0, -1.0]
     alias -@ reverse
 
     # 内積
+    #   Vector[1, 0].inner_product(Vector[1, 0])   # => 1.0
+    #   Vector[1, 0].inner_product(Vector[-1, 0])  # => -1.0
     def inner_product(other)
-      self.class.public_send(__method__, self, other)
+      self.class.send(__method__, self, other)
     end
 
-    #
     # 相手との距離を取得
-    #
+    #   Vector.zero.distance_to(Vector.one) # => 1.4142135623730951
     def distance_to(target)
-      (target - self).length
-    end
-
-    # FIXME: それぞれのクラスに書くべきだろうか
-    def to_2dv
-      Vector.new(*values.take(2))
-    end
-
-    def to_3dv
-      Vector3.new(*(values + [0]).take(3))
+      (target - self).magnitude
     end
 
     # 0ベクトルか？
+    #   Vector.zero.zero? # => true
     def zero?
       values.all?{|v|v.zero?}
     end
 
+    # 0ベクトルではない？
+    #   Vector.one.nonzero? # => true
     def nonzero?
       !zero?
+    end
+
+    private
+
+    def apply(method, *args)
+      self.class.new(*apply_values(method, *args))
+    end
+
+    def apply!(method, *args)
+      copy_from(apply(method, *args))
+    end
+
+    def apply_values(method, *args)
+      members.collect{|m|Float(send(m)).send(method, *args)}
     end
   end
 
@@ -218,7 +227,7 @@ module Stylet
   #
   # 移動制限のつけ方
   #
-  #   if vec.length > n
+  #   if vec.magnitude > n
   #     vec.normalize.scale(n)
   #   end
   #
@@ -228,6 +237,16 @@ module Stylet
   #
   class Vector < Point
     include BasicVector
+
+    # 外積
+    # x1*y2-x2*y1 = |v1||v2|sin(θ)
+    def self.outer_product(a, b)
+      a.x * b.y - b.x * a.y
+    end
+
+    def outer_product(b)
+      self.class.outer_product(self, b)
+    end
 
     # 方向ベクトル
     #
@@ -339,11 +358,11 @@ module Stylet
     #   自分が最初に考えた方法
     #
     def rotate(a)
-      self.class.angle_at(angle + a) * length
+      self.class.angle_at(angle + a) * magnitude
     end
 
     def rotate!(*args)
-      instance_copy_from(rotate(*args))
+      copy_from(rotate(*args))
     end
 
     #
@@ -359,25 +378,44 @@ module Stylet
     end
 
     def rotate2!(*args)
-      instance_copy_from(rotate2(*args))
+      copy_from(rotate2(*args))
+    end
+
+    def to_2dv
+      self
+    end
+
+    def to_3dv
+      Vector3.new(*values, 0)
     end
   end
 
   class Vector3 < Point3
     include BasicVector
+
+    def to_2dv
+      Vector.new(*values.take(2))
+    end
+
+    def to_3dv
+      self
+    end
   end
 end
 
 if $0 == __FILE__
+  Stylet::Vector.rand * 2 # !> possibly useless use of * in void context
+  exit
+
   p0 = Stylet::Vector.new(1, 1)
   p1 = Stylet::Vector.new(1, 1)
   p(p0 + p1)
   p(p0.add(p1))
   p(p0.add!(p1))
   p(p0)
-  p(Stylet::Vector.new(3, 4).length)
+  p(Stylet::Vector.new(3, 4).magnitude)
   p(Stylet::Vector.new(3, 4).normalize.scale(5))
-  p -Stylet::Vector.new(3, 4)
+  p -Stylet::Vector.new(3, 4) # !> ambiguous first argument; put parentheses or even spaces
 
   # p0 = Stylet::Vector.new(1, 1)
   # p1 = Stylet::Vector.new(1, 1)
