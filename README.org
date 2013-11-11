@@ -9,13 +9,16 @@
   - [[https://gemnasium.com/akicho8/stylet_math/][Gemnasium]]: [[https://gemnasium.com/akicho8/stylet_math.png]]
   - [[https://codeclimate.com/github/akicho8/stylet_math][Code Climate]]: [[https://codeclimate.com/github/akicho8/stylet_math.png]]
 
-: Point.new                                      # => [nil, nil]
+: Point.new                                      # => [0.0, 0.0]
 : Point[1, 2]                                    # => [1, 2]
 : Point[1, 2].members                            # => [:x, :y]
 : Point[1, 2].values                             # => [1, 2]
 : Point[1, 2]                                    # => [1, 2]
 : 
 : Vector.superclass                              # => Stylet::Point2
+: 
+: Point.new(Point[1,2])                          # => [1, 2]
+: Point[Point[1,2]]                              # => [1, 2]
 : 
 : Vector.new                                     # => [0.0, 0.0]
 : Vector.new                                     # => [0.0, 0.0]
@@ -48,29 +51,29 @@
 : Vector.one.magnitude_sq                        # => 2.0
 : 
 : v = Vector.rand
-: v.round(2)                                     # => [-0.52, 0.85]
-: v.round                                        # => [-1, 1]
-: v.floor                                        # => [-1, 0]
-: v.ceil                                         # => [0, 1]
+: v.round(2)                                     # => [-1.0, -0.88]
+: v.round                                        # => [-1, -1]
+: v.floor                                        # => [-1, -1]
+: v.ceil                                         # => [0, 0]
 : v.truncate                                     # => [0, 0]
 : 
-: Vector.rand                                    # => [-0.4848020605284271, 0.8126918196451847]
-: Vector.rand(3)                                 # => [2, 0]
-: Vector.rand(3..4)                              # => [4, 3]
-: Vector.rand(3.0..4)                            # => [3.3391996460372373, 3.799887748868171]
-: Vector.rand(-2.0..2.0)                         # => [-0.7118201949120793, -0.26682005217745086]
+: Vector.rand                                    # => [-0.5758140223421724, -0.23276547457672714]
+: Vector.rand(3)                                 # => [1, 1]
+: Vector.rand(3..4)                              # => [4, 4]
+: Vector.rand(3.0..4)                            # => [3.9402342251571714, 3.550203689124972]
+: Vector.rand(-2.0..2.0)                         # => [-1.181268220930995, 1.4942116900421252]
 : 
-: Vector[1, 0].inner_product(Vector[1, 0])       # => 1
-: Vector[1, 0].inner_product(Vector[-1, 0])      # => -1
+: Vector[1, 0].dot_product(Vector[1, 0])       # => 1
+: Vector[1, 0].dot_product(Vector[-1, 0])      # => -1
 : 
-: Vector.cross_product(Vector.rand, Vector.rand) # => 0.5333162572409049
+: Vector.cross_product(Vector.rand, Vector.rand) # => -0.7348374986070235
 : 
-: Vector.rand.distance_to(Vector.rand)           # => 0.8634596196444447
+: Vector.rand.distance_to(Vector.rand)           # => 1.7226903872525836
 : 
 : v = Vector.new
-: v.object_id                                    # => 70308396077900
-: v.replace(Vector.rand)                       # => [-0.5913794734970825, 0.2642720026589105]
-: v.object_id                                    # => 70308396077900
+: v.object_id                                    # => 70298637530620
+: v.replace(Vector.rand)                         # => [-0.2619785178209082, -0.4396795163426983]
+: v.object_id                                    # => 70298637530620
 : 
 : Vector.zero.distance_to(Vector.one)            # => 1.4142135623730951
 : 

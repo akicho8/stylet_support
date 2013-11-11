@@ -89,7 +89,7 @@ module Stylet
       # end
 
       # 内積
-      def inner_product(a, b)
+      def dot_product(a, b)
         members.collect{|m|a.send(m) * b.send(m)}.reduce(0, :+)
       end
 
@@ -183,9 +183,9 @@ module Stylet
     alias -@ reverse
 
     # 内積
-    #   Vector[1, 0].inner_product(Vector[1, 0])   # => 1.0
-    #   Vector[1, 0].inner_product(Vector[-1, 0])  # => -1.0
-    def inner_product(other)
+    #   Vector[1, 0].dot_product(Vector[1, 0])   # => 1.0
+    #   Vector[1, 0].dot_product(Vector[-1, 0])  # => -1.0
+    def dot_product(other)
       self.class.send(__method__, self, other)
     end
 
@@ -317,14 +317,14 @@ module Stylet
     # どう見ても遅い
     def slowly_normal(t)
       a = angle(t) + Fee.r90
-      Vector.new(Fee.cos(a), Fee.sin(a))
+      self.class.new(Fee.cos(a), Fee.sin(a))
     end
 
     # 法線ベクトルの取得(方法2)
     def normal(t)
       dx = t.x - x
       dy = t.y - y
-      Vector.new(-dy, dx)
+      self.class.new(-dy, dx)
     end
 
     #
