@@ -327,6 +327,11 @@ module Stylet
       self.class.new(-dy, dx)
     end
 
+    # 法線ベクトルの取得
+    def prep
+      self.class.new(-y, x)
+    end
+
     #
     # 相手の方向を取得
     #

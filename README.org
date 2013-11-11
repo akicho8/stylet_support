@@ -82,6 +82,8 @@
 : 
 : Vector.zero.inspect                            # => "[0.0, 0.0]"
 : Vector.zero.to_s                               # => "[0.0, 0.0]"
+: 
+: Vector[1,2].prep                               # => [-2, 1]
 
 *** 当たり判定を高速化するには？
 
