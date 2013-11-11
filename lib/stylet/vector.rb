@@ -109,7 +109,7 @@ module Stylet
         self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o.send(m))})
       end
       define_method("#{attr[:name]}!") do |*args|
-        copy_from(send(attr[:name], *args))
+        replace(send(attr[:name], *args))
       end
       alias_method attr[:sym], attr[:name]
     }
@@ -139,9 +139,9 @@ module Stylet
     # メンバーだけ更新(主に内部用)
     #   v = Vector.new
     #   v.object_id                       # => 70228805905160
-    #   v.copy_from(Vector.rand) # => [-0.5190386805455354, -0.5679474000175717]
+    #   v.replace(Vector.rand) # => [-0.5190386805455354, -0.5679474000175717]
     #   v.object_id                       # => 70228805905160
-    def copy_from(other)
+    def replace(other)
       tap { members.each{|m|send("#{m}=", other.send(m))} }
     end
 
@@ -154,7 +154,7 @@ module Stylet
     end
 
     def normalize!
-      copy_from(normalize)
+      replace(normalize)
     end
 
     # ベクトルの大きさを返す
@@ -214,7 +214,7 @@ module Stylet
     end
 
     def apply!(method, *args)
-      copy_from(apply(method, *args))
+      replace(apply(method, *args))
     end
 
     def apply_values(method, *args)
@@ -362,7 +362,7 @@ module Stylet
     end
 
     def rotate!(*args)
-      copy_from(rotate(*args))
+      replace(rotate(*args))
     end
 
     #
@@ -378,7 +378,7 @@ module Stylet
     end
 
     def rotate2!(*args)
-      copy_from(rotate2(*args))
+      replace(rotate2(*args))
     end
 
     def to_2dv

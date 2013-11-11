@@ -64,7 +64,7 @@ Vector.rand.distance_to(Vector.rand)           # => 2.275368849486666
 
 v = Vector.new
 v.object_id                                    # => 70242182689180
-v.copy_from(Vector.rand)              # => [-0.07634952958262664, -0.1731985596574761]
+v.replace(Vector.rand)              # => [-0.07634952958262664, -0.1731985596574761]
 v.object_id                                    # => 70242182689180
 
 Vector.zero.distance_to(Vector.one)            # => 1.4142135623730951
