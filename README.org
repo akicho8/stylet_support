@@ -63,13 +63,13 @@
 : Vector[1, 0].inner_product(Vector[1, 0])       # => 1
 : Vector[1, 0].inner_product(Vector[-1, 0])      # => -1
 : 
-: Vector.outer_product(Vector.rand, Vector.rand) # => 0.5333162572409049
+: Vector.cross_product(Vector.rand, Vector.rand) # => 0.5333162572409049
 : 
 : Vector.rand.distance_to(Vector.rand)           # => 0.8634596196444447
 : 
 : v = Vector.new
 : v.object_id                                    # => 70308396077900
-: v.copy_from(Vector.rand)              # => [-0.5913794734970825, 0.2642720026589105]
+: v.copy_from(Vector.rand)                       # => [-0.5913794734970825, 0.2642720026589105]
 : v.object_id                                    # => 70308396077900
 : 
 : Vector.zero.distance_to(Vector.one)            # => 1.4142135623730951

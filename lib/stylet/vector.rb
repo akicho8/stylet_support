@@ -94,7 +94,7 @@ module Stylet
       end
 
       # # 外積
-      # def outer_product(a, b)
+      # def cross_product(a, b)
       #   members.collect {|m|
       #     (members - [m]).collect {|n| a.send(m) * b.send(n) }
       #   }.flatten.reduce(0, :+)
@@ -240,12 +240,12 @@ module Stylet
 
     # 外積
     # x1*y2-x2*y1 = |v1||v2|sin(θ)
-    def self.outer_product(a, b)
+    def self.cross_product(a, b)
       a.x * b.y - b.x * a.y
     end
 
-    def outer_product(b)
-      self.class.outer_product(self, b)
+    def cross_product(b)
+      self.class.cross_product(self, b)
     end
 
     # 方向ベクトル
@@ -427,6 +427,6 @@ if $0 == __FILE__
   # p p0.add!(p1)
   # p p0
   #
-  # p0 = Stylet::Vector.new(0, 0)
+  # p0 = Stylet::Vector.zero
   # p p0.normalize
 end

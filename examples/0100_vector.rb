@@ -58,7 +58,7 @@ Vector.rand(-2.0..2.0)                         # => [1.455803890592764, 0.772496
 Vector[1, 0].inner_product(Vector[1, 0])       # => 1
 Vector[1, 0].inner_product(Vector[-1, 0])      # => -1
 
-Vector.outer_product(Vector.rand, Vector.rand) # => -0.10275400781516983
+Vector.cross_product(Vector.rand, Vector.rand) # => -0.10275400781516983
 
 Vector.rand.distance_to(Vector.rand)           # => 2.275368849486666
 

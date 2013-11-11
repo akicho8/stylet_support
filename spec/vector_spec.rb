@@ -15,7 +15,7 @@ module Stylet
 
     it "加減演算" do
       (@obj + @obj).should == Vector.new(6, 8)
-      (@obj - @obj).should == Vector.new(0, 0)
+      (@obj - @obj).should == Vector.zero
     end
 
     it "スケーリング" do
