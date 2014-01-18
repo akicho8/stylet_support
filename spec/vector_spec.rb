@@ -13,9 +13,16 @@ module Stylet
       Vector.rand
     end
 
-    it "加減演算" do
-      (@obj + @obj).should == Vector.new(6, 8)
-      (@obj - @obj).should == Vector.zero
+    describe "加減演算" do
+      it do
+        (@obj + @obj).should == Vector.new(6, 8)
+        (@obj - @obj).should == Vector.zero
+      end
+
+      it "右辺は配列でも可" do
+        (@obj + [3, 4]).should == Vector.new(6, 8)
+        (@obj - [3, 4]).should == Vector.zero
+      end
     end
 
     it "スケーリング" do

@@ -5,16 +5,16 @@ module Stylet
   describe Fee do
     describe "整数系" do
       it "sin/cos" do
-        Fee.isin(0).should == 0
-        Fee.icos(0).should == Fee.one
+        Fee._rsin(0).should == 0
+        Fee._rcos(0).should == Fee.one
       end
 
       it "sinとcosとatan2の整合性確認" do
         n = 64
         (0..n).collect{|i|
           r = (Fee.one_round * i / n) % Fee.one_round
-          x = Fee.icos(r)
-          y = Fee.isin(r)
+          x = Fee._rcos(r)
+          y = Fee._rsin(r)
           dir = Fee.iangle(0, 0, x, y)
           r == dir
         }.should be_all
@@ -27,16 +27,16 @@ module Stylet
 
     describe "一周も角度も小数で表す系" do
       it "sin/cos" do
-        Fee.sin(0).should == 0.0
-        Fee.cos(0).should == 1.0
+        Fee.rsin(0).should == 0.0
+        Fee.rcos(0).should == 1.0
       end
 
       it "sinとcosとatan2の整合性確認" do
         n = 32
         (0..n).collect{|i|
           r = 1.0 * i / n % 1.0
-          x = Fee.cos(r)
-          y = Fee.sin(r)
+          x = Fee.rcos(r)
+          y = Fee.rsin(r)
           dir = Fee.angle(0, 0, x, y)
           r == dir
         }.should be_all

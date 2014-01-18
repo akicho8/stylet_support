@@ -106,6 +106,9 @@ module Stylet
       {:name => :sub, :sym => :-},
     ].each{|attr|
       define_method(attr[:name]) do |o|
+        unless o.kind_of? self.class
+          o = self.class.new(*o.to_ary)
+        end
         self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o.send(m))})
       end
       define_method("#{attr[:name]}!") do |*args|
@@ -251,13 +254,13 @@ module Stylet
     # 方向ベクトル
     #
     #   これを使うと次のように簡単に書ける
-    #   cursor.x += Stylet::Fee.cos(dir) * speed
-    #   cursor.y += Stylet::Fee.sin(dir) * speed
+    #   cursor.x += Stylet::Fee.rcos(dir) * speed
+    #   cursor.y += Stylet::Fee.rsin(dir) * speed
     #     ↓
     #   cursor += Stylet::Fee.angle_at(dir) * speed
     #
     def self.angle_at(x, y = x)
-      new(Fee.cos(x), Fee.sin(y))
+      new(Fee.rcos(x), Fee.rsin(y))
     end
 
     # 反射ベクトルの取得
@@ -317,7 +320,7 @@ module Stylet
     # どう見ても遅い
     def slowly_normal(t)
       a = angle(t) + Fee.r90
-      self.class.new(Fee.cos(a), Fee.sin(a))
+      self.class.new(Fee.rcos(a), Fee.rsin(a))
     end
 
     # 法線ベクトルの取得(方法2)
@@ -370,15 +373,11 @@ module Stylet
       replace(rotate(*args))
     end
 
-    #
     # 指定の角度だけ回転する(方法2)
-    #
     #   他のいくつかのライブラリで使われている方法。
-    #   こっちの方が速そうだけど意味がよくわからない。
-    #
     def rotate2(a)
-      tx = (x * Fee.cos(a)) - (y * Fee.sin(a))
-      ty = (x * Fee.sin(a)) + (y * Fee.cos(a))
+      tx = (x * Fee.rcos(a)) - (y * Fee.rsin(a))
+      ty = (x * Fee.rsin(a)) + (y * Fee.rcos(a))
       self.class.new(tx, ty)
     end
 

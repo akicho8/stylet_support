@@ -12,21 +12,21 @@ module Stylet
       @sin_table = AROUND.times.collect{|i|(Math.sin(2 * Math::PI * i / AROUND) * ONE).round}
     end
 
-    def isin(a)
+    def _rsin(a)
       @sin_table[a.modulo(@sin_table.size)]
     end
 
-    def icos(a)
-      isin(a + @sin_table.size / 4)
+    def _rcos(a)
+      _rsin(a + @sin_table.size / 4)
     end
 
-    def sin(a)
-      a %= 1.0 # ruby の場合、一周せずに a * @sin_table.size で無限に桁がでかくなる、のを防ぐため
+    def rsin(a)
+      a = a.modulo(1.0) # ruby の場合、一周せずに a * @sin_table.size で無限に桁がでかくなる、のを防ぐため
       @sin_table[(a * @sin_table.size).modulo(@sin_table.size)] * 1.0 / ONE
     end
 
-    def cos(a)
-      sin(a + 1.0 / 4)
+    def rcos(a)
+      rsin(a + 1.0 / 4)
     end
   end
 
@@ -131,7 +131,9 @@ module Stylet
 
     def local_dir(value, div_value, area_no)
       # p [value, div_value, area_no]
-      raise unless value <= div_value
+      unless value <= div_value
+        raise ArgumentError, "#{value} <= #{div_value}"
+      end
       ip = @atan_area_info_table[area_no]
       dir = ip.basedir
       if div_value.nonzero?
@@ -163,11 +165,12 @@ module Stylet
     include AtanTableModule
 
     class << self
-      [:isin, :icos, :iangle, :sin, :cos, :angle].each{|method|
-        define_method(method){|*args, &block|
+      # FIXME: delegate
+      [:_rsin, :_rcos, :iangle, :rsin, :rcos, :angle].each do |method|
+        define_method(method) do |*args, &block|
           instance.send(method, *args, &block)
-        }
-      }
+        end
+      end
     end
 
     def self.one
@@ -205,19 +208,31 @@ module Stylet
     def self.cleft?(v)
       (r90...r270).include?(v % 1.0)
     end
+
+    # from から to への差分
+    def self.angle_diff(from: nil, to: nil)
+      v = to.modulo(1.0) - from.modulo(1.0)
+      if v < -1.0 / 2
+        1.0 + v
+      elsif v > 1.0 / 2
+        -1.0 + v
+      else
+        v
+      end
+    end
   end
 end
 
 if $0 == __FILE__
   require "pp"
-  # p Stylet::Fee.cos(0)
+  # p Stylet::Fee.rcos(0)
   # exit
 
-  # p Stylet::Fee.isin(0)
-  # p Stylet::Fee.icos(0)
+  # p Stylet::Fee._rsin(0)
+  # p Stylet::Fee._rcos(0)
   # p Stylet::Fee.iangle(0, 0, 0, 1)
-  # p Stylet::Fee.sin(0)
-  # p Stylet::Fee.cos(0)
+  # p Stylet::Fee.rsin(0)
+  # p Stylet::Fee.rcos(0)
   # p Stylet::Fee.iangle(320.0, 240.0, 447.990361835411, 240.429243)
 
   # n = Stylet::AROUND
@@ -225,8 +240,8 @@ if $0 == __FILE__
   #   if i == 4 || true
   #     # r = (Stylet::Fee.one_round / n * i) % Stylet::Fee.one_round
   #     r = (Stylet::Fee.one_round / n * i)
-  #     x = Stylet::Fee.icos(r)
-  #     y = Stylet::Fee.isin(r)
+  #     x = Stylet::Fee._rcos(r)
+  #     y = Stylet::Fee._rsin(r)
   #     dir = Stylet::Fee.iangle(0, 0, x, y)
   #     [i, [x, y], r, dir, (r == dir)]
   #   end
@@ -236,8 +251,8 @@ if $0 == __FILE__
   # (0..n).collect{|i|
   #   if true
   #     r = ((Stylet::Fee.one_round.to_f * i / n) % Stylet::Fee.one_round)
-  #     x = Stylet::Fee.icos(r)
-  #     y = Stylet::Fee.isin(r)
+  #     x = Stylet::Fee._rcos(r)
+  #     y = Stylet::Fee._rsin(r)
   #     dir = Stylet::Fee.iangle(0, 0, x, y)
   #     p [x, y, r, dir, (r == dir)]
   #     r == dir
@@ -246,11 +261,11 @@ if $0 == __FILE__
 
   # pp (0..8).collect{|i|
   #   r = 1.0 / 8 * i % 1.0
-  #   x = Stylet::Fee.cos(r)
-  #   y = Stylet::Fee.sin(r)
+  #   x = Stylet::Fee.rcos(r)
+  #   y = Stylet::Fee.rsin(r)
   #   dir = Stylet::Fee.angle(0, 0, x, y)
   #   [i, r, dir, (r == dir)]
   # }
-  # pp 8.times.collect{|i|[i, Stylet::Fee.sin(1.0 / 8 * i)]}
+  # pp 8.times.collect{|i|[i, Stylet::Fee.rsin(1.0 / 8 * i)]}
   # pp (0..12).collect{|i|[i, Stylet::Fee.clock(i)]}
 end
