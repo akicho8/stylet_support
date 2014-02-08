@@ -2,10 +2,14 @@ require "./setup"
 include Stylet
 
 Point.new                                      # => [0.0, 0.0]
+Point.new(1, 2)                                # => [1, 2]
 Point[1, 2]                                    # => [1, 2]
 Point[1, 2].members                            # => [:x, :y]
 Point[1, 2].values                             # => [1, 2]
 Point[1, 2]                                    # => [1, 2]
+
+Point[1, 2] == Point[1, 2]                     # => true
+Point[1, 2] == Point[3, 4]                     # => false
 
 Vector.superclass                              # => Stylet::Point2
 
@@ -46,29 +50,29 @@ Vector.one.magnitude                           # => 1.4142135623730951
 Vector.one.magnitude_sq                        # => 2.0
 
 v = Vector.rand
-v.round(2)                                     # => [0.38, 0.32]
-v.round                                        # => [0, 0]
-v.floor                                        # => [0, 0]
-v.ceil                                         # => [1, 1]
+v.round(2)                                     # => [0.39, -0.76]
+v.round                                        # => [0, -1]
+v.floor                                        # => [0, -1]
+v.ceil                                         # => [1, 0]
 v.truncate                                     # => [0, 0]
 
-Vector.rand                                    # => [-0.11178572190988056, -0.9579740673291302]
-Vector.rand(3)                                 # => [1, 1]
-Vector.rand(3..4)                              # => [3, 3]
-Vector.rand(3.0..4)                            # => [3.385788174895441, 3.243193721635672]
-Vector.rand(-2.0..2.0)                         # => [-0.11462874488152064, -0.5719227925271224]
+Vector.rand                                    # => [0.5107717958791023, -0.8620911343276032]
+Vector.rand(3)                                 # => [2, 0]
+Vector.rand(3..4)                              # => [4, 4]
+Vector.rand(3.0..4)                            # => [3.834865818413066, 3.0637049389796687]
+Vector.rand(-2.0..2.0)                         # => [-0.9675050965888485, 0.10547785169279633]
 
-Vector[1, 0].dot_product(Vector[1, 0])       # => 1
-Vector[1, 0].dot_product(Vector[-1, 0])      # => -1
+Vector[1, 0].dot_product(Vector[1, 0])         # => 1
+Vector[1, 0].dot_product(Vector[-1, 0])        # => -1
 
-Vector.cross_product(Vector.rand, Vector.rand) # => 0.37415586119802274
+Vector.cross_product(Vector.rand, Vector.rand) # => -0.14108468574865177
 
-Vector.rand.distance_to(Vector.rand)           # => 1.552555114034262
+Vector.rand.distance_to(Vector.rand)           # => 0.7634129942658593
 
 v = Vector.new
-v.object_id                                    # => 70181520566780
-v.replace(Vector.rand)                         # => [0.9156541157178435, 0.9496087051944213]
-v.object_id                                    # => 70181520566780
+v.object_id                                    # => 70323760370020
+v.replace(Vector.rand)                         # => [0.32000126095481973, -0.6619551294710135]
+v.object_id                                    # => 70323760370020
 
 Vector.zero.distance_to(Vector.one)            # => 1.4142135623730951
 
