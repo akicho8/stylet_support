@@ -408,8 +408,7 @@ module Stylet
 end
 
 if $0 == __FILE__
-  Stylet::Vector.rand * 2 # !> possibly useless use of * in void context
-  exit
+  Stylet::Vector.rand * 2
 
   p0 = Stylet::Vector.new(1, 1)
   p1 = Stylet::Vector.new(1, 1)
@@ -419,7 +418,7 @@ if $0 == __FILE__
   p(p0)
   p(Stylet::Vector.new(3, 4).magnitude)
   p(Stylet::Vector.new(3, 4).normalize.scale(5))
-  p -Stylet::Vector.new(3, 4) # !> ambiguous first argument; put parentheses or even spaces
+  p(-Stylet::Vector.new(3, 4))
 
   # p0 = Stylet::Vector.new(1, 1)
   # p1 = Stylet::Vector.new(1, 1)
@@ -434,3 +433,10 @@ if $0 == __FILE__
   # p0 = Stylet::Vector.zero
   # p p0.normalize
 end
+# >> [2.0, 2.0]
+# >> [2.0, 2.0]
+# >> [2.0, 2.0]
+# >> [2.0, 2.0]
+# >> 5.0
+# >> [3.0, 4.0]
+# >> [-3, -4]

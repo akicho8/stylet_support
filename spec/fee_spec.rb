@@ -59,8 +59,8 @@ module Stylet
     end
 
     it "左右どちらにいるか？" do
-      Fee.cright?(Fee.clock(3)).should be_true
-      Fee.cleft?(Fee.clock(9)).should be_true
+      Fee.cright?(Fee.clock(3)).should == true
+      Fee.cleft?(Fee.clock(9)).should == true
     end
   end
 end
