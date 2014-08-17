@@ -106,7 +106,7 @@ module Stylet
       {:name => :sub, :sym => :-},
     ].each{|attr|
       define_method(attr[:name]) do |o|
-        unless o.kind_of? self.class
+        unless o.is_a? self.class
           o = self.class.new(*o.to_ary)
         end
         self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o.send(m))})
@@ -356,7 +356,7 @@ module Stylet
     #
     #   a と b の位置が同じ場合いろいろおかしくなる
     #
-    def self.pos_vector_rate(a, b, rate)
+    def self.pos_vector_ratio(a, b, rate)
       a + angle_at(a.angle_to(b)) * (a.distance_to(b) * rate) # FIXME: ダメなコード
     end
 

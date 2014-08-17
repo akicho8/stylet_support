@@ -37,6 +37,6 @@ if $0 == __FILE__
   Stylet::Etc.clamp(0.5)                            # => 0.5
   Stylet::Etc.max_clamp(1.5)                        # => 1.0
   Stylet::Etc.min_clamp(-0.5)                       # => 0.0
-  Stylet::Etc.shortest_angular_difference(0.2, 0.5) # => 0.3
-  Stylet::Etc.shortest_angular_difference(0.8, 1.2) # => 0.3999999999999999
+  Stylet::Etc.shortest_angular_difference(0.2, 0.5) # => -0.3
+  Stylet::Etc.shortest_angular_difference(0.8, 1.2) # => -0.3999999999999999
 end
