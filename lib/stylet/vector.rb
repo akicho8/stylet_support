@@ -50,7 +50,7 @@ module Stylet
     included do
     end
 
-    module ClassMethods
+    class_methods do
       # ゼロベクトルを返す
       #   Vector.zero.to_a # => [0.0, 0.0]
       def zero
@@ -104,7 +104,7 @@ module Stylet
     [
       {:name => :add, :sym => :+},
       {:name => :sub, :sym => :-},
-    ].each{|attr|
+    ].each do |attr|
       define_method(attr[:name]) do |o|
         unless o.is_a? self.class
           o = self.class.new(*o.to_ary)
@@ -115,16 +115,16 @@ module Stylet
         replace(send(attr[:name], *args))
       end
       alias_method attr[:sym], attr[:name]
-    }
+    end
 
     [
       {:name => :scale, :sym => :*},
       {:name => :div,   :sym => :/},
-    ].each{|attr|
+    ].each do |attr|
       define_method(attr[:name])       {|*args| apply(attr[:sym], *args)  }
       define_method("#{attr[:name]}!") {|*args| apply!(attr[:sym], *args) }
       alias_method attr[:sym], attr[:name]
-    }
+    end
 
     alias mul scale
     alias mul! scale!
@@ -179,7 +179,7 @@ module Stylet
     # 反対方向のベクトルを返す
     #   Vector.one.reverse # => [-1.0, -1.0]
     def reverse
-      self.class.new(*values.collect{|v|-v})
+      self.class.new(*values.collect(&:-@))
     end
 
     # -Vector.one # => [-1.0, -1.0]
@@ -201,7 +201,7 @@ module Stylet
     # 0ベクトルか？
     #   Vector.zero.zero? # => true
     def zero?
-      values.all?{|v|v.zero?}
+      values.all?(&:zero?)
     end
 
     # 0ベクトルではない？
