@@ -10,7 +10,7 @@ class TestFee < Test::Unit::TestCase
 
     test "sinとcosとatan2の整合性確認" do
       n = 64
-      r = (0..n).collect{|i|
+      r = (0..n).collect {|i|
         r = (Fee.one_round * i / n) % Fee.one_round
         x = Fee._rcos(r)
         y = Fee._rsin(r)
@@ -33,7 +33,7 @@ class TestFee < Test::Unit::TestCase
 
     test "sinとcosとatan2の整合性確認" do
       n = 32
-      r = (0..n).collect{|i|
+      r = (0..n).collect {|i|
         r = 1.0 * i / n % 1.0
         x = Fee.rcos(r)
         y = Fee.rsin(r)

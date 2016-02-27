@@ -54,13 +54,13 @@ module Stylet
       # ゼロベクトルを返す
       #   Vector.zero.to_a # => [0.0, 0.0]
       def zero
-        new(*Array.new(members.size){0.0})
+        new(*Array.new(members.size) { 0.0 })
       end
 
       # メンバーが 1.0 のベクトルを返す
       #   Vector.one.to_a # => [1.0, 1.0]
       def one
-        new(*Array.new(members.size){1.0})
+        new(*Array.new(members.size) { 1.0 })
       end
 
       # ランダムを返す
@@ -73,7 +73,7 @@ module Stylet
         if args.empty?
           args = [-1.0..1.0]
         end
-        new(*members.collect{Kernel.rand(*args)})
+        new(*members.collect { Kernel.rand(*args) })
       end
 
       # ゼロベクトルを作ろうとすると例外を出す new
@@ -90,7 +90,7 @@ module Stylet
 
       # 内積
       def dot_product(a, b)
-        members.collect{|m|a.send(m) * b.send(m)}.reduce(0, :+)
+        members.collect { |m| a.send(m) * b.send(m) }.reduce(0, :+)
       end
 
       # # 外積
@@ -102,14 +102,14 @@ module Stylet
     end
 
     [
-      {:name => :add, :sym => :+},
-      {:name => :sub, :sym => :-},
+      { :name => :add, :sym => :+ },
+      { :name => :sub, :sym => :- },
     ].each do |attr|
       define_method(attr[:name]) do |o|
         unless o.is_a? self.class
           o = self.class.new(*o.to_ary)
         end
-        self.class.new(*members.collect{|m|Float(send(m)).send(attr[:sym], o.send(m))})
+        self.class.new(*members.collect { |m| Float(send(m)).send(attr[:sym], o.send(m)) })
       end
       define_method("#{attr[:name]}!") do |*args|
         replace(send(attr[:name], *args))
@@ -118,11 +118,11 @@ module Stylet
     end
 
     [
-      {:name => :scale, :sym => :*},
-      {:name => :div,   :sym => :/},
+      { :name => :scale, :sym => :* },
+      { :name => :div,   :sym => :/ },
     ].each do |attr|
-      define_method(attr[:name])       {|*args| apply(attr[:sym], *args)  }
-      define_method("#{attr[:name]}!") {|*args| apply!(attr[:sym], *args) }
+      define_method(attr[:name])       { |*args| apply(attr[:sym], *args)  }
+      define_method("#{attr[:name]}!") { |*args| apply!(attr[:sym], *args) }
       alias_method attr[:sym], attr[:name]
     end
 
@@ -135,8 +135,8 @@ module Stylet
     # Vector.rand.ceil.to_a     # => [1, 1]
     # Vector.rand.truncate.to_a # => [0, 0]
     [:ceil, :floor, :round, :truncate].each do |name|
-      define_method(name)        {|*args| apply(name, *args)  }
-      define_method("#{name}!")  {|*args| apply!(name, *args) }
+      define_method(name)        { |*args| apply(name, *args)  }
+      define_method("#{name}!")  { |*args| apply!(name, *args) }
     end
 
     # メンバーだけ更新(主に内部用)
@@ -145,7 +145,7 @@ module Stylet
     #   v.replace(Vector.rand) # => [-0.5190386805455354, -0.5679474000175717]
     #   v.object_id                       # => 70228805905160
     def replace(other)
-      tap { members.each{|m|send("#{m}=", other.send(m))} }
+      tap { members.each { |m| send("#{m}=", other.send(m)) } }
     end
 
     # 単位ベクトル化
@@ -153,7 +153,7 @@ module Stylet
     def normalize
       raise ZeroVectorError if zero?
       c = magnitude
-      self.class.safe_new(*values.collect{|v|Float(v) / c})
+      self.class.safe_new(*values.collect { |v| Float(v) / c })
     end
 
     def normalize!
@@ -170,7 +170,7 @@ module Stylet
     end
 
     def magnitude_sq
-      values.collect{|v|v ** 2}.inject(0, &:+)
+      values.collect { |v| v**2 }.inject(0, &:+)
     end
 
     alias length magnitude
@@ -221,7 +221,7 @@ module Stylet
     end
 
     def apply_values(method, *args)
-      members.collect{|m|Float(send(m)).send(method, *args)}
+      members.collect { |m| Float(send(m)).send(method, *args) }
     end
   end
 
@@ -297,7 +297,7 @@ module Stylet
     #    n: 法線ベクトル
     #
     def slide(n)
-      t = -(n.x * x + n.y * y) / (n.x ** 2 + n.y ** 2)
+      t = -(n.x * x + n.y * y) / (n.x**2 + n.y**2)
       n * t
     end
 

@@ -13,8 +13,8 @@ Point[1, 2] == Point[3, 4]                     # => false
 
 Vector.superclass                              # => Stylet::Point2
 
-Point.new(Point[1,2])                          # => [1, 2]
-Point[Point[1,2]]                              # => [1, 2]
+Point.new(Point[1, 2])                          # => [1, 2]
+Point[Point[1, 2]]                              # => [1, 2]
 
 Vector.new                                     # => [0.0, 0.0]
 Vector.new                                     # => [0.0, 0.0]
@@ -82,4 +82,4 @@ Vector.one.nonzero?                            # => true
 Vector.zero.inspect                            # => "[0.0, 0.0]"
 Vector.zero.to_s                               # => "[0.0, 0.0]"
 
-Vector[1,2].prep                               # => [-2, 1]
+Vector[1, 2].prep                               # => [-2, 1]

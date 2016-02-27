@@ -4,12 +4,12 @@ require "singleton"
 module Stylet
   AtanAreaInfo = Struct.new(:basedir, :sign)
   ONE    = 4096     # sin cos の精度
-  AROUND = 4096*2   # 4096の場合、64分割以上のときにズレが生じる。8092なら256分割でズレるようだ
+  AROUND = 4096 * 2   # 4096の場合、64分割以上のときにズレが生じる。8092なら256分割でズレるようだ
 
   module SinTableModule
     def initialize
       super
-      @sin_table = AROUND.times.collect{|i|(Math.sin(2 * Math::PI * i / AROUND) * ONE).round}
+      @sin_table = AROUND.times.collect { |i| (Math.sin(2 * Math::PI * i / AROUND) * ONE).round }
     end
 
     def _rsin(a)
@@ -34,7 +34,7 @@ module Stylet
     def initialize
       super
       part = AROUND / 8
-      @atan_table = (0..part).collect{|i|
+      @atan_table = (0..part).collect {|i|
         (Math.atan2(i, part) * part / (2 * Math::PI / 8)).round
       }
       # p @atan_table # [0, 319, 605, 839]
