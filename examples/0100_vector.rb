@@ -50,29 +50,29 @@ Vector.one.magnitude                           # => 1.4142135623730951
 Vector.one.magnitude_sq                        # => 2.0
 
 v = Vector.rand
-v.round(2)                                     # => [0.56, -0.46]
+v.round(2)                                     # => [0.77, 0.47]
 v.round                                        # => [1, 0]
-v.floor                                        # => [0, -1]
-v.ceil                                         # => [1, 0]
+v.floor                                        # => [0, 0]
+v.ceil                                         # => [1, 1]
 v.truncate                                     # => [0, 0]
 
-Vector.rand                                    # => [-0.7445455091610387, 0.46462301042660603]
-Vector.rand(3)                                 # => [1, 2]
-Vector.rand(3..4)                              # => [4, 4]
-Vector.rand(3.0..4)                            # => [3.2537847118085614, 3.3275413035112784]
-Vector.rand(-2.0..2.0)                         # => [-1.3836212151787404, -1.0930685964548252]
+Vector.rand                                    # => [0.6970991113147997, -0.5146410135812451]
+Vector.rand(3)                                 # => [0, 1]
+Vector.rand(3..4)                              # => [3, 3]
+Vector.rand(3.0..4)                            # => [3.9382584406399674, 3.0500795268941383]
+Vector.rand(-2.0..2.0)                         # => [1.5634303938005125, 1.1675343505408282]
 
 Vector[1, 0].dot_product(Vector[1, 0])         # => 1
 Vector[1, 0].dot_product(Vector[-1, 0])        # => -1
 
-Vector.cross_product(Vector.rand, Vector.rand) # => 0.06142489967947013
+Vector.cross_product(Vector.rand, Vector.rand) # => 1.1123981665221983
 
-Vector.rand.distance_to(Vector.rand)           # => 1.2186965349198795
+Vector.rand.distance_to(Vector.rand)           # => 1.010522253717908
 
 v = Vector.new
-v.object_id                                    # => 70324625115960
-v.replace(Vector.rand)                         # => [0.1572712025818228, -0.8783051109123912]
-v.object_id                                    # => 70324625115960
+v.object_id                                    # => 70293201414260
+v.replace(Vector.rand)                         # => [0.47051195404497625, -0.5120068434351144]
+v.object_id                                    # => 70293201414260
 
 Vector.zero.distance_to(Vector.one)            # => 1.4142135623730951
 

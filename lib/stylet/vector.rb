@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 require "active_support/concern"
 
 module Stylet
@@ -140,10 +139,12 @@ module Stylet
     end
 
     # メンバーだけ更新(主に内部用)
+    #
     #   v = Vector.new
-    #   v.object_id                       # => 70228805905160
+    #   v.object_id            # => 70228805905160
     #   v.replace(Vector.rand) # => [-0.5190386805455354, -0.5679474000175717]
-    #   v.object_id                       # => 70228805905160
+    #   v.object_id            # => 70228805905160
+    #
     def replace(other)
       tap { members.each { |m| send("#{m}=", other.send(m)) } }
     end
@@ -254,13 +255,13 @@ module Stylet
     # 方向ベクトル
     #
     #   これを使うと次のように簡単に書ける
-    #   cursor.x += Stylet::Fee.rcos(dir) * speed
-    #   cursor.y += Stylet::Fee.rsin(dir) * speed
+    #   cursor.x += Stylet::Magic.rcos(dir) * speed
+    #   cursor.y += Stylet::Magic.rsin(dir) * speed
     #     ↓
-    #   cursor += Stylet::Fee.angle_at(dir) * speed
+    #   cursor += Stylet::Magic.angle_at(dir) * speed
     #
     def self.angle_at(x, y = x)
-      new(Fee.rcos(x), Fee.rsin(y))
+      new(Magic.rcos(x), Magic.rsin(y))
     end
 
     # 反射ベクトルの取得
@@ -275,7 +276,7 @@ module Stylet
     #   反射係数
     #     ×1.5: 謎の力によってありえない反射をする
     #     ◎1.0: 摩擦なし(標準)
-    #     ◎0.8: 少しす滑る
+    #     ◎0.8: 少し滑る
     #     ○0.6: かなり滑ってほんの少しだけ反射する
     #     ○0.5: 線に沿って滑る
     #     ×0.4: 線にわずかにめり込んだまま滑る
@@ -284,7 +285,7 @@ module Stylet
     #   hakuhin.jp/as/collide.html#COLLIDE_02 の方法だと x + t * n.x * 2.0 * 0.8 と一気に書いていたけど
     #   メソッド化するときには分解した方がわかりやすそうなのでこうした。
     #
-    #   その５ 反射ベクトルと壁ずりベクトル
+    #   参考: 反射ベクトルと壁ずりベクトル
     #   http://marupeke296.com/COL_Basic_No5_WallVector.html
     #
     def reflect(n)
@@ -301,13 +302,12 @@ module Stylet
       n * t
     end
 
+    # p: 現在地点
+    # s: スピードベクトル
+    # a: 線の片方
+    # n: 法線ベクトル
     #
-    #    p: 現在地点
-    #    s: スピードベクトル
-    #    a: 線の片方
-    #    n: 法線ベクトル
-    #
-    # としたら何倍したら線にぶつかるか
+    # としたとき何倍したら線にぶつかるか
     #
     # 式の意味がまだ理解できてない
     #
@@ -319,8 +319,8 @@ module Stylet
     # 法線ベクトルの取得(方法1)
     # どう見ても遅い
     def slowly_normal(t)
-      a = angle(t) + Fee.r90
-      self.class.new(Fee.rcos(a), Fee.rsin(a))
+      a = angle(t) + Magic.r90
+      self.class.new(Magic.rcos(a), Magic.rsin(a))
     end
 
     # 法線ベクトルの取得(方法2)
@@ -342,16 +342,14 @@ module Stylet
       (target - self).angle
     end
 
-    #
     # ベクトルから角度に変換
     #
-    #   Math.atan2(y, x) * 180 / Math.PI
+    #   Math.atan2(y, x) * 180 / Math.PI に相当する
     #
     def angle
-      Fee.angle(0, 0, x, y)
+      Magic.angle(0, 0, x, y)
     end
 
-    #
     # 線分 A B の距離 1.0 をしたとき途中の位置ベクトルを取得
     #
     #   a と b の位置が同じ場合いろいろおかしくなる
@@ -360,10 +358,9 @@ module Stylet
       a + angle_at(a.angle_to(b)) * (a.distance_to(b) * rate) # FIXME: ダメなコード
     end
 
-    #
     # 指定の角度だけ回転する
     #
-    #   自分が最初に考えた方法
+    #   自分で最初に考えた方法
     #
     def rotate(a)
       self.class.angle_at(angle + a) * magnitude
@@ -376,8 +373,8 @@ module Stylet
     # 指定の角度だけ回転する(方法2)
     #   他のいくつかのライブラリで使われている方法。
     def rotate2(a)
-      tx = (x * Fee.rcos(a)) - (y * Fee.rsin(a))
-      ty = (x * Fee.rsin(a)) + (y * Fee.rcos(a))
+      tx = (x * Magic.rcos(a)) - (y * Magic.rsin(a))
+      ty = (x * Magic.rsin(a)) + (y * Magic.rcos(a))
       self.class.new(tx, ty)
     end
 
@@ -408,7 +405,7 @@ module Stylet
 end
 
 if $0 == __FILE__
-  Stylet::Vector.rand * 2
+  # Stylet::Vector.rand * 2
 
   p0 = Stylet::Vector.new(1, 1)
   p1 = Stylet::Vector.new(1, 1)

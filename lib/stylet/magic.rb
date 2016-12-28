@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 require "singleton"
 
 module Stylet
-  AtanAreaInfo = Struct.new(:basedir, :sign)
+  AtanAreaInfo = Struct.new(:base_dir, :sign)
   ONE    = 4096     # sin cos の精度
-  AROUND = 4096 * 2   # 4096の場合、64分割以上のときにズレが生じる。8092なら256分割でズレるようだ
+  AROUND = 4096 * 2 # 4096の場合、64分割以上のときにズレが生じる。8092なら256分割でズレるようだ
 
   module SinTableModule
     def initialize
@@ -135,7 +134,7 @@ module Stylet
         raise ArgumentError, "#{value} <= #{div_value}"
       end
       ip = @atan_area_info_table[area_no]
-      dir = ip.basedir
+      dir = ip.base_dir
       if div_value.nonzero?
         if value != div_value
           index = (value.to_f * AROUND / 8 / div_value).round
@@ -158,14 +157,14 @@ module Stylet
     end
   end
 
-  class Fee
+  class Magic
     include Singleton
     include Initialize
     include SinTableModule
     include AtanTableModule
 
     class << self
-      # FIXME: delegate
+      # FIXME: delegate を使うこと
       [:_rsin, :_rcos, :iangle, :rsin, :rcos, :angle].each do |method|
         define_method(method) do |*args, &block|
           instance.send(method, *args, &block)
@@ -189,11 +188,11 @@ module Stylet
     end
 
     # 一周を360度と考えたときの角度(抽象化のため)
-    def self.r0; 0; end
-    def self.r45; 1.0 / 8.0; end
-    def self.r90; 1.0 / 4.0; end
+    def self.r0;           0; end
+    def self.r45;  1.0 / 8.0; end
+    def self.r90;  1.0 / 4.0; end
     def self.r180; 1.0 / 2.0; end
-    def self.r270; r90 * 3; end
+    def self.r270;   r90 * 3; end
 
     def self.degree(r)
       r / 360.0
@@ -225,24 +224,24 @@ end
 
 if $0 == __FILE__
   require "pp"
-  # p Stylet::Fee.rcos(0)
+  # p Stylet::Magic.rcos(0)
   # exit
 
-  # p Stylet::Fee._rsin(0)
-  # p Stylet::Fee._rcos(0)
-  # p Stylet::Fee.iangle(0, 0, 0, 1)
-  # p Stylet::Fee.rsin(0)
-  # p Stylet::Fee.rcos(0)
-  # p Stylet::Fee.iangle(320.0, 240.0, 447.990361835411, 240.429243)
+  # p Stylet::Magic._rsin(0)
+  # p Stylet::Magic._rcos(0)
+  # p Stylet::Magic.iangle(0, 0, 0, 1)
+  # p Stylet::Magic.rsin(0)
+  # p Stylet::Magic.rcos(0)
+  # p Stylet::Magic.iangle(320.0, 240.0, 447.990361835411, 240.429243)
 
   # n = Stylet::AROUND
   # pp (0..(n*2)).collect{|i|
   #   if i == 4 || true
-  #     # r = (Stylet::Fee.one_round / n * i) % Stylet::Fee.one_round
-  #     r = (Stylet::Fee.one_round / n * i)
-  #     x = Stylet::Fee._rcos(r)
-  #     y = Stylet::Fee._rsin(r)
-  #     dir = Stylet::Fee.iangle(0, 0, x, y)
+  #     # r = (Stylet::Magic.one_round / n * i) % Stylet::Magic.one_round
+  #     r = (Stylet::Magic.one_round / n * i)
+  #     x = Stylet::Magic._rcos(r)
+  #     y = Stylet::Magic._rsin(r)
+  #     dir = Stylet::Magic.iangle(0, 0, x, y)
   #     [i, [x, y], r, dir, (r == dir)]
   #   end
   # }.compact
@@ -250,10 +249,10 @@ if $0 == __FILE__
   # n = 32
   # (0..n).collect{|i|
   #   if true
-  #     r = ((Stylet::Fee.one_round.to_f * i / n) % Stylet::Fee.one_round)
-  #     x = Stylet::Fee._rcos(r)
-  #     y = Stylet::Fee._rsin(r)
-  #     dir = Stylet::Fee.iangle(0, 0, x, y)
+  #     r = ((Stylet::Magic.one_round.to_f * i / n) % Stylet::Magic.one_round)
+  #     x = Stylet::Magic._rcos(r)
+  #     y = Stylet::Magic._rsin(r)
+  #     dir = Stylet::Magic.iangle(0, 0, x, y)
   #     p [x, y, r, dir, (r == dir)]
   #     r == dir
   #   end
@@ -261,11 +260,11 @@ if $0 == __FILE__
 
   # pp (0..8).collect{|i|
   #   r = 1.0 / 8 * i % 1.0
-  #   x = Stylet::Fee.rcos(r)
-  #   y = Stylet::Fee.rsin(r)
-  #   dir = Stylet::Fee.angle(0, 0, x, y)
+  #   x = Stylet::Magic.rcos(r)
+  #   y = Stylet::Magic.rsin(r)
+  #   dir = Stylet::Magic.angle(0, 0, x, y)
   #   [i, r, dir, (r == dir)]
   # }
-  # pp 8.times.collect{|i|[i, Stylet::Fee.rsin(1.0 / 8 * i)]}
-  # pp (0..12).collect{|i|[i, Stylet::Fee.clock(i)]}
+  # pp 8.times.collect{|i|[i, Stylet::Magic.rsin(1.0 / 8 * i)]}
+  # pp (0..12).collect{|i|[i, Stylet::Magic.clock(i)]}
 end

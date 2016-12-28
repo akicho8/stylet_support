@@ -1,9 +1,9 @@
 #+OPTIONS: toc:nil num:nil author:nil creator:nil \n:nil |:t
 #+OPTIONS: @:t ::t ^:t -:t f:t *:t <:t
 
-* ベクトルとかのライブラリ
+* ベクトル等の便利ライブラリ
 
-  styleからSDLに依存してない数学系の汎用ライブラリを単体で使いたかったので抜き出したもの
+  styleからSDL非依存の数学系処理を単体で使うために抜き出したもの
 
   - [[https://travis-ci.org/akicho8/stylet_math][Travis]]: [[https://travis-ci.org/akicho8/stylet_math.png]]
   - [[https://gemnasium.com/akicho8/stylet_math/][Gemnasium]]: [[https://gemnasium.com/akicho8/stylet_math.png]]
@@ -43,7 +43,7 @@
 : 
 : a + [3, 4]                                     # => [4.0, 6.0]
 : a - [3, 4]                                     # => [-2.0, -2.0]
-:
+: 
 : Vector.one.reverse                             # => [-1.0, -1.0]
 : -Vector.one                                    # => [-1.0, -1.0]
 : 
