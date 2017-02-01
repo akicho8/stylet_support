@@ -3,8 +3,7 @@ module Stylet
     extend self
 
     def clamp(v, range = (0.0..1.0))
-      v = min_clamp(v, range.min)
-      v = max_clamp(v, range.max)
+      v.clamp(range.min, range.max)
     end
 
     def max_clamp(v, r = 1.0)
