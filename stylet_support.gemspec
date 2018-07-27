@@ -1,13 +1,13 @@
 $:.push File.expand_path("../lib", __FILE__)
-require "stylet_math/version"
+require "stylet_support/version"
 
 Gem::Specification.new do |s|
-  s.name          = "stylet_math"
-  s.version       = StyletMath::VERSION
+  s.name          = "stylet_support"
+  s.version       = StyletSupport::VERSION
   s.summary       = "Vector library"
   s.description   = "Vector library"
   s.author        = "akicho8"
-  s.homepage      = "http://github.com/akicho8/stylet_math"
+  s.homepage      = "http://github.com/akicho8/stylet_support"
   s.email         = "akicho8@gmail.com"
 
   s.files         = `git ls-files`.split("\n")

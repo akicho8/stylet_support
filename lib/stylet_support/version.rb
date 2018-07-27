@@ -1,3 +1,3 @@
-module StyletMath
+module StyletSupport
   VERSION = "0.0.4"
 end

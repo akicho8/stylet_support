@@ -2,6 +2,8 @@ require "test_helper"
 
 class TestEtc < Test::Unit::TestCase
   test "all" do
+    # assert { Stylet::Etc.clamp(0.5) == 0.5 }
+
     assert_equal(0.5, Stylet::Etc.clamp(0.5))
     assert_equal(1.0, Stylet::Etc.max_clamp(1.5))
     assert_equal(0.0, Stylet::Etc.min_clamp(-0.5))
