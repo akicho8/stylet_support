@@ -16,7 +16,8 @@ class TestMagic < Test::Unit::TestCase
         dir = Magic.iangle(0, 0, x, y)
         r == dir
       }.all?
-      assert_true r
+
+      assert { r }
     end
 
     test "二点間の角度を求める" do
@@ -26,8 +27,8 @@ class TestMagic < Test::Unit::TestCase
 
   sub_test_case "一周も角度も小数で表す系" do
     test "sin/cos" do
-      assert_equal 0.0, Magic.rsin(0)
-      assert_equal 1.0, Magic.rcos(0)
+      assert { Magic.rsin(0) == 0.0 }
+      assert { Magic.rcos(0) == 1.0 }
     end
 
     test "sinとcosとatan2の整合性確認" do
@@ -39,27 +40,27 @@ class TestMagic < Test::Unit::TestCase
         dir = Magic.angle(0, 0, x, y)
         r == dir
       }.all?
-      assert_true r
+      assert { r }
     end
   end
 
   test "時計の時で方向指定" do
-    assert_equal 0.75, Magic.clock(0)
-    assert_equal 0.0, Magic.clock(3)
-    assert_equal 0.25, Magic.clock(6)
-    assert_equal 0.5, Magic.clock(9)
-    assert_equal 0.75, Magic.clock(12)
+    assert { Magic.clock(0) == 0.75 }
+    assert { Magic.clock(3) == 0.0 }
+    assert { Magic.clock(6) == 0.25 }
+    assert { Magic.clock(9) == 0.5 }
+    assert { Magic.clock(12) == 0.75 }
   end
 
   test "方向を抽象化" do
-    assert_equal Magic.clock(3), Magic.r0
-    assert_equal (Magic.clock(4, 30) * 10000).round, Magic.r45 * 10000
-    assert_equal Magic.clock(6), Magic.r90
-    assert_equal Magic.clock(9), Magic.r180
+    assert { Magic.r0 == Magic.clock(3) }
+    assert { Magic.r45 * 10000 == (Magic.clock(4, 30) * 10000).round }
+    assert { Magic.r90 == Magic.clock(6) }
+    assert { Magic.r180 == Magic.clock(9) }
   end
 
   test "左右どちらにいるか？" do
-    assert_true Magic.cright?(Magic.clock(3))
-    assert_true Magic.cleft?(Magic.clock(9))
+    assert { Magic.cright?(Magic.clock(3)) }
+    assert { Magic.cleft?(Magic.clock(9)) }
   end
 end
