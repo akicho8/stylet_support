@@ -1,5 +1,5 @@
 module Stylet
-  module Etc
+  module Chore
     extend self
 
     def clamp(v, range = (0.0..1.0))
@@ -32,9 +32,9 @@ module Stylet
 end
 
 if $0 == __FILE__
-  Stylet::Etc.clamp(0.5)                            # => 0.5
-  Stylet::Etc.max_clamp(1.5)                        # => 1.0
-  Stylet::Etc.min_clamp(-0.5)                       # => 0.0
-  Stylet::Etc.shortest_angular_difference(0.2, 0.5) # => -0.3
-  Stylet::Etc.shortest_angular_difference(0.8, 1.2) # => -0.3999999999999999
+  Stylet::Chore.clamp(0.5)                            # => 0.5
+  Stylet::Chore.max_clamp(1.5)                        # => 1.0
+  Stylet::Chore.min_clamp(-0.5)                       # => 0.0
+  Stylet::Chore.shortest_angular_difference(0.2, 0.5) # => -0.3
+  Stylet::Chore.shortest_angular_difference(0.8, 1.2) # => -0.3999999999999999
 end

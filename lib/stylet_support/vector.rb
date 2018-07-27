@@ -84,7 +84,7 @@ module Stylet
 
       # # 1.0 と -1.0 で構成したランダム値
       # def nonzero_random_new
-      #   new(*members.collect{Etc.nonzero_random})
+      #   new(*members.collect{Chore.nonzero_random})
       # end
 
       # 内積
