@@ -316,19 +316,19 @@ module Stylet
       -(n.x * p.x + n.y * p.y + d) / (n.x * s.x + n.y * s.y)
     end
 
-    # 法線ベクトルの取得(方法1)
-    # どう見ても遅い
-    def slowly_normal(t)
-      a = angle(t) + Magic.r90
-      self.class.new(Magic.rcos(a), Magic.rsin(a))
-    end
+    # # 法線ベクトルの取得(方法1)
+    # # どう見ても遅い
+    # def slowly_normal(t)
+    #   a = angle(t) + Magic.r90
+    #   self.class.new(Magic.rcos(a), Magic.rsin(a))
+    # end
 
-    # 法線ベクトルの取得(方法2)
-    def normal(t)
-      dx = t.x - x
-      dy = t.y - y
-      self.class.new(-dy, dx)
-    end
+    # # 法線ベクトルの取得(方法2)
+    # def normal(t)
+    #   dx = t.x - x
+    #   dy = t.y - y
+    #   self.class.new(-dy, dx)
+    # end
 
     # 法線ベクトルの取得
     def prep
