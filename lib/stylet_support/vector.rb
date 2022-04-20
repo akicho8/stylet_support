@@ -211,6 +211,11 @@ module Stylet
       !zero?
     end
 
+    # Vector クラスの map2 相当
+    def map2(other, &block)
+      self.class.new(*values.zip(other).collect(&block))
+    end
+
     private
 
     def apply(method, *args)
